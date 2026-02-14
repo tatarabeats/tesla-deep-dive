@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+@theme {
+  --color-duo-green: #58cc02;
+  --color-duo-green-dark: #46a302;
+  --color-duo-green-light: #d7ffb8;
+  --color-duo-blue: #1cb0f6;
+  --color-duo-blue-dark: #1899d6;
+  --color-duo-red: #ff4b4b;
+  --color-duo-red-dark: #ea2b2b;
+  --color-duo-red-light: #ffdfe0;
+  --color-duo-gold: #ffc800;
+  --color-duo-gold-dark: #e5b400;
+  --color-duo-purple: #ce82ff;
+  --color-duo-purple-dark: #a855f7;
+  --color-duo-orange: #ff9600;
+  --color-duo-gray: #e5e5e5;
+  --color-duo-gray-dark: #afafaf;
+  --color-duo-gray-text: #777;
+  --color-duo-bg: #131f24;
+  --color-duo-bg-card: #1a2b32;
+  --color-duo-bg-card-hover: #213740;
+  --color-duo-bg-surface: #0d171b;
+  --color-duo-text: #f7f7f7;
+  --color-duo-text-secondary: #93b0bc;
+  --color-duo-text-muted: #5e7d8a;
+  --color-duo-border: #2a3f48;
+  --color-duo-white: #ffffff;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'DIN Round', 'Nunito', 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: var(--color-duo-bg);
+    color: var(--color-duo-text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.01em;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.btn-duo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.1s;
+  text-transform: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-duo:active {
+  transform: translateY(2px);
+}
+
+.btn-duo-green {
+  background-color: var(--color-duo-green);
+  box-shadow: 0 4px 0 var(--color-duo-green-dark);
+  color: white;
+}
+.btn-duo-green:active {
+  box-shadow: 0 2px 0 var(--color-duo-green-dark);
+}
+
+.btn-duo-blue {
+  background-color: var(--color-duo-blue);
+  box-shadow: 0 4px 0 var(--color-duo-blue-dark);
+  color: white;
+}
+.btn-duo-blue:active {
+  box-shadow: 0 2px 0 var(--color-duo-blue-dark);
+}
+
+.btn-duo-red {
+  background-color: var(--color-duo-red);
+  box-shadow: 0 4px 0 var(--color-duo-red-dark);
+  color: white;
+}
+.btn-duo-red:active {
+  box-shadow: 0 2px 0 var(--color-duo-red-dark);
+}
+
+.btn-duo-gold {
+  background-color: var(--color-duo-gold);
+  box-shadow: 0 4px 0 var(--color-duo-gold-dark);
+  color: #1a1a1a;
+}
+.btn-duo-gold:active {
+  box-shadow: 0 2px 0 var(--color-duo-gold-dark);
+}
+
+.btn-duo-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-duo-border);
+  box-shadow: 0 4px 0 var(--color-duo-border);
+  color: var(--color-duo-text);
+}
+.btn-duo-outline:active {
+  box-shadow: 0 2px 0 var(--color-duo-border);
+}
+
+.btn-duo-outline-selected {
+  border-color: var(--color-duo-blue);
+  background-color: rgba(28, 176, 246, 0.15);
+  box-shadow: 0 4px 0 var(--color-duo-blue-dark);
+}
+
+.choice-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 2px solid var(--color-duo-border);
+  background-color: var(--color-duo-bg-card);
+  cursor: pointer;
+  transition: all 0.1s;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.choice-card:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+}
+
+.choice-card:hover {
+  background-color: var(--color-duo-bg-card-hover);
+  border-color: var(--color-duo-text-muted);
+}
+
+.choice-card-correct {
+  border-color: var(--color-duo-green) !important;
+  background-color: rgba(88, 204, 2, 0.15) !important;
+  box-shadow: 0 4px 0 var(--color-duo-green-dark) !important;
+}
+
+.choice-card-wrong {
+  border-color: var(--color-duo-red) !important;
+  background-color: rgba(255, 75, 75, 0.15) !important;
+  box-shadow: 0 4px 0 var(--color-duo-red-dark) !important;
+}
+
+.choice-card-disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+.progress-bar-duo {
+  height: 16px;
+  background-color: var(--color-duo-bg-surface);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-duo-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #7adb2e 0%, var(--color-duo-green) 100%);
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-bar-duo-fill::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  right: 6px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.15); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes float-up {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-50px) scale(1.3); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes slide-up-fade {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes celebrate {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  50% { transform: scale(1.2) rotate(5deg); }
+  75% { transform: scale(1.1) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.animate-shake { animation: shake 0.5s ease-in-out; }
+.animate-bounce-in { animation: bounce-in 0.4s ease-out; }
+.animate-float-up { animation: float-up 0.8s ease-out forwards; }
+.animate-slide-up { animation: slide-up-fade 0.3s ease-out; }
+.animate-celebrate { animation: celebrate 0.6s ease-in-out; }
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-duo-border);
+  border-radius: 999px;
+}
