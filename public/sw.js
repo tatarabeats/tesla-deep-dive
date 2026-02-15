@@ -1,9 +1,10 @@
-const CACHE_NAME = 'tesla-dive-v1';
+const CACHE_NAME = 'tesla-dive-v2';
+const BASE_PATH = '/tesla-deep-dive/';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(['/', '/index.html']);
+      return cache.addAll([BASE_PATH, BASE_PATH + 'index.html']);
     })
   );
   self.skipWaiting();
@@ -22,10 +23,12 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, clone);
-        });
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, clone);
+          });
+        }
         return response;
       })
       .catch(() => caches.match(event.request))
