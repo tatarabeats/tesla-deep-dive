@@ -83,21 +83,32 @@ function GlossaryPopup({ entry, onClose, anchorRect }: {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: 8 }}
       transition={{ duration: 0.15 }}
-      className="fixed z-50 bg-duo-bg-card border-2 border-duo-blue/40 rounded-2xl p-4 shadow-xl"
-      style={popupStyle}
+      className="fixed z-50 rounded-2xl p-4 shadow-xl"
+      style={{
+        backgroundColor: 'var(--card-bg)',
+        border: '2px solid var(--accent-blue)',
+        ...popupStyle,
+      }}
     >
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-base font-extrabold text-duo-blue">{entry.term}</span>
+        <span className="text-base font-extrabold" style={{ color: 'var(--accent-blue)' }}>{entry.term}</span>
         {entry.reading && (
-          <span className="text-xs font-bold text-duo-text-muted bg-duo-bg-surface px-2 py-0.5 rounded-full">
+          <span className="text-xs font-bold px-2 py-0.5 rounded-full"
+            style={{ color: 'var(--muted)', backgroundColor: 'var(--card-bg)' }}
+          >
             {entry.reading}
           </span>
         )}
       </div>
-      <p className="text-sm text-duo-text leading-relaxed">{entry.short}</p>
+      <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground)' }}>{entry.short}</p>
       <button
         onClick={onClose}
-        className="mt-3 w-full py-2 rounded-xl bg-duo-bg-surface text-duo-text-secondary text-xs font-bold hover:bg-duo-border transition-colors"
+        className="mt-3 w-full py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer hover:opacity-80"
+        style={{
+          backgroundColor: 'var(--card-bg)',
+          color: 'var(--muted)',
+          border: '1px solid var(--card-border)',
+        }}
       >
         閉じる
       </button>
@@ -130,7 +141,8 @@ export function GlossaryText({ text, className = '', onPause }: GlossaryTextProp
         <span
           key={i}
           onClick={(e) => handleTermClick(seg.entry!, e)}
-          className="underline decoration-duo-blue/40 decoration-dotted underline-offset-2 cursor-pointer text-duo-blue/90 hover:text-duo-blue transition-colors"
+          className="underline decoration-dotted underline-offset-2 cursor-pointer transition-colors"
+          style={{ color: 'var(--accent-blue)', textDecorationColor: 'rgba(74,144,217,0.4)' }}
         >
           {seg.text}
         </span>

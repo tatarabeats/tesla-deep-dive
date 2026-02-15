@@ -1,31 +1,45 @@
 @import "tailwindcss";
 
-@theme {
-  --color-duo-green: #58cc02;
-  --color-duo-green-dark: #46a302;
-  --color-duo-green-light: #d7ffb8;
-  --color-duo-blue: #1cb0f6;
-  --color-duo-blue-dark: #1899d6;
-  --color-duo-red: #ff4b4b;
-  --color-duo-red-dark: #ea2b2b;
-  --color-duo-red-light: #ffdfe0;
-  --color-duo-gold: #ffc800;
-  --color-duo-gold-dark: #e5b400;
-  --color-duo-purple: #ce82ff;
-  --color-duo-purple-dark: #a855f7;
-  --color-duo-orange: #ff9600;
-  --color-duo-gray: #e5e5e5;
-  --color-duo-gray-dark: #afafaf;
-  --color-duo-gray-text: #777;
-  --color-duo-bg: #131f24;
-  --color-duo-bg-card: #1a2b32;
-  --color-duo-bg-card-hover: #213740;
-  --color-duo-bg-surface: #0d171b;
-  --color-duo-text: #f7f7f7;
-  --color-duo-text-secondary: #93b0bc;
-  --color-duo-text-muted: #5e7d8a;
-  --color-duo-border: #2a3f48;
-  --color-duo-white: #ffffff;
+:root {
+  --background: #0f0f1a;
+  --foreground: #e8e6df;
+  --card-bg: #1a1a2e;
+  --card-border: #2a2a4a;
+  --tesla-red: #e31937;
+  --tesla-red-dark: #b8142d;
+  --tesla-red-light: #ff3a54;
+  --gold: #d4a017;
+  --gold-light: #f0d060;
+  --gold-dark: #8b6914;
+  --accent-blue: #1cb0f6;
+  --accent-blue-dark: #1899d6;
+  --accent-green: #4caf50;
+  --accent-green-dark: #3d8b40;
+  --accent-purple: #ce82ff;
+  --accent-orange: #ff9600;
+  --muted: #6b6b8d;
+  --surface: #12122a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-tesla-red: var(--tesla-red);
+  --color-tesla-red-dark: var(--tesla-red-dark);
+  --color-tesla-red-light: var(--tesla-red-light);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-blue-dark: var(--accent-blue-dark);
+  --color-accent-green: var(--accent-green);
+  --color-accent-green-dark: var(--accent-green-dark);
+  --color-accent-purple: var(--accent-purple);
+  --color-accent-orange: var(--accent-orange);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
 }
 
 @layer base {
@@ -39,8 +53,8 @@
     font-family: 'DIN Round', 'Nunito', 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    background-color: var(--color-duo-bg);
-    color: var(--color-duo-text);
+    background-color: var(--background);
+    color: var(--foreground);
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -54,86 +68,168 @@
   }
 }
 
-.btn-duo {
+/* ===== RPG Card (from life-quest) ===== */
+.rpg-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+}
+
+.rpg-card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--gold-dark), transparent, var(--gold-dark));
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* Tesla-accent card variant */
+.rpg-card-tesla::before {
+  background: linear-gradient(135deg, var(--tesla-red-dark), transparent, var(--tesla-red-dark));
+  opacity: 0.4;
+}
+
+/* ===== Gold Shimmer Text (from life-quest) ===== */
+@keyframes goldShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.gold-text {
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 3s linear infinite;
+}
+
+/* Tesla red shimmer */
+@keyframes teslaShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.tesla-text {
+  background: linear-gradient(90deg, var(--tesla-red-dark), var(--tesla-red-light), var(--tesla-red), var(--tesla-red-light), var(--tesla-red-dark));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: teslaShimmer 3s linear infinite;
+}
+
+/* ===== EXP Bar (from life-quest) ===== */
+.exp-bar {
+  height: 16px;
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.exp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--tesla-red-dark), var(--tesla-red), var(--tesla-red-light));
+  border-radius: 7px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.exp-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.15), transparent);
+  border-radius: 7px 7px 0 0;
+}
+
+/* ===== Buttons (RPG + DuoLingo hybrid) ===== */
+.btn-rpg {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  border-radius: 16px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
   transition: all 0.1s;
-  text-transform: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.btn-duo:active {
+.btn-rpg:active {
   transform: translateY(2px);
 }
 
-.btn-duo-green {
-  background-color: var(--color-duo-green);
-  box-shadow: 0 4px 0 var(--color-duo-green-dark);
+.btn-rpg-red {
+  background-color: var(--tesla-red);
+  box-shadow: 0 4px 0 var(--tesla-red-dark);
   color: white;
 }
-.btn-duo-green:active {
-  box-shadow: 0 2px 0 var(--color-duo-green-dark);
+.btn-rpg-red:active {
+  box-shadow: 0 2px 0 var(--tesla-red-dark);
 }
 
-.btn-duo-blue {
-  background-color: var(--color-duo-blue);
-  box-shadow: 0 4px 0 var(--color-duo-blue-dark);
-  color: white;
-}
-.btn-duo-blue:active {
-  box-shadow: 0 2px 0 var(--color-duo-blue-dark);
-}
-
-.btn-duo-red {
-  background-color: var(--color-duo-red);
-  box-shadow: 0 4px 0 var(--color-duo-red-dark);
-  color: white;
-}
-.btn-duo-red:active {
-  box-shadow: 0 2px 0 var(--color-duo-red-dark);
-}
-
-.btn-duo-gold {
-  background-color: var(--color-duo-gold);
-  box-shadow: 0 4px 0 var(--color-duo-gold-dark);
+.btn-rpg-gold {
+  background-color: var(--gold);
+  box-shadow: 0 4px 0 var(--gold-dark);
   color: #1a1a1a;
 }
-.btn-duo-gold:active {
-  box-shadow: 0 2px 0 var(--color-duo-gold-dark);
+.btn-rpg-gold:active {
+  box-shadow: 0 2px 0 var(--gold-dark);
 }
 
-.btn-duo-outline {
+.btn-rpg-green {
+  background-color: var(--accent-green);
+  box-shadow: 0 4px 0 var(--accent-green-dark);
+  color: white;
+}
+.btn-rpg-green:active {
+  box-shadow: 0 2px 0 var(--accent-green-dark);
+}
+
+.btn-rpg-blue {
+  background-color: var(--accent-blue);
+  box-shadow: 0 4px 0 var(--accent-blue-dark);
+  color: white;
+}
+.btn-rpg-blue:active {
+  box-shadow: 0 2px 0 var(--accent-blue-dark);
+}
+
+.btn-rpg-outline {
   background-color: transparent;
-  border: 2px solid var(--color-duo-border);
-  box-shadow: 0 4px 0 var(--color-duo-border);
-  color: var(--color-duo-text);
+  border: 2px solid var(--card-border);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+  color: var(--foreground);
 }
-.btn-duo-outline:active {
-  box-shadow: 0 2px 0 var(--color-duo-border);
-}
-
-.btn-duo-outline-selected {
-  border-color: var(--color-duo-blue);
-  background-color: rgba(28, 176, 246, 0.15);
-  box-shadow: 0 4px 0 var(--color-duo-blue-dark);
+.btn-rpg-outline:active {
+  box-shadow: 0 2px 0 rgba(0,0,0,0.3);
 }
 
+/* ===== Choice Cards (RPG style) ===== */
 .choice-card {
   position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  border-radius: 16px;
-  border: 2px solid var(--color-duo-border);
-  background-color: var(--color-duo-bg-card);
+  border-radius: 12px;
+  border: 2px solid var(--card-border);
+  background-color: var(--card-bg);
   cursor: pointer;
   transition: all 0.1s;
   box-shadow: 0 4px 0 rgba(0,0,0,0.3);
@@ -147,20 +243,20 @@
 }
 
 .choice-card:hover {
-  background-color: var(--color-duo-bg-card-hover);
-  border-color: var(--color-duo-text-muted);
+  border-color: var(--muted);
+  background-color: #222244;
 }
 
 .choice-card-correct {
-  border-color: var(--color-duo-green) !important;
-  background-color: rgba(88, 204, 2, 0.15) !important;
-  box-shadow: 0 4px 0 var(--color-duo-green-dark) !important;
+  border-color: var(--accent-green) !important;
+  background-color: rgba(76, 175, 80, 0.15) !important;
+  box-shadow: 0 4px 0 var(--accent-green-dark) !important;
 }
 
 .choice-card-wrong {
-  border-color: var(--color-duo-red) !important;
-  background-color: rgba(255, 75, 75, 0.15) !important;
-  box-shadow: 0 4px 0 var(--color-duo-red-dark) !important;
+  border-color: var(--tesla-red) !important;
+  background-color: rgba(227, 25, 55, 0.15) !important;
+  box-shadow: 0 4px 0 var(--tesla-red-dark) !important;
 }
 
 .choice-card-disabled {
@@ -169,23 +265,25 @@
   pointer-events: none;
 }
 
-.progress-bar-duo {
+/* ===== Progress Bar (Tesla red) ===== */
+.progress-bar-rpg {
   height: 16px;
-  background-color: var(--color-duo-bg-surface);
+  background-color: var(--surface);
   border-radius: 999px;
   overflow: hidden;
   position: relative;
+  border: 1px solid var(--card-border);
 }
 
-.progress-bar-duo-fill {
+.progress-bar-rpg-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(180deg, #7adb2e 0%, var(--color-duo-green) 100%);
+  background: linear-gradient(180deg, var(--tesla-red-light) 0%, var(--tesla-red) 100%);
   transition: width 0.3s ease;
   position: relative;
 }
 
-.progress-bar-duo-fill::after {
+.progress-bar-rpg-fill::after {
   content: '';
   position: absolute;
   top: 3px;
@@ -193,9 +291,32 @@
   right: 6px;
   height: 4px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25);
 }
 
+/* ===== Category Pills (from toushi-brain) ===== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pill-blue { background: rgba(28, 176, 246, 0.15); color: var(--accent-blue); }
+.pill-gold { background: rgba(212, 160, 23, 0.15); color: var(--gold); }
+.pill-purple { background: rgba(206, 130, 255, 0.15); color: var(--accent-purple); }
+.pill-green { background: rgba(76, 175, 80, 0.15); color: var(--accent-green); }
+.pill-red { background: rgba(227, 25, 55, 0.15); color: var(--tesla-red); }
+
+/* ===== Severity Badges ===== */
+.badge-moderate { background: rgba(255, 150, 0, 0.15); color: var(--accent-orange); }
+.badge-severe { background: rgba(227, 25, 55, 0.15); color: var(--tesla-red); }
+.badge-existential { background: rgba(206, 130, 255, 0.15); color: var(--accent-purple); }
+
+/* ===== Animations ===== */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
@@ -232,19 +353,31 @@
   100% { transform: scale(1) rotate(0deg); }
 }
 
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(227, 25, 55, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(227, 25, 55, 0.6); }
+}
+
 .animate-shake { animation: shake 0.5s ease-in-out; }
 .animate-bounce-in { animation: bounce-in 0.4s ease-out; }
 .animate-float-up { animation: float-up 0.8s ease-out forwards; }
 .animate-slide-up { animation: slide-up-fade 0.3s ease-out; }
 .animate-celebrate { animation: celebrate 0.6s ease-in-out; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 
+/* ===== RPG Scrollbar ===== */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-duo-border);
-  border-radius: 999px;
+  background: var(--gold-dark);
+  border-radius: 3px;
+}
+
+/* ===== Bottom Nav Safe Area ===== */
+.bottom-nav-spacer {
+  height: 80px;
 }

@@ -89,7 +89,10 @@ ${questionContext}`;
             exit={{ scale: 0 }}
             transition={bounce ? { type: 'spring', stiffness: 400, damping: 10 } : { duration: 0.2 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-24 right-4 z-40 w-14 h-14 rounded-full bg-gradient-to-br from-duo-blue to-duo-green shadow-lg flex items-center justify-center text-2xl border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform"
+            className="fixed bottom-24 right-4 z-40 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-2xl border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+            style={{
+              background: 'linear-gradient(135deg, var(--tesla-red), var(--accent-blue))',
+            }}
           >
             🤖
           </motion.button>
@@ -103,24 +106,31 @@ ${questionContext}`;
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="fixed inset-x-3 bottom-3 z-50 bg-duo-bg-card border-2 border-duo-border rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[80vh]"
+            className="fixed inset-x-3 bottom-3 z-50 rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[80vh]"
+            style={{
+              backgroundColor: 'var(--card-bg)',
+              border: '2px solid var(--card-border)',
+            }}
           >
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-duo-border">
+            <div className="flex items-center gap-3 px-4 py-3"
+              style={{ borderBottom: '1px solid var(--card-border)' }}
+            >
               <span className="text-2xl">🤖</span>
               <div className="flex-1">
-                <span className="font-extrabold text-duo-text text-sm">テスラ博士</span>
-                <span className="text-[10px] text-duo-text-muted ml-2">AIに質問しよう</span>
+                <span className="font-extrabold text-sm" style={{ color: 'var(--foreground)' }}>テスラ博士</span>
+                <span className="text-[10px] ml-2" style={{ color: 'var(--muted)' }}>AIに質問しよう</span>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-duo-text-muted hover:text-duo-text text-lg font-bold w-8 h-8 flex items-center justify-center rounded-lg hover:bg-duo-bg-surface transition-colors"
+                className="text-lg font-bold w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer hover:opacity-80"
+                style={{ color: 'var(--muted)' }}
               >
                 ✕
               </button>
             </div>
 
             <div className="px-4 py-4 overflow-y-auto space-y-4">
-              <p className="text-sm text-duo-text-secondary leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
                 この問題について、もっと知りたい？
                 好きなAIを選んで質問しよう！
               </p>
@@ -131,7 +141,12 @@ ${questionContext}`;
                   value={customQ}
                   onChange={e => setCustomQ(e.target.value)}
                   placeholder="聞きたいこと（空欄なら自動で質問します）"
-                  className="w-full bg-duo-bg text-duo-text text-sm rounded-xl px-4 py-3 border border-duo-border focus:border-duo-blue focus:outline-none placeholder-duo-text-muted"
+                  className="w-full text-sm rounded-xl px-4 py-3 focus:outline-none"
+                  style={{
+                    backgroundColor: 'var(--background)',
+                    color: 'var(--foreground)',
+                    border: '1px solid var(--card-border)',
+                  }}
                 />
               </div>
 
@@ -140,11 +155,13 @@ ${questionContext}`;
                   <button
                     key={i}
                     onClick={() => setCustomQ(q)}
-                    className={`text-[11px] px-3 py-1.5 rounded-full border font-bold transition-colors ${
-                      customQ === q
-                        ? 'bg-duo-blue/20 border-duo-blue text-duo-blue'
-                        : 'border-duo-border text-duo-text-muted hover:border-duo-blue/50 hover:text-duo-text'
-                    }`}
+                    className="text-[11px] px-3 py-1.5 rounded-full font-bold transition-colors cursor-pointer"
+                    style={{
+                      backgroundColor: customQ === q ? 'rgba(227,25,55,0.15)' : 'transparent',
+                      borderColor: customQ === q ? 'var(--tesla-red)' : 'var(--card-border)',
+                      color: customQ === q ? 'var(--tesla-red)' : 'var(--muted)',
+                      border: '1px solid',
+                    }}
                   >
                     {q}
                   </button>
@@ -156,18 +173,27 @@ ${questionContext}`;
                   <button
                     key={service.id}
                     onClick={() => handleOpenAI(service.id)}
-                    className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl bg-duo-bg-surface border border-duo-border hover:border-duo-blue/50 transition-colors active:scale-[0.98]"
+                    className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-colors active:scale-[0.98] cursor-pointer hover:brightness-110"
+                    style={{
+                      backgroundColor: 'var(--card-bg)',
+                      border: '1px solid var(--card-border)',
+                      color: 'var(--foreground)',
+                    }}
                   >
                     <span className="text-xl">{service.icon}</span>
-                    <span className="font-bold text-sm text-duo-text">{service.name} で聞く</span>
-                    <span className="ml-auto text-duo-text-muted text-xs">↗</span>
+                    <span className="font-bold text-sm">{service.name} で聞く</span>
+                    <span className="ml-auto text-xs" style={{ color: 'var(--muted)' }}>↗</span>
                   </button>
                 ))}
               </div>
 
               <button
                 onClick={handleCopy}
-                className="w-full py-2.5 text-center text-xs font-bold text-duo-text-muted hover:text-duo-text rounded-xl border border-duo-border hover:border-duo-blue/30 transition-colors"
+                className="w-full py-2.5 text-center text-xs font-bold rounded-xl transition-colors cursor-pointer hover:opacity-80"
+                style={{
+                  color: 'var(--muted)',
+                  border: '1px solid var(--card-border)',
+                }}
               >
                 {copied ? '✅ コピーしました！' : '📋 プロンプトをコピーして自分で貼り付ける'}
               </button>

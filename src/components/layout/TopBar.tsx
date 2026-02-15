@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
+import { getLevelTitle } from '../../engine/progressionEngine';
 
 export function TopBar() {
   const { userProfile } = useGame();
@@ -8,40 +9,50 @@ export function TopBar() {
     : 0;
 
   return (
-    <div className="bg-duo-bg border-b border-duo-border px-4 py-3">
-      <div className="max-w-lg mx-auto flex items-center gap-4">
+    <header className="sticky top-0 z-40 border-b px-4 py-3"
+      style={{
+        backgroundColor: 'rgba(15, 15, 26, 0.9)',
+        backdropFilter: 'blur(8px)',
+        borderColor: 'var(--card-border)',
+      }}
+    >
+      <div className="max-w-lg mx-auto flex items-center gap-3">
+        {/* App title */}
         <div className="flex items-center gap-1.5">
-          <span className="text-2xl">🔥</span>
-          <span className={`font-bold text-sm ${
-            userProfile.currentStreak > 0 ? 'text-duo-orange' : 'text-duo-text-muted'
-          }`}>
+          <span className="text-lg">⚡</span>
+          <span className="gold-text text-sm font-bold">テスラ投資RPG</span>
+        </div>
+
+        {/* Streak */}
+        <div className="flex items-center gap-1">
+          <span className="text-base">🔥</span>
+          <span className="text-xs font-bold"
+            style={{ color: userProfile.currentStreak > 0 ? 'var(--accent-orange)' : 'var(--muted)' }}
+          >
             {userProfile.currentStreak}
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <span className="text-xl">⚡</span>
-          <span className="font-bold text-sm text-duo-gold">
+        {/* XP */}
+        <div className="flex items-center gap-1">
+          <span className="text-sm">💎</span>
+          <span className="text-xs font-bold" style={{ color: 'var(--gold)' }}>
             {userProfile.totalXP.toLocaleString()}
           </span>
         </div>
 
-        {/* Conviction Score */}
-        <div className="flex items-center gap-1.5">
-          <span className="text-xl">🎯</span>
-          <span className="font-bold text-sm text-duo-purple">
-            {userProfile.convictionScore}
-          </span>
-        </div>
-
+        {/* Level badge (right) */}
         <div className="flex items-center gap-1.5 ml-auto">
+          <span className="text-[10px] font-bold" style={{ color: 'var(--muted)' }}>
+            {getLevelTitle(userProfile.level)}
+          </span>
           <div className="relative">
             <svg width="36" height="36" viewBox="0 0 36 36" className="-rotate-90">
-              <circle cx="18" cy="18" r="15" fill="none" stroke="var(--color-duo-bg-surface)" strokeWidth="3" />
+              <circle cx="18" cy="18" r="15" fill="none" stroke="var(--card-border)" strokeWidth="3" />
               <motion.circle
                 cx="18" cy="18" r="15"
                 fill="none"
-                stroke="var(--color-duo-green)"
+                stroke="var(--tesla-red)"
                 strokeWidth="3"
                 strokeDasharray={`${xpPercent * 0.94} 94.2`}
                 strokeLinecap="round"
@@ -50,12 +61,14 @@ export function TopBar() {
                 transition={{ duration: 0.5 }}
               />
             </svg>
-            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-duo-green">
+            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold"
+              style={{ color: 'var(--tesla-red)' }}
+            >
               {userProfile.level}
             </span>
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

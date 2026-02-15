@@ -9,8 +9,8 @@ export function CompetitorScreen() {
   return (
     <div className="space-y-5 pb-8">
       <div className="text-center">
-        <h1 className="text-2xl font-extrabold">📊 競合比較</h1>
-        <p className="text-base text-duo-text-secondary mt-1">Tesla vs ライバル企業</p>
+        <h1 className="text-2xl font-extrabold gold-text">📊 競合比較</h1>
+        <p className="text-base mt-1" style={{ color: 'var(--muted)' }}>Tesla vs ライバル企業</p>
       </div>
 
       {/* Card-based layout for better mobile readability */}
@@ -21,39 +21,43 @@ export function CompetitorScreen() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className={`bg-duo-bg-card rounded-2xl p-4 border ${c.ticker === 'TSLA' ? 'border-duo-red/50 bg-duo-red/5' : 'border-duo-border'}`}
+            className={c.ticker === 'TSLA' ? 'rpg-card-tesla' : 'rpg-card'}
           >
             <div className="flex items-center gap-3 mb-3">
               <div>
-                <span className="font-extrabold text-base text-duo-text">{c.company}</span>
-                <span className="text-sm text-duo-text-muted ml-2">{c.ticker}</span>
+                <span className="font-extrabold text-base" style={{ color: 'var(--foreground)' }}>{c.company}</span>
+                <span className="text-sm ml-2" style={{ color: 'var(--muted)' }}>{c.ticker}</span>
               </div>
               {c.ticker === 'TSLA' && (
-                <span className="ml-auto text-xs font-bold text-duo-red bg-duo-red/20 px-2 py-0.5 rounded-full">注目</span>
+                <span className="ml-auto text-xs font-bold px-2 py-0.5 rounded-full"
+                  style={{ backgroundColor: 'rgba(227,25,55,0.2)', color: 'var(--tesla-red)' }}
+                >注目</span>
               )}
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <div className="text-xs text-duo-text-muted mb-0.5">売上(TTM)</div>
-                <div className="text-sm font-bold text-duo-text">{formatCurrency(c.revenue * 1e9, true)}</div>
+                <div className="text-xs mb-0.5" style={{ color: 'var(--muted)' }}>売上(TTM)</div>
+                <div className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>{formatCurrency(c.revenue * 1e9, true)}</div>
               </div>
               <div>
-                <div className="text-xs text-duo-text-muted mb-0.5">時価総額</div>
-                <div className="text-sm font-bold text-duo-text">{formatCurrency(c.marketCap * 1e9, true)}</div>
+                <div className="text-xs mb-0.5" style={{ color: 'var(--muted)' }}>時価総額</div>
+                <div className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>{formatCurrency(c.marketCap * 1e9, true)}</div>
               </div>
               <div>
-                <div className="text-xs text-duo-text-muted mb-0.5">粗利率</div>
-                <div className="text-sm font-bold text-duo-text">{formatPercent(c.grossMargin)}</div>
+                <div className="text-xs mb-0.5" style={{ color: 'var(--muted)' }}>粗利率</div>
+                <div className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>{formatPercent(c.grossMargin)}</div>
               </div>
               <div>
-                <div className="text-xs text-duo-text-muted mb-0.5">営業利益率</div>
-                <div className={`text-sm font-bold ${c.operatingMargin >= 0 ? 'text-duo-green' : 'text-duo-red'}`}>
+                <div className="text-xs mb-0.5" style={{ color: 'var(--muted)' }}>営業利益率</div>
+                <div className="text-sm font-bold"
+                  style={{ color: c.operatingMargin >= 0 ? 'var(--accent-green)' : 'var(--tesla-red)' }}
+                >
                   {formatPercent(c.operatingMargin)}
                 </div>
               </div>
               <div>
-                <div className="text-xs text-duo-text-muted mb-0.5">PER</div>
-                <div className="text-sm font-bold text-duo-text">
+                <div className="text-xs mb-0.5" style={{ color: 'var(--muted)' }}>PER</div>
+                <div className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>
                   {c.peRatio ? c.peRatio.toFixed(1) + 'x' : 'N/A'}
                 </div>
               </div>
@@ -63,9 +67,9 @@ export function CompetitorScreen() {
       </div>
 
       {/* Insights */}
-      <div className="bg-duo-bg-card rounded-2xl p-4 border border-duo-border">
-        <h2 className="text-base font-bold mb-3">💡 考えるポイント</h2>
-        <ul className="text-sm text-duo-text-secondary space-y-2 leading-relaxed">
+      <div className="rpg-card">
+        <h2 className="text-base font-bold mb-3 gold-text">💡 考えるポイント</h2>
+        <ul className="text-sm space-y-2 leading-relaxed" style={{ color: 'var(--muted)' }}>
           <li>• テスラの粗利率はBYDやトヨタと比較してどうか？</li>
           <li>• PERの差はどんな将来期待を反映しているか？</li>
           <li>• 営業利益率がマイナスの企業はなぜ生き残れるか？</li>
@@ -74,7 +78,7 @@ export function CompetitorScreen() {
 
       <button
         onClick={() => navigate('module_select')}
-        className="w-full btn-duo btn-duo-outline py-4 text-base"
+        className="w-full btn-rpg btn-rpg-outline py-4 text-base"
       >
         戻る
       </button>

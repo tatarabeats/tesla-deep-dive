@@ -74,3 +74,14 @@ export function calculateConvictionGain(accuracy: number, questionsAnswered: num
   const base = accuracy >= 80 ? 5 : accuracy >= 60 ? 3 : 1;
   return base;
 }
+
+// Tesla-themed level titles
+export function getLevelTitle(level: number): string {
+  if (level >= 20) return '確信の投資家';
+  if (level >= 13) return 'テスラマスター';
+  if (level >= 9) return '能力の輪構築中';
+  if (level >= 6) return 'テスラ分析官';
+  if (level >= 4) return 'SEC Filing探索者';
+  if (level >= 2) return '決算読み見習い';
+  return 'テスラ初心者';
+}

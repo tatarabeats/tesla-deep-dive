@@ -37,10 +37,10 @@ export function ScenarioScreen() {
     setRating(0);
   };
 
-  const severityColors = {
-    moderate: 'border-duo-gold',
-    severe: 'border-duo-orange',
-    existential: 'border-duo-red',
+  const severityBorder = {
+    moderate: 'var(--gold)',
+    severe: 'var(--accent-orange)',
+    existential: 'var(--tesla-red)',
   };
 
   const ratingLabels = ['', '全く自信なし', 'やや不安', 'まあまあ', 'かなり自信あり', '絶対的な確信'];
@@ -52,7 +52,8 @@ export function ScenarioScreen() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => { setSelectedScenario(null); setShowCounter(false); setUserText(''); setRating(0); }}
-            className="text-duo-text-muted text-2xl hover:text-duo-text"
+            className="text-2xl hover:opacity-80 cursor-pointer"
+            style={{ color: 'var(--muted)' }}
           >
             ←
           </button>
@@ -60,26 +61,31 @@ export function ScenarioScreen() {
         </div>
 
         {/* Scenario description */}
-        <div className="bg-duo-bg-card rounded-2xl p-5 border border-duo-border">
-          <p className="text-base text-duo-text leading-relaxed">{selectedScenario.description}</p>
+        <div className="rpg-card">
+          <p className="text-base leading-relaxed" style={{ color: 'var(--foreground)' }}>{selectedScenario.description}</p>
         </div>
 
         {/* Prompt */}
-        <div className="bg-duo-red/10 border-2 border-duo-red/30 rounded-2xl p-5">
-          <h3 className="text-base font-bold text-duo-red mb-2">🤔 考えてみよう</h3>
-          <p className="text-base text-duo-text leading-relaxed">{selectedScenario.prompt}</p>
+        <div className="rpg-card" style={{ borderColor: 'var(--tesla-red)', backgroundColor: 'rgba(227,25,55,0.05)' }}>
+          <h3 className="text-base font-bold mb-2" style={{ color: 'var(--tesla-red)' }}>🤔 考えてみよう</h3>
+          <p className="text-base leading-relaxed" style={{ color: 'var(--foreground)' }}>{selectedScenario.prompt}</p>
         </div>
 
         {/* User input */}
         <div>
-          <label className="text-sm font-bold text-duo-text-secondary block mb-2">
+          <label className="text-sm font-bold block mb-2" style={{ color: 'var(--muted)' }}>
             あなたの分析（このリスクにテスラはどう対処できる？）
           </label>
           <textarea
             value={userText}
             onChange={(e) => setUserText(e.target.value)}
             placeholder="例: BYDの低価格攻勢に対して、テスラはFSDやSupercharger網で差別化できる…"
-            className="w-full h-44 bg-duo-bg-surface border-2 border-duo-border rounded-2xl p-4 text-base text-duo-text placeholder-duo-text-muted resize-none focus:outline-none focus:border-duo-blue leading-relaxed"
+            className="w-full h-44 rounded-xl p-4 text-base resize-none focus:outline-none leading-relaxed"
+            style={{
+              backgroundColor: 'var(--card-bg)',
+              border: '2px solid var(--card-border)',
+              color: 'var(--foreground)',
+            }}
           />
         </div>
 
@@ -87,7 +93,7 @@ export function ScenarioScreen() {
           <button
             onClick={handleSubmitAnalysis}
             disabled={!userText.trim()}
-            className={`w-full btn-duo py-4 text-base ${userText.trim() ? 'btn-duo-blue' : 'btn-duo-outline opacity-50'}`}
+            className={`w-full btn-rpg py-4 text-base ${userText.trim() ? 'btn-rpg-blue' : 'btn-rpg-outline opacity-50'}`}
           >
             反論を見る
           </button>
@@ -101,8 +107,8 @@ export function ScenarioScreen() {
               className="space-y-4"
             >
               {/* Counter arguments */}
-              <h3 className="text-lg font-extrabold text-duo-gold">💡 カウンター・アーギュメント</h3>
-              <p className="text-sm text-duo-text-secondary">
+              <h3 className="text-lg font-extrabold gold-text">💡 カウンター・アーギュメント</h3>
+              <p className="text-sm" style={{ color: 'var(--muted)' }}>
                 あなたの分析に対する反論です。投資判断の「死角」を見つけよう。
               </p>
               {selectedScenario.counterArguments.map((arg, i) => (
@@ -111,29 +117,29 @@ export function ScenarioScreen() {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.15 }}
-                  className="bg-duo-bg-card rounded-2xl p-4 border border-duo-border"
+                  className="rpg-card"
                 >
-                  <p className="text-base font-bold text-duo-text mb-2">{arg.point}</p>
-                  <p className="text-sm text-duo-text-secondary leading-relaxed">{arg.evidence}</p>
+                  <p className="text-base font-bold mb-2" style={{ color: 'var(--foreground)' }}>{arg.point}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>{arg.evidence}</p>
                 </motion.div>
               ))}
 
               {/* Follow-up questions */}
               {selectedScenario.followUpQuestions.length > 0 && (
-                <div className="bg-duo-purple/10 border-2 border-duo-purple/30 rounded-2xl p-4">
-                  <h4 className="text-base font-bold text-duo-purple mb-3">🔍 さらに考えてみよう</h4>
+                <div className="rpg-card" style={{ borderColor: 'var(--accent-purple)', backgroundColor: 'rgba(155,89,182,0.05)' }}>
+                  <h4 className="text-base font-bold mb-3" style={{ color: 'var(--accent-purple)' }}>🔍 さらに考えてみよう</h4>
                   {selectedScenario.followUpQuestions.map((q, i) => (
-                    <p key={i} className="text-sm text-duo-text leading-relaxed mb-2">• {q}</p>
+                    <p key={i} className="text-sm leading-relaxed mb-2" style={{ color: 'var(--foreground)' }}>• {q}</p>
                   ))}
                 </div>
               )}
 
               {/* Conviction Rating */}
-              <div className="bg-duo-bg-card rounded-2xl p-5 border-2 border-duo-blue/30">
-                <h4 className="text-lg font-extrabold mb-2 text-center">
+              <div className="rpg-card" style={{ borderColor: 'var(--accent-blue)' }}>
+                <h4 className="text-lg font-extrabold mb-2 text-center gold-text">
                   🎯 テスラへの投資確信度
                 </h4>
-                <p className="text-sm text-duo-text-secondary text-center mb-4 leading-relaxed">
+                <p className="text-sm text-center mb-4 leading-relaxed" style={{ color: 'var(--muted)' }}>
                   このリスクを考慮した上で、<br />
                   「それでもテスラに長期投資したいか？」
                 </p>
@@ -142,17 +148,20 @@ export function ScenarioScreen() {
                     <button
                       key={n}
                       onClick={() => setRating(n)}
-                      className={`w-14 h-14 rounded-2xl font-extrabold text-lg transition-all ${
-                        rating === n
-                          ? 'bg-duo-blue text-white scale-110 shadow-lg shadow-duo-blue/30'
-                          : 'bg-duo-bg-surface text-duo-text-muted hover:bg-duo-border'
-                      }`}
+                      className="w-14 h-14 rounded-xl font-extrabold text-lg transition-all cursor-pointer"
+                      style={{
+                        backgroundColor: rating === n ? 'var(--tesla-red)' : 'var(--card-bg)',
+                        color: rating === n ? '#fff' : 'var(--muted)',
+                        transform: rating === n ? 'scale(1.1)' : 'scale(1)',
+                        boxShadow: rating === n ? '0 4px 16px rgba(227,25,55,0.3)' : 'none',
+                        border: `1px solid ${rating === n ? 'var(--tesla-red)' : 'var(--card-border)'}`,
+                      }}
                     >
                       {n}
                     </button>
                   ))}
                 </div>
-                <div className="flex justify-between text-xs text-duo-text-muted px-2">
+                <div className="flex justify-between text-xs px-2" style={{ color: 'var(--muted)' }}>
                   <span>❄️ 不安</span>
                   <span>🔥 確信</span>
                 </div>
@@ -160,7 +169,8 @@ export function ScenarioScreen() {
                   <motion.p
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-center text-sm font-bold text-duo-blue mt-3"
+                    className="text-center text-sm font-bold mt-3"
+                    style={{ color: 'var(--tesla-red)' }}
                   >
                     {ratingLabels[rating]}
                   </motion.p>
@@ -170,7 +180,7 @@ export function ScenarioScreen() {
               <button
                 onClick={handleSaveAndClose}
                 disabled={rating === 0}
-                className={`w-full btn-duo py-4 text-base ${rating > 0 ? 'btn-duo-green' : 'btn-duo-outline opacity-50'}`}
+                className={`w-full btn-rpg py-4 text-base ${rating > 0 ? 'btn-rpg-green' : 'btn-rpg-outline opacity-50'}`}
               >
                 保存して完了 ✓
               </button>
@@ -185,16 +195,16 @@ export function ScenarioScreen() {
   return (
     <div className="space-y-5 pb-8">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-extrabold">🔥 最悪シナリオ</h1>
-        <p className="text-base text-duo-text-secondary">テスラが失敗するシナリオを考えよう</p>
-        <p className="text-sm text-duo-text-muted">— 李録「10年後の最悪を想定せよ」</p>
+        <h1 className="text-2xl font-extrabold tesla-text">🔥 最悪シナリオ</h1>
+        <p className="text-base" style={{ color: 'var(--muted)' }}>テスラが失敗するシナリオを考えよう</p>
+        <p className="text-sm" style={{ color: 'var(--muted)', opacity: 0.7 }}>— 李録「10年後の最悪を想定せよ」</p>
       </div>
 
       {/* Explanation card */}
-      <div className="bg-duo-blue/10 border border-duo-blue/30 rounded-2xl p-4">
-        <p className="text-sm text-duo-text leading-relaxed">
+      <div className="rpg-card" style={{ borderColor: 'var(--accent-blue)', backgroundColor: 'rgba(74,144,217,0.05)' }}>
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--foreground)' }}>
           💡 各シナリオを読んで自分の考えを書き、反論を見た後に
-          <span className="font-bold text-duo-blue">「それでもテスラに投資したいか？」</span>
+          <span className="font-bold" style={{ color: 'var(--accent-blue)' }}>「それでもテスラに投資したいか？」</span>
           を1〜5で評価します。この繰り返しで投資の確信度が磨かれます。
         </p>
       </div>
@@ -209,19 +219,20 @@ export function ScenarioScreen() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
               onClick={() => setSelectedScenario(scenario)}
-              className={`w-full choice-card ${severityColors[scenario.severity]}`}
+              className="w-full rpg-card flex items-center gap-3 text-left cursor-pointer hover:brightness-110 transition-all"
+              style={{ borderColor: severityBorder[scenario.severity] }}
             >
               <div className="flex-1 text-left">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-bold text-base">{scenario.title}</span>
-                  {completed && <span className="text-duo-green text-sm">✓ 分析済み</span>}
+                  {completed && <span className="text-sm" style={{ color: 'var(--accent-green)' }}>✓ 分析済み</span>}
                 </div>
-                <p className="text-sm text-duo-text-secondary leading-relaxed">{scenario.description}</p>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>{scenario.description}</p>
               </div>
               <span className={`text-xs font-bold px-3 py-1 rounded-full shrink-0 ${
-                scenario.severity === 'existential' ? 'bg-duo-red/20 text-duo-red' :
-                scenario.severity === 'severe' ? 'bg-duo-orange/20 text-duo-orange' :
-                'bg-duo-gold/20 text-duo-gold'
+                scenario.severity === 'existential' ? 'badge-existential' :
+                scenario.severity === 'severe' ? 'badge-severe' :
+                'badge-moderate'
               }`}>
                 {scenario.severity === 'existential' ? '致命的' :
                  scenario.severity === 'severe' ? '深刻' : '中程度'}

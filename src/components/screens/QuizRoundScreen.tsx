@@ -47,7 +47,6 @@ export function QuizRoundScreen() {
     setTimeout(() => setShaking(false), 500);
   }
 
-  // Build context for MascotChat
   const questionContext = `問題: ${question.questionText}\n解説: ${question.explanation}`;
 
   return (
@@ -56,19 +55,20 @@ export function QuizRoundScreen() {
       <div className="flex items-center gap-3 mb-6">
         <button
           onClick={() => navigate('module_select')}
-          className="text-duo-text-muted text-xl hover:text-duo-text"
+          className="text-xl hover:opacity-80 cursor-pointer"
+          style={{ color: 'var(--muted)' }}
         >
           ✕
         </button>
-        <div className="flex-1 progress-bar-duo">
+        <div className="flex-1 progress-bar-rpg">
           <motion.div
-            className="progress-bar-duo-fill"
+            className="progress-bar-rpg-fill"
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.3 }}
           />
         </div>
         <div className="flex items-center gap-1">
-          <span className="text-sm font-bold text-duo-gold">{round.currentScore}</span>
+          <span className="text-sm font-bold" style={{ color: 'var(--gold)' }}>{round.currentScore}</span>
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export function QuizRoundScreen() {
           animate={{ scale: 1 }}
           className="text-center mb-2"
         >
-          <span className="text-duo-orange font-extrabold text-sm">
+          <span className="gold-text font-extrabold text-sm">
             🔥 {round.currentCombo}x コンボ！
           </span>
         </motion.div>
@@ -96,7 +96,7 @@ export function QuizRoundScreen() {
           <GlossaryText text={question.questionText} />
         </p>
         {question.source && (
-          <p className="text-xs text-duo-text-muted mt-2">出典: {question.source}</p>
+          <p className="text-xs mt-2" style={{ color: 'var(--muted)' }}>出典: {question.source}</p>
         )}
       </motion.div>
 
@@ -142,7 +142,9 @@ export function QuizRoundScreen() {
                 className={`w-full ${cardClass}`}
                 disabled={isAnswered}
               >
-                <span className="w-8 h-8 rounded-lg bg-duo-bg-surface flex items-center justify-center text-sm font-bold text-duo-text-secondary shrink-0">
+                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0"
+                  style={{ backgroundColor: 'var(--surface)', color: 'var(--muted)' }}
+                >
                   {label}
                 </span>
                 <span className="flex-1 text-left text-sm font-semibold">{option}</span>
@@ -152,20 +154,18 @@ export function QuizRoundScreen() {
         )}
       </div>
 
-      {/* Answer Feedback Modal */}
+      {/* Answer Feedback */}
       <AnimatePresence>
         {isAnswered && (
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className={`mt-4 rounded-2xl p-4 ${
-              round.answerState === 'answered_correct'
-                ? 'bg-duo-green/10 border-2 border-duo-green'
-                : 'bg-duo-red/10 border-2 border-duo-red'
-            }`}
+            className="mt-4 rpg-card"
+            style={{
+              borderColor: round.answerState === 'answered_correct' ? 'var(--accent-green)' : 'var(--tesla-red)',
+            }}
           >
-            {/* Result header */}
             <div className="flex items-center gap-2 mb-3">
               <motion.span
                 initial={{ scale: 0 }}
@@ -182,36 +182,35 @@ export function QuizRoundScreen() {
                 <motion.span
                   initial={{ scale: 0, y: -10 }}
                   animate={{ scale: 1, y: 0 }}
-                  className="ml-auto text-duo-gold font-extrabold text-sm"
+                  className="ml-auto font-extrabold text-sm"
+                  style={{ color: 'var(--gold)' }}
                 >
                   +{round.answers[round.answers.length - 1].pointsEarned}pt
                 </motion.span>
               )}
             </div>
 
-            {/* Show correct answer when wrong */}
             {round.answerState === 'answered_wrong' && question.type !== 'true_false' && question.correctIndex !== undefined && (
-              <div className="mb-3 px-3 py-2 rounded-xl bg-duo-green/10 border border-duo-green/30">
-                <span className="text-xs font-bold text-duo-green">正解: </span>
-                <span className="text-xs text-duo-text">{question.options?.[question.correctIndex]}</span>
+              <div className="mb-3 px-3 py-2 rounded-xl"
+                style={{ backgroundColor: 'rgba(76,175,80,0.1)', border: '1px solid rgba(76,175,80,0.3)' }}
+              >
+                <span className="text-xs font-bold" style={{ color: 'var(--accent-green)' }}>正解: </span>
+                <span className="text-xs" style={{ color: 'var(--foreground)' }}>{question.options?.[question.correctIndex]}</span>
               </div>
             )}
 
-            {/* Explanation with glossary terms */}
-            <div className="text-sm text-duo-text-secondary leading-relaxed">
+            <div className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
               <GlossaryText text={question.explanation} />
             </div>
 
-            {/* Glossary hint */}
-            <p className="text-[10px] text-duo-text-muted mt-2">
+            <p className="text-[10px] mt-2" style={{ color: 'var(--muted)' }}>
               💡 青い用語をタップすると意味がわかります
             </p>
 
-            {/* Next button */}
             <button
               onClick={handleNext}
-              className={`w-full mt-4 btn-duo py-3 text-sm ${
-                round.answerState === 'answered_correct' ? 'btn-duo-green' : 'btn-duo-red'
+              className={`w-full mt-4 btn-rpg py-3 text-sm ${
+                round.answerState === 'answered_correct' ? 'btn-rpg-green' : 'btn-rpg-red'
               }`}
             >
               {round.currentQuestionIndex < round.questions.length - 1 ? '次の問題' : '結果を見る'}
@@ -220,7 +219,6 @@ export function QuizRoundScreen() {
         )}
       </AnimatePresence>
 
-      {/* MascotChat - テスラ博士 (only visible after answering) */}
       {isAnswered && <MascotChat questionContext={questionContext} />}
     </div>
   );

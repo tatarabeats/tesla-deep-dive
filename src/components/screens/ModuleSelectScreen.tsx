@@ -3,12 +3,12 @@ import { useGame } from '../../store/gameContext';
 import { useSound } from '../../hooks/useSound';
 import type { ModuleId } from '../../types/quiz';
 
-const modules: { id: ModuleId; name: string; icon: string; description: string; color: string; scene?: string }[] = [
-  { id: 'sec_filing', name: '10-K/10-Q クイズ', icon: '📄', description: 'テスラの年次・四半期報告書から出題', color: 'border-duo-blue' },
-  { id: 'earnings_call', name: '決算説明会', icon: '🎙️', description: 'イーロンの発言から投資判断を学ぶ', color: 'border-duo-gold' },
-  { id: 'worst_case', name: '最悪シナリオ', icon: '🔥', description: '失敗シナリオを徹底的に考える', color: 'border-duo-red', scene: 'scenario' },
-  { id: 'competitor', name: '競合比較', icon: '📊', description: 'BYD、トヨタ、Rivianと比較', color: 'border-duo-green', scene: 'competitor_dashboard' },
-  { id: 'segment', name: 'セグメント分析', icon: '📈', description: '事業別の売上・利益率推移', color: 'border-duo-purple', scene: 'segment_charts' },
+const modules: { id: ModuleId; name: string; icon: string; description: string; borderColor: string; scene?: string }[] = [
+  { id: 'sec_filing', name: '10-K/10-Q クイズ', icon: '📄', description: 'テスラの年次・四半期報告書から出題', borderColor: 'var(--accent-blue)' },
+  { id: 'earnings_call', name: '決算説明会', icon: '🎙️', description: 'イーロンの発言から投資判断を学ぶ', borderColor: 'var(--gold)' },
+  { id: 'worst_case', name: '最悪シナリオ', icon: '🔥', description: '失敗シナリオを徹底的に考える', borderColor: 'var(--tesla-red)', scene: 'scenario' },
+  { id: 'competitor', name: '競合比較', icon: '📊', description: 'BYD、トヨタ、Rivianと比較', borderColor: 'var(--accent-green)', scene: 'competitor_dashboard' },
+  { id: 'segment', name: 'セグメント分析', icon: '📈', description: '事業別の売上・利益率推移', borderColor: 'var(--accent-purple)', scene: 'segment_charts' },
 ];
 
 export function ModuleSelectScreen() {
@@ -31,8 +31,8 @@ export function ModuleSelectScreen() {
   return (
     <div className="space-y-5">
       <div className="text-center">
-        <h1 className="text-xl font-extrabold">学習モジュール</h1>
-        <p className="text-sm text-duo-text-secondary mt-1">能力の輪を広げよう</p>
+        <h1 className="text-xl font-extrabold gold-text">⚔️ 学習モジュール</h1>
+        <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>能力の輪を広げよう</p>
       </div>
 
       <div className="space-y-3">
@@ -49,19 +49,21 @@ export function ModuleSelectScreen() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.08 }}
               onClick={() => handleModuleClick(mod)}
-              className={`w-full choice-card ${mod.color}`}
+              className="w-full rpg-card flex items-center gap-3 text-left cursor-pointer hover:brightness-110 transition-all"
+              style={{ borderColor: mod.borderColor }}
             >
               <span className="text-3xl">{mod.icon}</span>
-              <div className="flex-1 text-left">
-                <div className="font-bold text-sm">{mod.name}</div>
-                <div className="text-xs text-duo-text-muted">{mod.description}</div>
+              <div className="flex-1">
+                <div className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>{mod.name}</div>
+                <div className="text-xs" style={{ color: 'var(--muted)' }}>{mod.description}</div>
                 {stats.timesPlayed > 0 && (
-                  <div className="text-[10px] text-duo-text-muted mt-1">
-                    {stats.timesPlayed}回プレイ・正答率{accuracy}%
+                  <div className="text-[10px] mt-1" style={{ color: 'var(--muted)' }}>
+                    {stats.timesPlayed}回プレイ・正答率
+                    <span style={{ color: accuracy >= 80 ? 'var(--accent-green)' : 'var(--foreground)' }}>{accuracy}%</span>
                   </div>
                 )}
               </div>
-              <span className="text-duo-text-muted text-lg">→</span>
+              <span className="text-lg" style={{ color: 'var(--muted)' }}>→</span>
             </motion.button>
           );
         })}

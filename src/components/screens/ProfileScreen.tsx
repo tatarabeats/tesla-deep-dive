@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
+import { getLevelTitle } from '../../engine/progressionEngine';
 
 export function ProfileScreen() {
   const { userProfile, updateProfile } = useGame();
@@ -8,59 +9,74 @@ export function ProfileScreen() {
     ? Math.round((userProfile.totalCorrect / userProfile.totalQuestionsAnswered) * 100)
     : 0;
 
+  const xpPercent = userProfile.xpToNextLevel > 0
+    ? Math.min(100, (userProfile.currentLevelXP / userProfile.xpToNextLevel) * 100)
+    : 0;
+
   return (
     <div className="space-y-5">
-      <div className="text-center">
-        <div className="text-5xl mb-2">🧠</div>
-        <h1 className="text-xl font-extrabold">{userProfile.name}</h1>
-        <p className="text-sm text-duo-text-secondary">Level {userProfile.level} テスラ投資家</p>
-      </div>
-
-      {/* XP Progress */}
-      <div className="bg-duo-bg-card rounded-2xl p-4 border border-duo-border">
-        <div className="flex justify-between text-xs text-duo-text-muted mb-2">
-          <span>Level {userProfile.level}</span>
-          <span>{userProfile.currentLevelXP} / {userProfile.xpToNextLevel} XP</span>
+      {/* Character Card */}
+      <div className="rpg-card text-center">
+        <div className="relative inline-block mb-3">
+          <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl"
+            style={{ backgroundColor: 'var(--surface)', border: '2px solid var(--card-border)' }}
+          >
+            🧠
+          </div>
+          {/* Level badge */}
+          <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+            style={{ backgroundColor: 'var(--tesla-red)', color: 'white', border: '2px solid var(--background)' }}
+          >
+            {userProfile.level}
+          </div>
         </div>
-        <div className="progress-bar-duo">
-          <motion.div
-            className="progress-bar-duo-fill"
-            animate={{ width: `${(userProfile.currentLevelXP / userProfile.xpToNextLevel) * 100}%` }}
-          />
+        <div className="gold-text text-xl font-bold mb-1">{getLevelTitle(userProfile.level)}</div>
+        <div className="text-xs" style={{ color: 'var(--muted)' }}>Lv.{userProfile.level}</div>
+
+        {/* EXP Bar */}
+        <div className="mt-4">
+          <div className="exp-bar">
+            <motion.div
+              className="exp-bar-fill"
+              initial={{ width: 0 }}
+              animate={{ width: `${xpPercent}%` }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            />
+          </div>
+          <div className="text-right text-[10px] mt-1" style={{ color: 'var(--muted)' }}>
+            {userProfile.currentLevelXP} / {userProfile.xpToNextLevel} XP
+          </div>
         </div>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-duo-bg-card rounded-xl p-3 text-center border border-duo-border">
-          <div className="text-2xl font-extrabold text-duo-gold">{userProfile.totalXP.toLocaleString()}</div>
-          <div className="text-[10px] text-duo-text-muted font-bold mt-1">合計XP</div>
-        </div>
-        <div className="bg-duo-bg-card rounded-xl p-3 text-center border border-duo-border">
-          <div className="text-2xl font-extrabold text-duo-red">{userProfile.convictionScore}</div>
-          <div className="text-[10px] text-duo-text-muted font-bold mt-1">確信度</div>
-        </div>
-        <div className="bg-duo-bg-card rounded-xl p-3 text-center border border-duo-border">
-          <div className="text-2xl font-extrabold text-duo-blue">{accuracy}%</div>
-          <div className="text-[10px] text-duo-text-muted font-bold mt-1">正答率</div>
-        </div>
-        <div className="bg-duo-bg-card rounded-xl p-3 text-center border border-duo-border">
-          <div className="text-2xl font-extrabold text-duo-orange">{userProfile.currentStreak}</div>
-          <div className="text-[10px] text-duo-text-muted font-bold mt-1">連続日数</div>
-        </div>
-        <div className="bg-duo-bg-card rounded-xl p-3 text-center border border-duo-border">
-          <div className="text-2xl font-extrabold text-duo-green">{userProfile.totalRoundsPlayed}</div>
-          <div className="text-[10px] text-duo-text-muted font-bold mt-1">ラウンド数</div>
-        </div>
-        <div className="bg-duo-bg-card rounded-xl p-3 text-center border border-duo-border">
-          <div className="text-2xl font-extrabold text-duo-purple">{userProfile.bestCombo}x</div>
-          <div className="text-[10px] text-duo-text-muted font-bold mt-1">最大コンボ</div>
-        </div>
+        {[
+          { label: '合計XP', value: userProfile.totalXP.toLocaleString(), icon: '💎', color: 'var(--gold)' },
+          { label: '確信度', value: String(userProfile.convictionScore), icon: '🎯', color: 'var(--tesla-red)' },
+          { label: '正答率', value: `${accuracy}%`, icon: '📊', color: 'var(--accent-blue)' },
+          { label: '連続日数', value: String(userProfile.currentStreak), icon: '🔥', color: 'var(--accent-orange)' },
+          { label: 'ラウンド数', value: String(userProfile.totalRoundsPlayed), icon: '⚔️', color: 'var(--accent-green)' },
+          { label: '最大コンボ', value: `${userProfile.bestCombo}x`, icon: '💥', color: 'var(--accent-purple)' },
+        ].map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.05 }}
+            className="rpg-card text-center !p-3"
+          >
+            <div className="text-2xl font-extrabold" style={{ color: stat.color }}>
+              {stat.icon} {stat.value}
+            </div>
+            <div className="text-[10px] font-bold mt-1" style={{ color: 'var(--muted)' }}>{stat.label}</div>
+          </motion.div>
+        ))}
       </div>
 
       {/* Module Stats */}
-      <div className="bg-duo-bg-card rounded-2xl p-4 border border-duo-border">
-        <h2 className="text-sm font-bold mb-3">モジュール別実績</h2>
+      <div className="rpg-card">
+        <h2 className="text-sm font-bold mb-3" style={{ color: 'var(--gold)' }}>モジュール別実績</h2>
         {Object.entries(userProfile.moduleStats).map(([id, stat]) => {
           const modAccuracy = stat.questionsAnswered > 0
             ? Math.round((stat.correctAnswers / stat.questionsAnswered) * 100)
@@ -73,11 +89,17 @@ export function ProfileScreen() {
             segment: '📈 セグメント',
           };
           return (
-            <div key={id} className="flex items-center justify-between py-2 border-b border-duo-border/50 last:border-0">
-              <span className="text-xs font-bold">{modNames[id] || id}</span>
-              <div className="flex items-center gap-3 text-xs text-duo-text-muted">
+            <div key={id} className="flex items-center justify-between py-2"
+              style={{ borderBottom: '1px solid rgba(42,42,74,0.5)' }}
+            >
+              <span className="text-xs font-bold" style={{ color: 'var(--foreground)' }}>
+                {modNames[id] || id}
+              </span>
+              <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--muted)' }}>
                 <span>{stat.timesPlayed}回</span>
-                <span>{modAccuracy}%</span>
+                <span style={{ color: modAccuracy >= 80 ? 'var(--accent-green)' : 'var(--muted)' }}>
+                  {modAccuracy}%
+                </span>
               </div>
             </div>
           );
@@ -91,7 +113,9 @@ export function ProfileScreen() {
       >
         <span className="text-xl">{userProfile.soundEnabled ? '🔊' : '🔇'}</span>
         <span className="flex-1 text-left text-sm font-bold">サウンド</span>
-        <span className={`text-xs font-bold ${userProfile.soundEnabled ? 'text-duo-green' : 'text-duo-text-muted'}`}>
+        <span className="text-xs font-bold"
+          style={{ color: userProfile.soundEnabled ? 'var(--accent-green)' : 'var(--muted)' }}
+        >
           {userProfile.soundEnabled ? 'ON' : 'OFF'}
         </span>
       </button>

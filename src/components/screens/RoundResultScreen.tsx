@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
 import { useSound } from '../../hooks/useSound';
 import { useEffect } from 'react';
+import { getLevelTitle } from '../../engine/progressionEngine';
 
 export function RoundResultScreen() {
   const { gameState, navigate } = useGame();
@@ -11,8 +12,17 @@ export function RoundResultScreen() {
 
   useEffect(() => {
     if (result) {
+      // Trigger EXP toast
+      if (result.xpEarned > 0 && typeof window !== 'undefined' && (window as any).__triggerExpGain) {
+        setTimeout(() => (window as any).__triggerExpGain(result.xpEarned), 300);
+      }
+
+      // Trigger level up overlay
+      if (result.leveledUp && result.newLevel && typeof window !== 'undefined' && (window as any).__triggerLevelUp) {
+        setTimeout(() => (window as any).__triggerLevelUp(result.newLevel! - 1, result.newLevel!), 1500);
+      }
+
       if (result.accuracy >= 80) play('roundComplete');
-      if (result.leveledUp) setTimeout(() => play('levelUp'), 500);
     }
   }, []);
 
@@ -20,58 +30,64 @@ export function RoundResultScreen() {
 
   return (
     <div className="space-y-6 text-center">
+      {/* Trophy */}
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ type: 'spring', damping: 12 }}
       >
         <div className="text-6xl mb-3">
-          {result.accuracy >= 80 ? '🏆' : result.accuracy >= 60 ? '👍' : '📖'}
+          {result.accuracy >= 80 ? '🏆' : result.accuracy >= 60 ? '⚔️' : '📖'}
         </div>
-        <h1 className="text-2xl font-extrabold">ラウンド完了！</h1>
+        <h1 className="gold-text text-2xl font-extrabold">クエスト完了！</h1>
       </motion.div>
 
+      {/* Results Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-duo-bg-card rounded-2xl p-5 border border-duo-border"
+        className="rpg-card"
       >
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <div className="text-2xl font-extrabold text-duo-gold">{result.totalScore}</div>
-            <div className="text-xs text-duo-text-muted font-bold">スコア</div>
+            <div className="text-2xl font-extrabold" style={{ color: 'var(--gold)' }}>{result.totalScore}</div>
+            <div className="text-xs font-bold" style={{ color: 'var(--muted)' }}>スコア</div>
           </div>
           <div>
-            <div className="text-2xl font-extrabold text-duo-blue">{result.accuracy}%</div>
-            <div className="text-xs text-duo-text-muted font-bold">正答率</div>
+            <div className="text-2xl font-extrabold" style={{ color: 'var(--accent-blue)' }}>{result.accuracy}%</div>
+            <div className="text-xs font-bold" style={{ color: 'var(--muted)' }}>正答率</div>
           </div>
           <div>
-            <div className="text-2xl font-extrabold text-duo-green">+{result.xpEarned}</div>
-            <div className="text-xs text-duo-text-muted font-bold">XP獲得</div>
+            <div className="text-2xl font-extrabold" style={{ color: 'var(--tesla-red)' }}>+{result.xpEarned}</div>
+            <div className="text-xs font-bold" style={{ color: 'var(--muted)' }}>XP獲得</div>
           </div>
           <div>
-            <div className="text-2xl font-extrabold text-duo-purple">+{result.convictionGain}</div>
-            <div className="text-xs text-duo-text-muted font-bold">確信度</div>
+            <div className="text-2xl font-extrabold gold-text">+{result.convictionGain}</div>
+            <div className="text-xs font-bold" style={{ color: 'var(--muted)' }}>確信度</div>
           </div>
         </div>
         {result.maxCombo >= 3 && (
-          <div className="mt-3 text-sm text-duo-orange font-bold">
+          <div className="mt-3 text-sm font-bold" style={{ color: 'var(--accent-orange)' }}>
             🔥 最大コンボ: {result.maxCombo}x
           </div>
         )}
       </motion.div>
 
-      {result.leveledUp && (
+      {/* Level up notice */}
+      {result.leveledUp && result.newLevel && (
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.4, type: 'spring' }}
-          className="bg-duo-gold/10 border-2 border-duo-gold rounded-2xl p-4 animate-celebrate"
+          className="rpg-card animate-celebrate"
+          style={{ borderColor: 'var(--gold)' }}
         >
-          <div className="text-3xl mb-1">🎉</div>
-          <div className="font-extrabold text-duo-gold">レベルアップ！</div>
-          <div className="text-sm text-duo-text-secondary">Level {result.newLevel}</div>
+          <div className="text-3xl mb-1">✨</div>
+          <div className="gold-text font-extrabold text-lg">レベルアップ！</div>
+          <div className="text-sm" style={{ color: 'var(--muted)' }}>
+            Lv.{result.newLevel} — {getLevelTitle(result.newLevel)}
+          </div>
         </motion.div>
       )}
 
@@ -82,35 +98,37 @@ export function RoundResultScreen() {
         transition={{ delay: 0.5 }}
         className="text-left"
       >
-        <h2 className="text-sm font-bold text-duo-text-secondary mb-2">解答レビュー</h2>
+        <h2 className="text-sm font-bold mb-2" style={{ color: 'var(--muted)' }}>解答レビュー</h2>
         <div className="space-y-1">
           {result.answers.map((a, i) => (
             <div
               key={i}
-              className={`flex items-center gap-2 text-xs px-3 py-2 rounded-xl ${
-                a.isCorrect ? 'bg-duo-green/10' : 'bg-duo-red/10'
-              }`}
+              className="flex items-center gap-2 text-xs px-3 py-2 rounded-xl"
+              style={{
+                backgroundColor: a.isCorrect ? 'rgba(76,175,80,0.1)' : 'rgba(227,25,55,0.1)',
+              }}
             >
               <span>{a.isCorrect ? '✅' : '❌'}</span>
-              <span className="text-duo-text-secondary">Q{i + 1}</span>
+              <span style={{ color: 'var(--muted)' }}>Q{i + 1}</span>
               {a.pointsEarned > 0 && (
-                <span className="ml-auto text-duo-gold font-bold">+{a.pointsEarned}pt</span>
+                <span className="ml-auto font-bold" style={{ color: 'var(--gold)' }}>+{a.pointsEarned}pt</span>
               )}
             </div>
           ))}
         </div>
       </motion.div>
 
+      {/* Action Buttons */}
       <div className="flex gap-3">
         <button
           onClick={() => navigate('module_select')}
-          className="flex-1 btn-duo btn-duo-outline py-3 text-sm"
+          className="flex-1 btn-rpg btn-rpg-outline py-3 text-sm"
         >
           モジュール選択
         </button>
         <button
           onClick={() => navigate('home')}
-          className="flex-1 btn-duo btn-duo-green py-3 text-sm"
+          className="flex-1 btn-rpg btn-rpg-red py-3 text-sm"
         >
           ホームへ
         </button>
