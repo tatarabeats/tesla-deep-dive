@@ -36,7 +36,7 @@ export const segmentQuestions: Question[] = [
     id: 'sg-005', moduleId: 'segment', type: 'true_false', difficulty: 'easy',
     questionText: 'テスラのAutomotive部門の売上には規制クレジットの販売収入も含まれる。',
     correctAnswer: true,
-    explanation: 'Automotive売上には車両販売、リース、規制クレジット販売が含まれます。FY2024の規制クレジット売上は約$2.1Bで、ほぼ純利益に直結する高利益率の収入源です。',
+    explanation: 'Automotive売上には車両販売、リース、規制クレジット販売が含まれます。FY2024の規制クレジット売上は約$2.8B（前年比+54%）で、ほぼ純利益に直結する高利益率の収入源です。',
     tags: ['automotive', 'regulatory_credits'],
   },
   {
@@ -91,7 +91,7 @@ export const segmentQuestions: Question[] = [
     questionText: 'テスラの規制クレジット売上が将来的に減少すると予想される理由はどれですか？',
     options: ['テスラがクレジットを自社で使うようになる', '他社のEV生産増加でクレジット需要が減少する', '規制が廃止される予定', 'テスラのEV販売が減少する'],
     correctIndex: 1,
-    explanation: 'GM、Ford、VW等の伝統的メーカーがEV生産を増やすことで、排出クレジット購入の必要性が低下します。ただしFY2024では$2.1Bと依然大きな収入源です。',
+    explanation: 'GM、Ford、VW等の伝統的メーカーがEV生産を増やすことで、排出クレジット購入の必要性が低下します。ただしFY2024では$2.8Bと依然大きな収入源です。',
     tags: ['regulatory_credits', 'future'],
   },
   {
@@ -162,7 +162,7 @@ export const segmentQuestions: Question[] = [
     questionText: 'テスラのAutomotive売上のうち、「車両販売以外」の主な構成要素はどれですか？',
     options: ['Megapack売上のみ', '規制クレジット、FSD、リース収入', 'Supercharging収入', '保険収入'],
     correctIndex: 1,
-    explanation: 'Automotive売上は「車両販売+規制クレジット+FSD+リース」で構成。規制クレジット（$2.1B）とFSD繰延収益の認識は高マージンの重要な収入源です。',
+    explanation: 'Automotive売上は「車両販売+規制クレジット+FSD+リース」で構成。規制クレジット（$2.8B）とFSD繰延収益の認識は高マージンの重要な収入源です。',
     tags: ['automotive', 'revenue_components'],
   },
   {

@@ -115,7 +115,7 @@ export const scenarioQuizQuestions: Question[] = [
     questionText: '李録の「10年後の最悪シナリオ」の考え方で最も重要なポイントはどれですか？',
     options: ['最悪シナリオでも元本が保全される', '最悪シナリオでも黒字が維持される', '最悪シナリオでも企業が存続し、回復の道筋がある', '最悪シナリオが起きる確率を計算する'],
     correctIndex: 2,
-    explanation: '李録は「最悪のシナリオでも企業が生き残れるか、そしてそこから回復できるか」を重視します。テスラの場合、現金$29Bと多角化した事業が安全マージンです。',
+    explanation: '李録は「最悪のシナリオでも企業が生き残れるか、そしてそこから回復できるか」を重視します。テスラの場合、現金$36.5Bと多角化した事業が安全マージンです。',
     tags: ['li_lu', 'philosophy'],
   },
   // --- 以下、新規追加問題 ---
@@ -169,16 +169,16 @@ export const scenarioQuizQuestions: Question[] = [
   {
     id: 'wc-022', moduleId: 'worst_case', type: 'multiple_choice', difficulty: 'hard',
     questionText: 'テスラの「マージン・オブ・セーフティ（安全余裕）」として最も適切な要素はどれですか？',
-    options: ['高い株価', '現金$29B・ほぼ無借金・多角化事業', '規制クレジット収入', 'イーロンの個人資産'],
+    options: ['高い株価', '現金$36.5B・ほぼ無借金・多角化事業', '規制クレジット収入', 'イーロンの個人資産'],
     correctIndex: 1,
-    explanation: 'バフェットの「安全余裕」概念をテスラに適用すると、$29Bの現金、実質無借金、Auto/Energy/Services/FSDの多角化が、最悪シナリオでの生存力を支えています。',
+    explanation: 'バフェットの「安全余裕」概念をテスラに適用すると、$36.5Bの現金、実質無借金、Auto/Energy/Services/FSDの多角化が、最悪シナリオでの生存力を支えています。',
     tags: ['margin_of_safety', 'buffett', 'balance_sheet'],
   },
   {
     id: 'wc-023', moduleId: 'worst_case', type: 'true_false', difficulty: 'easy',
     questionText: 'テスラが倒産するリスクはFY2024時点でほぼゼロと言える。',
     correctAnswer: true,
-    explanation: '現金$29B、ほぼ無借金、営業利益$7.1B、FCF $3.6Bの財務体質。仮にEV市場が急縮小しても、バランスシートの強さから短中期的な倒産リスクはほぼゼロです。',
+    explanation: '現金$36.5B、ほぼ無借金、営業利益$7.1B、FCF $3.6Bの財務体質。仮にEV市場が急縮小しても、バランスシートの強さから短中期的な倒産リスクはほぼゼロです。',
     tags: ['bankruptcy', 'balance_sheet', 'safety'],
   },
   {

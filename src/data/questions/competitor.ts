@@ -76,7 +76,7 @@ export const competitorQuestions: Question[] = [
     questionText: 'テスラがソフトウェアで競合に圧倒的優位を持つ分野はどれですか？',
     options: ['インフォテインメント', 'OTA（Over-the-Air）アップデート', 'FSD用のリアルワールドデータ収集量', 'カーシェアリングアプリ'],
     correctIndex: 2,
-    explanation: 'テスラは数百万台の車両から64億マイル以上のFSD走行データを収集。このデータ量は他社が追いつけない自動運転AIの学習優位性を生んでいます。',
+    explanation: 'テスラは数百万台の車両からFSD Supervisedだけで20億マイル以上、Autopilot全体では桁違いの走行データを収集。このデータ量は他社が追いつけない自動運転AIの学習優位性を生んでいます。',
     tags: ['data', 'fsd', 'competitive_advantage'],
   },
   {
@@ -255,7 +255,7 @@ export const competitorQuestions: Question[] = [
     id: 'cp-033', moduleId: 'competitor', type: 'true_false', difficulty: 'hard',
     questionText: 'WaymoのFSD走行距離はテスラのFSD走行距離を上回っている。',
     correctAnswer: false,
-    explanation: 'テスラのFSD累計走行距離は64億マイル以上。Waymoは約2,000万マイル/年のペースで、テスラとのデータ量の差は数百倍。ただしWaymoはL4、テスラはL2+で比較対象が異なります。',
+    explanation: 'テスラのFSD Supervised累計走行距離は20億マイル以上。Waymoは約2,000万マイル/年のペースで、テスラとのデータ量の差は100倍以上。ただしWaymoはL4、テスラはL2+で比較対象が異なります。',
     tags: ['waymo', 'fsd', 'miles', 'data'],
   },
   {

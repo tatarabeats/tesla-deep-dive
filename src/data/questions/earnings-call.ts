@@ -136,10 +136,10 @@ export const earningsCallQuestions: Question[] = [
   },
   {
     id: 'ec-018', moduleId: 'earnings_call', type: 'multiple_choice', difficulty: 'easy',
-    questionText: 'FSD（Full Self-Driving）の累計走行距離に最も近い数字はどれですか？（2024年末時点）',
-    options: ['約5億マイル', '約20億マイル', '約64億マイル', '約100億マイル'],
-    correctIndex: 2,
-    explanation: 'FSDの累計走行距離は64億マイル（約103億km）を超えています。このデータ量が自動運転AIの学習に圧倒的な優位性を生んでいます。',
+    questionText: 'FSD Supervisedの累計走行距離に最も近い数字はどれですか？（2024年末時点）',
+    options: ['約5億マイル', '約20億マイル', '約50億マイル', '約100億マイル'],
+    correctIndex: 1,
+    explanation: 'FSD Supervisedの累計走行距離は2024年10月に20億マイルを突破。50%以上がV12アーキテクチャで走行。Autopilot全体ではさらに桁違いのデータ量があります。',
     source: 'Q4 2024 Earnings Call', tags: ['fsd', 'miles'],
   },
   {
@@ -232,7 +232,7 @@ export const earningsCallQuestions: Question[] = [
     questionText: 'テスラの規制クレジット売上が「利益への依存」でなく「ボーナス」と言える理由はどれですか？',
     options: ['売上の50%以上を占めるから', '規制クレジットなしでも営業黒字だから', '政府が永続を保証しているから', '毎年増加し続けているから'],
     correctIndex: 1,
-    explanation: 'FY2024の規制クレジット売上は約$2.1Bで全売上の約2%。テスラは規制クレジットを除いても十分な営業利益を計上しており、あくまで「ボーナス」的収入です。',
+    explanation: 'FY2024の規制クレジット売上は約$2.8B（前年比+54%）で全売上の約3%。テスラは規制クレジットを除いても十分な営業利益を計上しており、あくまで「ボーナス」的収入です。',
     source: 'FY2024 10-K', tags: ['regulatory_credits', 'profitability'],
   },
   {
@@ -246,9 +246,9 @@ export const earningsCallQuestions: Question[] = [
   {
     id: 'ec-032', moduleId: 'earnings_call', type: 'multiple_choice', difficulty: 'easy',
     questionText: 'テスラの現金及び現金同等物（FY2024末時点）に最も近い数字はどれですか？',
-    options: ['約$10B', '約$19B', '約$29B', '約$45B'],
+    options: ['約$10B', '約$20B', '約$36B', '約$50B'],
     correctIndex: 2,
-    explanation: 'テスラはFY2024末時点で約$29Bの現金を保有。ほぼ無借金で、巨額の投資を行いながらも強固なバランスシートを維持しています。',
+    explanation: 'テスラはFY2024末時点で約$36.5Bの現金・現金同等物を保有。ほぼ無借金で、巨額の投資を行いながらも強固なバランスシートを維持しています。',
     source: 'FY2024 10-K', tags: ['cash', 'balance_sheet'],
   },
   {
