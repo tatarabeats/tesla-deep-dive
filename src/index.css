@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f0f1a;
-  --foreground: #e8e6df;
-  --card-bg: #1a1a2e;
-  --card-border: #2a2a4a;
+  --background: #111111;
+  --foreground: #e0e0e0;
+  --card-bg: #1a1a1a;
+  --card-border: #2a2a2a;
   --tesla-red: #e31937;
   --tesla-red-dark: #b8142d;
   --tesla-red-light: #ff3a54;
@@ -15,10 +15,10 @@
   --accent-blue-dark: #1899d6;
   --accent-green: #4caf50;
   --accent-green-dark: #3d8b40;
-  --accent-purple: #ce82ff;
-  --accent-orange: #ff9600;
-  --muted: #6b6b8d;
-  --surface: #12122a;
+  --accent-purple: #888888;
+  --accent-orange: #c07000;
+  --muted: #666666;
+  --surface: #151515;
 }
 
 @theme inline {
@@ -51,14 +51,14 @@
     margin: 0;
     padding: 0;
     font-family: 'DIN Round', 'Nunito', 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', system-ui, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 18px;
+    line-height: 1.7;
     background-color: var(--background);
     color: var(--foreground);
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
   }
 
   #root {
@@ -85,9 +85,9 @@
   right: -1px;
   bottom: -1px;
   border-radius: 13px;
-  background: linear-gradient(135deg, var(--gold-dark), transparent, var(--gold-dark));
+  background: linear-gradient(135deg, #333, transparent, #333);
   z-index: -1;
-  opacity: 0.3;
+  opacity: 0.2;
 }
 
 /* Tesla-accent card variant */
@@ -244,7 +244,7 @@
 
 .choice-card:hover {
   border-color: var(--muted);
-  background-color: #222244;
+  background-color: #222222;
 }
 
 .choice-card-correct {
@@ -373,7 +373,7 @@
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--gold-dark);
+  background: #444;
   border-radius: 3px;
 }
 

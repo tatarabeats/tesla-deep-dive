@@ -77,7 +77,7 @@ export function CompetitorScreen() {
       </div>
 
       <button
-        onClick={() => navigate('module_select')}
+        onClick={() => navigate('home')}
         className="w-full btn-rpg btn-rpg-outline py-4 text-base"
       >
         戻る

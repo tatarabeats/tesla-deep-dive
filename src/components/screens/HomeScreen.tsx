@@ -4,110 +4,77 @@ import { useSound } from '../../hooks/useSound';
 import { getLevelTitle } from '../../engine/progressionEngine';
 
 export function HomeScreen() {
-  const { userProfile, startRound, navigate } = useGame();
+  const { userProfile, startRound } = useGame();
   const { play } = useSound();
-
-  const convictionLevel = userProfile.convictionScore >= 80 ? '確信' :
-    userProfile.convictionScore >= 60 ? '理解' :
-    userProfile.convictionScore >= 40 ? '学習中' :
-    userProfile.convictionScore >= 20 ? '初心者' : '未知';
 
   const xpPercent = userProfile.xpToNextLevel > 0
     ? Math.min(100, (userProfile.currentLevelXP / userProfile.xpToNextLevel) * 100)
     : 0;
 
-  return (
-    <div className="space-y-6 flex flex-col items-center pt-4">
-      {/* Title */}
-      <div className="text-center">
-        <span className="text-3xl">⚡</span>
-        <h1 className="gold-text text-2xl font-extrabold mt-1">テスラ投資RPG</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
-          テスラを深く理解して確信度を上げよう
-        </p>
-      </div>
+  const accuracy = userProfile.totalQuestionsAnswered > 0
+    ? Math.round((userProfile.totalCorrect / userProfile.totalQuestionsAnswered) * 100)
+    : 0;
 
-      {/* Conviction Meter - the core metric */}
+  return (
+    <div className="flex flex-col items-center pt-8 pb-4" style={{ minHeight: 'calc(100vh - 120px)' }}>
+      {/* Level circle */}
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="relative flex flex-col items-center"
+        className="relative mb-4"
+        style={{ width: 120, height: 120 }}
       >
-        <div className="relative" style={{ width: 160, height: 160 }}>
-          <svg viewBox="0 0 100 100" className="-rotate-90" style={{ width: '100%', height: '100%' }}>
-            <circle cx="50" cy="50" r="42" fill="none" stroke="var(--card-border)" strokeWidth="6" />
-            <motion.circle
-              cx="50" cy="50" r="42"
-              fill="none"
-              stroke="var(--tesla-red)"
-              strokeWidth="6"
-              strokeDasharray={`${userProfile.convictionScore * 2.64} 264`}
-              strokeLinecap="round"
-              initial={false}
-              animate={{ strokeDasharray: `${userProfile.convictionScore * 2.64} 264` }}
-              transition={{ duration: 1 }}
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-extrabold" style={{ color: 'var(--foreground)' }}>
-              {userProfile.convictionScore}
-            </span>
-            <span className="text-xs font-bold" style={{ color: 'var(--muted)' }}>確信度</span>
-          </div>
-        </div>
-        <span className="gold-text text-lg font-bold mt-2">{convictionLevel}</span>
-      </motion.div>
-
-      {/* Level + Streak row */}
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">🏅</span>
-          <div>
-            <div className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>
-              Lv.{userProfile.level} {getLevelTitle(userProfile.level)}
-            </div>
-            <div className="w-24 h-1.5 rounded-full mt-1" style={{ backgroundColor: 'var(--card-border)' }}>
-              <motion.div
-                className="h-full rounded-full"
-                style={{ backgroundColor: 'var(--tesla-red)' }}
-                animate={{ width: `${xpPercent}%` }}
-                transition={{ duration: 0.8 }}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="text-lg">🔥</span>
-          <span className="text-sm font-bold"
-            style={{ color: userProfile.currentStreak > 0 ? 'var(--accent-orange)' : 'var(--muted)' }}
-          >
-            {userProfile.currentStreak}日連続
+        <svg viewBox="0 0 100 100" className="-rotate-90" style={{ width: '100%', height: '100%' }}>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="var(--card-border)" strokeWidth="5" />
+          <motion.circle
+            cx="50" cy="50" r="42"
+            fill="none"
+            stroke="var(--tesla-red)"
+            strokeWidth="5"
+            strokeDasharray={`${xpPercent * 2.64} 264`}
+            strokeLinecap="round"
+            initial={false}
+            animate={{ strokeDasharray: `${xpPercent * 2.64} 264` }}
+            transition={{ duration: 1 }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-3xl font-extrabold" style={{ color: 'var(--foreground)' }}>
+            {userProfile.level}
           </span>
         </div>
+      </motion.div>
+
+      {/* Title */}
+      <h1 className="text-lg font-bold" style={{ color: 'var(--foreground)' }}>
+        {getLevelTitle(userProfile.level)}
+      </h1>
+
+      {/* Stats row */}
+      <div className="flex items-center gap-4 mt-3 text-sm" style={{ color: 'var(--muted)' }}>
+        {userProfile.currentStreak > 0 && (
+          <span>{userProfile.currentStreak}日連続</span>
+        )}
+        {userProfile.totalQuestionsAnswered > 0 && (
+          <span>正答率 {accuracy}%</span>
+        )}
+        <span>{userProfile.totalXP} XP</span>
       </div>
 
-      {/* Primary CTA */}
+      {/* Spacer */}
+      <div className="flex-1" />
+
+      {/* Single CTA */}
       <motion.button
         whileTap={{ scale: 0.97 }}
         onClick={() => {
           play('roundStart');
           startRound('sec_filing', true);
         }}
-        className="w-full btn-rpg btn-rpg-red py-5 text-xl animate-pulse-glow"
+        className="w-full btn-rpg btn-rpg-red py-5 text-xl"
       >
-        ⚔️ 今日のクエストを始める
+        学習を始める
       </motion.button>
-
-      {/* Secondary CTA */}
-      <button
-        onClick={() => {
-          play('click');
-          navigate('module_select');
-        }}
-        className="w-full btn-rpg btn-rpg-outline py-3 text-base"
-      >
-        📚 モジュールを選んで学ぶ
-      </button>
     </div>
   );
 }

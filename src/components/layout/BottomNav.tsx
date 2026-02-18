@@ -3,8 +3,7 @@ import { useSound } from '../../hooks/useSound';
 import type { GameScene } from '../../types/game';
 
 const navItems: { scene: GameScene; label: string; icon: string }[] = [
-  { scene: 'home', label: 'ホーム', icon: '🏠' },
-  { scene: 'module_select', label: '学ぶ', icon: '⚔️' },
+  { scene: 'home', label: 'ホーム', icon: '⚡' },
   { scene: 'profile', label: 'MY', icon: '👤' },
 ];
 
@@ -14,20 +13,13 @@ export function BottomNav() {
 
   if (gameState.scene === 'round_active') return null;
 
-  // Map sub-scenes to their parent nav tab
-  const activeTab = (() => {
-    const scene = gameState.scene;
-    if (scene === 'home') return 'home';
-    if (scene === 'profile') return 'profile';
-    // Everything else (module_select, scenario, competitor_dashboard, segment_charts, round_result, etc.) → "learn" tab
-    return 'module_select';
-  })();
+  const activeTab = gameState.scene === 'profile' ? 'profile' : 'home';
 
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-50 border-t"
       style={{
-        backgroundColor: 'rgba(18, 18, 42, 0.95)',
+        backgroundColor: 'rgba(15, 15, 26, 0.95)',
         backdropFilter: 'blur(8px)',
         borderColor: 'var(--card-border)',
       }}
@@ -44,26 +36,13 @@ export function BottomNav() {
                 play('click');
                 navigate(scene);
               }}
-              className="flex flex-col items-center gap-0.5 px-6 py-1 transition-colors cursor-pointer"
+              className="flex flex-col items-center gap-0.5 px-8 py-1 transition-colors cursor-pointer"
               style={{
-                color: isActive ? 'var(--gold)' : 'var(--muted)',
+                color: isActive ? 'var(--foreground)' : 'var(--muted)',
               }}
             >
-              <span
-                className="text-2xl"
-                style={{
-                  filter: isActive ? 'drop-shadow(0 0 6px rgba(212,160,23,0.5))' : 'none',
-                }}
-              >
-                {icon}
-              </span>
+              <span className="text-xl">{icon}</span>
               <span className="text-xs font-bold">{label}</span>
-              {isActive && (
-                <div
-                  className="w-6 h-[2px] rounded-full mt-0.5"
-                  style={{ backgroundColor: 'var(--gold)' }}
-                />
-              )}
             </button>
           );
         })}

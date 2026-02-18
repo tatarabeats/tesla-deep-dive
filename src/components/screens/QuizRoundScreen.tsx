@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
 import { useSound } from '../../hooks/useSound';
@@ -9,8 +9,30 @@ export function QuizRoundScreen() {
   const { gameState, submitAnswer, nextQuestion, navigate } = useGame();
   const { play } = useSound();
   const [shaking, setShaking] = useState(false);
+  const lastSoundPlayedRef = useRef<string | null>(null);
 
   const round = gameState.round;
+
+  // Play sound ONLY once per answer state change
+  useEffect(() => {
+    if (!round) return;
+    const key = `${round.currentQuestionIndex}-${round.answerState}`;
+    if (key === lastSoundPlayedRef.current) return;
+
+    if (round.answerState === 'answered_correct') {
+      lastSoundPlayedRef.current = key;
+      play('correct');
+      if (round.currentCombo >= 3) {
+        setTimeout(() => play('combo'), 300);
+      }
+    } else if (round.answerState === 'answered_wrong') {
+      lastSoundPlayedRef.current = key;
+      play('wrong');
+      setShaking(true);
+      setTimeout(() => setShaking(false), 500);
+    }
+  }, [round?.currentQuestionIndex, round?.answerState]);
+
   if (!round) return null;
 
   const question = round.questions[round.currentQuestionIndex];
@@ -28,24 +50,9 @@ export function QuizRoundScreen() {
   };
 
   const handleNext = () => {
-    if (round.answerState === 'answered_wrong') {
-      setShaking(false);
-    }
+    setShaking(false);
     nextQuestion();
   };
-
-  // Play sound on answer
-  if (round.answerState === 'answered_correct' && !shaking) {
-    play('correct');
-    if (round.currentCombo >= 3) {
-      setTimeout(() => play('combo'), 300);
-    }
-  }
-  if (round.answerState === 'answered_wrong' && !shaking) {
-    play('wrong');
-    setShaking(true);
-    setTimeout(() => setShaking(false), 500);
-  }
 
   const questionContext = `問題: ${question.questionText}\n解説: ${question.explanation}`;
 
@@ -54,7 +61,7 @@ export function QuizRoundScreen() {
       {/* Top bar: progress + quit */}
       <div className="flex items-center gap-3 mb-6">
         <button
-          onClick={() => navigate('module_select')}
+          onClick={() => navigate('home')}
           className="text-xl hover:opacity-80 cursor-pointer"
           style={{ color: 'var(--muted)' }}
         >
@@ -68,7 +75,9 @@ export function QuizRoundScreen() {
           />
         </div>
         <div className="flex items-center gap-1">
-          <span className="text-sm font-bold" style={{ color: 'var(--gold)' }}>{round.currentScore}</span>
+          <span className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>
+            {round.currentQuestionIndex + 1}/{round.questions.length}
+          </span>
         </div>
       </div>
 
@@ -79,8 +88,8 @@ export function QuizRoundScreen() {
           animate={{ scale: 1 }}
           className="text-center mb-2"
         >
-          <span className="gold-text font-extrabold text-sm">
-            🔥 {round.currentCombo}x コンボ！
+          <span className="font-extrabold text-base" style={{ color: 'var(--tesla-red)' }}>
+            {round.currentCombo}x combo
           </span>
         </motion.div>
       )}
@@ -92,12 +101,9 @@ export function QuizRoundScreen() {
         animate={{ opacity: 1, y: 0 }}
         className={`mb-6 ${shaking ? 'animate-shake' : ''}`}
       >
-        <p className="text-lg font-bold leading-relaxed">
+        <p className="text-xl font-bold leading-relaxed" style={{ color: 'var(--foreground)' }}>
           <GlossaryText text={question.questionText} />
         </p>
-        {question.source && (
-          <p className="text-xs mt-2" style={{ color: 'var(--muted)' }}>出典: {question.source}</p>
-        )}
       </motion.div>
 
       {/* Options */}
@@ -142,12 +148,12 @@ export function QuizRoundScreen() {
                 className={`w-full ${cardClass}`}
                 disabled={isAnswered}
               >
-                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0"
+                <span className="w-9 h-9 rounded-lg flex items-center justify-center text-base font-bold shrink-0"
                   style={{ backgroundColor: 'var(--surface)', color: 'var(--muted)' }}
                 >
                   {label}
                 </span>
-                <span className="flex-1 text-left text-sm font-semibold">{option}</span>
+                <span className="flex-1 text-left text-base font-semibold">{option}</span>
               </motion.button>
             );
           })
@@ -167,35 +173,20 @@ export function QuizRoundScreen() {
             }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 15 }}
-                className="text-2xl"
-              >
-                {round.answerState === 'answered_correct' ? '🎉' : '💭'}
-              </motion.span>
-              <span className="font-extrabold text-sm">
-                {round.answerState === 'answered_correct' ? 'すばらしい！' : '惜しい！'}
+              <span className="text-2xl">
+                {round.answerState === 'answered_correct' ? '✅' : '❌'}
               </span>
-              {round.answers[round.answers.length - 1]?.pointsEarned > 0 && (
-                <motion.span
-                  initial={{ scale: 0, y: -10 }}
-                  animate={{ scale: 1, y: 0 }}
-                  className="ml-auto font-extrabold text-sm"
-                  style={{ color: 'var(--gold)' }}
-                >
-                  +{round.answers[round.answers.length - 1].pointsEarned}pt
-                </motion.span>
-              )}
+              <span className="font-extrabold text-base" style={{ color: 'var(--foreground)' }}>
+                {round.answerState === 'answered_correct' ? '正解！' : '不正解'}
+              </span>
             </div>
 
             {round.answerState === 'answered_wrong' && question.type !== 'true_false' && question.correctIndex !== undefined && (
               <div className="mb-3 px-3 py-2 rounded-xl"
                 style={{ backgroundColor: 'rgba(76,175,80,0.1)', border: '1px solid rgba(76,175,80,0.3)' }}
               >
-                <span className="text-xs font-bold" style={{ color: 'var(--accent-green)' }}>正解: </span>
-                <span className="text-xs" style={{ color: 'var(--foreground)' }}>{question.options?.[question.correctIndex]}</span>
+                <span className="text-sm font-bold" style={{ color: 'var(--accent-green)' }}>正解: </span>
+                <span className="text-sm" style={{ color: 'var(--foreground)' }}>{question.options?.[question.correctIndex]}</span>
               </div>
             )}
 
@@ -203,17 +194,11 @@ export function QuizRoundScreen() {
               <GlossaryText text={question.explanation} />
             </div>
 
-            <p className="text-[10px] mt-2" style={{ color: 'var(--muted)' }}>
-              💡 青い用語をタップすると意味がわかります
-            </p>
-
             <button
               onClick={handleNext}
-              className={`w-full mt-4 btn-rpg py-3 text-sm ${
-                round.answerState === 'answered_correct' ? 'btn-rpg-green' : 'btn-rpg-red'
-              }`}
+              className="w-full mt-4 btn-rpg btn-rpg-red py-3 text-base"
             >
-              {round.currentQuestionIndex < round.questions.length - 1 ? '次の問題' : '結果を見る'}
+              {round.currentQuestionIndex < round.questions.length - 1 ? '次へ' : '結果を見る'}
             </button>
           </motion.div>
         )}

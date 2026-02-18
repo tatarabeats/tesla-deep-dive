@@ -2,7 +2,6 @@ import type { ModuleId, Question } from './quiz';
 
 export type GameScene =
   | 'home'
-  | 'module_select'
   | 'round_active'
   | 'round_result'
   | 'profile';

@@ -15,7 +15,7 @@ export function FilingInputScreen() {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3">
-        <button onClick={() => navigate('module_select')}
+        <button onClick={() => navigate('home')}
           className="text-xl cursor-pointer hover:opacity-80"
           style={{ color: 'var(--muted)' }}
         >←</button>

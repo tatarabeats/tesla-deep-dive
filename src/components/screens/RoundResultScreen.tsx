@@ -119,18 +119,12 @@ export function RoundResultScreen() {
       </motion.div>
 
       {/* Action Buttons */}
-      <div className="flex gap-3">
-        <button
-          onClick={() => navigate('module_select')}
-          className="flex-1 btn-rpg btn-rpg-outline py-3 text-sm"
-        >
-          モジュール選択
-        </button>
+      <div className="space-y-3">
         <button
           onClick={() => navigate('home')}
-          className="flex-1 btn-rpg btn-rpg-red py-3 text-sm"
+          className="w-full btn-rpg btn-rpg-red py-4 text-base"
         >
-          ホームへ
+          ホームに戻る
         </button>
       </div>
     </div>
