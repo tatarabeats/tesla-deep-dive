@@ -5,11 +5,6 @@ export type GameScene =
   | 'module_select'
   | 'round_active'
   | 'round_result'
-  | 'filing_input'
-  | 'transcript_input'
-  | 'scenario'
-  | 'competitor_dashboard'
-  | 'segment_charts'
   | 'profile';
 
 export type AnswerState = 'waiting' | 'answered_correct' | 'answered_wrong';

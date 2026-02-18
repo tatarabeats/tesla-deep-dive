@@ -115,7 +115,7 @@ export const teslaFeedCards: TeslaFeedCardData[] = [
     categoryLabel: 'テスラファクト',
     title: '現金$36.5B — 鉄壁のバランスシート',
     body: '現金$36.5B、ほぼ無借金。巨額のAI投資とMegapack工場建設を行いながら、FCF $3.6Bを生み出し続ける財務力。',
-    highlight: '$29B',
+    highlight: '$36.5B',
     relatedModule: 'sec_filing',
   },
   {

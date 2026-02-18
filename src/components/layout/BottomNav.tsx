@@ -4,9 +4,7 @@ import type { GameScene } from '../../types/game';
 
 const navItems: { scene: GameScene; label: string; icon: string }[] = [
   { scene: 'home', label: 'ホーム', icon: '🏠' },
-  { scene: 'module_select', label: 'クイズ', icon: '⚔️' },
-  { scene: 'competitor_dashboard', label: '分析', icon: '📊' },
-  { scene: 'scenario', label: 'シナリオ', icon: '🔥' },
+  { scene: 'module_select', label: '学ぶ', icon: '⚔️' },
   { scene: 'profile', label: 'MY', icon: '👤' },
 ];
 
@@ -15,6 +13,15 @@ export function BottomNav() {
   const { play } = useSound();
 
   if (gameState.scene === 'round_active') return null;
+
+  // Map sub-scenes to their parent nav tab
+  const activeTab = (() => {
+    const scene = gameState.scene;
+    if (scene === 'home') return 'home';
+    if (scene === 'profile') return 'profile';
+    // Everything else (module_select, scenario, competitor_dashboard, segment_charts, round_result, etc.) → "learn" tab
+    return 'module_select';
+  })();
 
   return (
     <nav
@@ -29,7 +36,7 @@ export function BottomNav() {
         style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}
       >
         {navItems.map(({ scene, label, icon }) => {
-          const isActive = gameState.scene === scene;
+          const isActive = activeTab === scene;
           return (
             <button
               key={scene}
@@ -37,20 +44,20 @@ export function BottomNav() {
                 play('click');
                 navigate(scene);
               }}
-              className="flex flex-col items-center gap-0.5 px-3 py-1 transition-colors cursor-pointer"
+              className="flex flex-col items-center gap-0.5 px-6 py-1 transition-colors cursor-pointer"
               style={{
                 color: isActive ? 'var(--gold)' : 'var(--muted)',
               }}
             >
               <span
-                className="text-xl"
+                className="text-2xl"
                 style={{
                   filter: isActive ? 'drop-shadow(0 0 6px rgba(212,160,23,0.5))' : 'none',
                 }}
               >
                 {icon}
               </span>
-              <span className="text-[10px] font-bold">{label}</span>
+              <span className="text-xs font-bold">{label}</span>
               {isActive && (
                 <div
                   className="w-6 h-[2px] rounded-full mt-0.5"
