@@ -2,48 +2,47 @@ import type { NodeContent as NodeContentType } from '../../types/visionTree';
 
 interface Props {
   content: NodeContentType;
-  color: string;
 }
 
-export default function NodeContent({ content, color }: Props) {
+export default function NodeContent({ content }: Props) {
   return (
-    <div className="space-y-4">
-      <p className="text-[var(--foreground)] leading-relaxed text-sm">
+    <div className="space-y-1">
+      <p className="text-[var(--text)] leading-relaxed">
         {content.mainText}
       </p>
 
       {content.elonQuote && (
-        <div className="quote-block" style={{ borderColor: `var(${color})` }}>
-          <p className="text-sm italic text-[var(--foreground)] opacity-90">
+        <div className="quote-block">
+          <p className="text-sm italic text-[var(--text)]">
             "{content.elonQuote}"
           </p>
           {content.quoteSource && (
-            <p className="text-xs text-[var(--muted)] mt-1">— {content.quoteSource}</p>
+            <p className="text-xs text-[var(--text-secondary)] mt-1">— {content.quoteSource}</p>
           )}
         </div>
       )}
 
       {content.firstPrinciple && (
         <div className="first-principle-box">
-          <div className="text-xs font-bold text-[var(--gold)] mb-1 flex items-center gap-1">
-            <span>💡</span> First Principles
-          </div>
-          <p className="text-sm text-[var(--foreground)] opacity-90">
+          <p className="text-xs font-semibold text-[var(--text-secondary)] mb-1 tracking-wide uppercase">
+            First Principles
+          </p>
+          <p className="text-sm text-[var(--text)]">
             {content.firstPrinciple}
           </p>
         </div>
       )}
 
       {content.data && content.data.length > 0 && (
-        <div className="space-y-2">
+        <div>
           {content.data.map((d, i) => (
             <div key={i} className="data-point">
               <div className="flex justify-between items-baseline">
-                <span className="text-xs text-[var(--muted)]">{d.label}</span>
-                <span className="text-sm font-bold text-[var(--foreground)]">{d.value}</span>
+                <span className="text-sm text-[var(--text-secondary)]">{d.label}</span>
+                <span className="text-sm font-semibold text-[var(--text)]">{d.value}</span>
               </div>
               {d.context && (
-                <p className="text-xs text-[var(--muted)] mt-0.5">{d.context}</p>
+                <p className="text-xs text-[var(--text-secondary)] mt-0.5">{d.context}</p>
               )}
             </div>
           ))}
@@ -52,8 +51,8 @@ export default function NodeContent({ content, color }: Props) {
 
       {content.analogy && (
         <div className="analogy-box">
-          <p className="text-sm text-[var(--foreground)] opacity-80">
-            <span className="text-[var(--gold)]">🔗</span> {content.analogy}
+          <p className="text-sm text-[var(--text-secondary)]">
+            {content.analogy}
           </p>
         </div>
       )}

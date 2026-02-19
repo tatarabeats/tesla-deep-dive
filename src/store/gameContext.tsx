@@ -1,38 +1,18 @@
-import { createContext, useContext, useReducer, useCallback, useEffect, useMemo, type ReactNode } from 'react';
-import type { GameState, GameAction, GameScene } from '../types/game';
+import { createContext, useContext, useReducer, useCallback, useEffect, type ReactNode } from 'react';
 import type { UserProfile } from '../types/user';
-import type { ExplorationState, BranchProgress, BranchId } from '../types/visionTree';
+import type { ExplorationState } from '../types/visionTree';
 import { loadUserProgress, saveUserProgress } from '../utils/storage';
-import { totalNodeCount, getNode, getNodesInBranch, getBranchIds } from '../data/visionTree';
-
-function gameReducer(state: GameState, action: GameAction): GameState {
-  switch (action.type) {
-    case 'NAVIGATE':
-      return { ...state, scene: action.payload };
-    default:
-      return state;
-  }
-}
-
-const initialGameState: GameState = {
-  scene: 'home',
-};
+import { getNode } from '../data/visionTree';
 
 interface GameContextType {
-  gameState: GameState;
   userProfile: UserProfile;
   exploration: ExplorationState;
-  branchProgressMap: Record<BranchId, BranchProgress>;
-  overallProgress: number;
-  navigate: (scene: GameScene) => void;
   toggleNode: (nodeId: string) => void;
-  toggleBookmark: (nodeId: string) => void;
 }
 
 const GameContext = createContext<GameContextType | null>(null);
 
 export function GameProvider({ children }: { children: ReactNode }) {
-  const [gameState, dispatch] = useReducer(gameReducer, initialGameState);
   const [userProfile, setUserProfile] = useReducer(
     (_prev: UserProfile, next: UserProfile) => next,
     null as unknown as UserProfile,
@@ -52,10 +32,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     saveUserProgress(userProfile);
   }, [userProfile]);
 
-  const navigate = useCallback((scene: GameScene) => {
-    dispatch({ type: 'NAVIGATE', payload: scene });
-  }, []);
-
   const toggleNode = useCallback((nodeId: string) => {
     const node = getNode(nodeId);
     if (!node) return;
@@ -64,7 +40,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const newExpanded = new Set(exploration.expandedNodes);
 
     if (isExpanded) {
-      // Collapse: remove this node and all descendants
       const removeDescendants = (id: string) => {
         newExpanded.delete(id);
         const n = getNode(id);
@@ -72,7 +47,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
       };
       removeDescendants(nodeId);
     } else {
-      // Expand
       newExpanded.add(nodeId);
     }
 
@@ -96,57 +70,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }
   }, [exploration, userProfile]);
 
-  const toggleBookmark = useCallback((nodeId: string) => {
-    const isBookmarked = exploration.bookmarkedNodes.includes(nodeId);
-    const newBookmarks = isBookmarked
-      ? exploration.bookmarkedNodes.filter(id => id !== nodeId)
-      : [...exploration.bookmarkedNodes, nodeId];
-
-    setExploration({
-      ...exploration,
-      bookmarkedNodes: newBookmarks,
-    });
-    setUserProfile({
-      ...userProfile,
-      bookmarkedNodeIds: newBookmarks,
-    });
-  }, [exploration, userProfile]);
-
-  const branchProgressMap = useMemo(() => {
-    const map = {} as Record<BranchId, BranchProgress>;
-    for (const branchId of getBranchIds()) {
-      const branchNodes = getNodesInBranch(branchId);
-      const exploredInBranch = branchNodes.filter(n => exploration.exploredNodes.has(n.id));
-      const maxDepth = exploredInBranch.reduce((max, n) => Math.max(max, n.depth), 0);
-      map[branchId] = {
-        totalNodes: branchNodes.length,
-        exploredNodes: exploredInBranch.length,
-        deepestDepth: maxDepth,
-        fullyExplored: exploredInBranch.length === branchNodes.length,
-      };
-    }
-    return map;
-  }, [exploration.exploredNodes]);
-
-  const overallProgress = useMemo(() => {
-    const explorable = totalNodeCount - 1;
-    const explored = Math.max(0, exploration.exploredNodes.size - (exploration.exploredNodes.has('root') ? 1 : 0));
-    return explorable > 0 ? Math.round((explored / explorable) * 100) : 0;
-  }, [exploration.exploredNodes]);
-
   return (
-    <GameContext.Provider
-      value={{
-        gameState,
-        userProfile,
-        exploration,
-        branchProgressMap,
-        overallProgress,
-        navigate,
-        toggleNode,
-        toggleBookmark,
-      }}
-    >
+    <GameContext.Provider value={{ userProfile, exploration, toggleNode }}>
       {children}
     </GameContext.Provider>
   );

@@ -41,10 +41,3 @@ export interface ExplorationState {
   exploredNodes: Set<string>;
   bookmarkedNodes: string[];
 }
-
-export interface BranchProgress {
-  totalNodes: number;
-  exploredNodes: number;
-  deepestDepth: number;
-  fullyExplored: boolean;
-}

@@ -15,7 +15,6 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
   const hasChildren = children.length > 0;
   const isRoot = node.id === 'root';
 
-  // Scroll into view when expanded
   useEffect(() => {
     if (isExpanded && contentRef.current && !isRoot) {
       setTimeout(() => {
@@ -24,39 +23,33 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
     }
   }, [isExpanded, isRoot]);
 
-  // Compact indent: 12px per level, max 48px so deep nodes stay readable
-  const indent = isRoot ? 0 : Math.min(depth * 12, 48);
+  const indent = isRoot ? 0 : Math.min(depth * 16, 64);
 
   return (
     <div style={{ paddingLeft: indent }}>
-      {/* Node row */}
       <button
         onClick={() => toggleNode(node.id)}
-        className={`outliner-row ${isExpanded ? 'outliner-row-expanded' : ''} ${isRoot ? 'outliner-row-root' : ''}`}
-        style={{
-          borderLeftColor: depth > 0 ? `var(${node.color})` : 'transparent',
-        }}
+        className="outliner-row"
       >
-        {/* Toggle indicator */}
         <span className={`outliner-toggle ${!hasChildren ? 'invisible' : ''}`}>
-          {isExpanded ? '▼' : '▶'}
+          {isExpanded ? '▾' : '▸'}
         </span>
 
-        {/* Icon */}
-        <span className="text-xl shrink-0">{node.icon}</span>
-
-        {/* Title */}
-        <span className={`flex-1 text-left truncate ${isExplored ? 'text-[var(--foreground)]' : 'text-[var(--muted)]'}`}>
+        <span className={`flex-1 text-left ${
+          isRoot
+            ? 'text-2xl font-bold tracking-tight'
+            : depth === 1
+              ? 'text-lg font-semibold'
+              : 'text-base'
+        } ${isExplored || isRoot ? 'text-[var(--text)]' : 'text-[var(--text-secondary)]'}`}>
           {node.title}
         </span>
 
-        {/* Subtitle for branch-level nodes */}
-        {node.subtitle && depth <= 1 && (
-          <span className="text-xs text-[var(--muted)] shrink-0">{node.subtitle}</span>
+        {node.subtitle && depth <= 1 && !isRoot && (
+          <span className="text-xs text-[var(--text-secondary)] shrink-0">{node.subtitle}</span>
         )}
       </button>
 
-      {/* Expanded content + children */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -65,16 +58,14 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
-            className="overflow-hidden"
+            style={{ overflow: 'hidden' }}
           >
-            {/* Content (show for non-root expanded nodes) */}
             {!isRoot && (
-              <div className="outliner-content" style={{ borderLeftColor: `var(${node.color})` }}>
-                <NodeContent content={node.content} color={node.color} />
+              <div className="outliner-content">
+                <NodeContent content={node.content} />
               </div>
             )}
 
-            {/* Children */}
             {children.map(child => (
               <OutlinerNode key={child.id} node={child} depth={depth + 1} />
             ))}
@@ -86,22 +77,11 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
 }
 
 export function HomeScreen() {
-  const { overallProgress } = useGame();
-
   const rootNode = visionTreeData['root'];
 
   return (
-    <div className="space-y-3 pb-4">
-      {/* Simple progress */}
-      <div className="flex items-center justify-between">
-        <p className="text-base font-bold text-[var(--foreground)]">Elon's Vision Tree</p>
-        <span className="text-xs text-[var(--muted)]">{overallProgress}% 探索済</span>
-      </div>
-
-      {/* Outliner tree */}
-      <div className="outliner-tree">
-        <OutlinerNode node={rootNode} depth={0} />
-      </div>
+    <div className="max-w-xl mx-auto px-5 py-8">
+      <OutlinerNode node={rootNode} depth={0} />
     </div>
   );
 }
