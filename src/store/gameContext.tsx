@@ -3,10 +3,7 @@ import type { GameState, GameAction, GameScene } from '../types/game';
 import type { UserProfile } from '../types/user';
 import type { ExplorationState, BranchProgress, BranchId } from '../types/visionTree';
 import { loadUserProgress, saveUserProgress } from '../utils/storage';
-import { applyXP, updateDailyStreak, calculateUnderstandingScore } from '../engine/progressionEngine';
-import { updateNodeMemory } from '../engine/spacedRepetition';
 import { totalNodeCount, getNode, getNodesInBranch, getBranchIds } from '../data/visionTree';
-import { XP_PER_NEW_NODE, XP_DEPTH_BONUS } from '../utils/constants';
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
@@ -30,7 +27,6 @@ interface GameContextType {
   navigate: (scene: GameScene) => void;
   toggleNode: (nodeId: string) => void;
   toggleBookmark: (nodeId: string) => void;
-  updateProfile: (updater: (prev: UserProfile) => UserProfile) => void;
 }
 
 const GameContext = createContext<GameContextType | null>(null);
@@ -60,10 +56,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'NAVIGATE', payload: scene });
   }, []);
 
-  const updateProfile = useCallback((updater: (prev: UserProfile) => UserProfile) => {
-    setUserProfile(updater(userProfile));
-  }, [userProfile]);
-
   const toggleNode = useCallback((nodeId: string) => {
     const node = getNode(nodeId);
     if (!node) return;
@@ -84,8 +76,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       newExpanded.add(nodeId);
     }
 
-    const isFirstVisit = !exploration.exploredNodes.has(nodeId);
     const newExplored = new Set(exploration.exploredNodes);
+    const isFirstVisit = !newExplored.has(nodeId);
     newExplored.add(nodeId);
 
     setExploration({
@@ -95,41 +87,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
 
     if (isFirstVisit) {
-      const xpEarned = XP_PER_NEW_NODE + (node.depth * XP_DEPTH_BONUS);
-      const progression = applyXP(userProfile, xpEarned);
-      const streak = updateDailyStreak(userProfile);
       const today = new Date().toISOString().slice(0, 10);
-      const newExploredIds = [...userProfile.exploredNodeIds, nodeId];
-
-      const newMemory = { ...userProfile.nodeMemory };
-      newMemory[nodeId] = updateNodeMemory(newMemory[nodeId], nodeId);
-
       setUserProfile({
         ...userProfile,
-        totalXP: progression.newTotalXP,
-        level: progression.newLevel,
-        currentLevelXP: progression.newCurrentLevelXP,
-        xpToNextLevel: progression.newXpToNextLevel,
-        currentStreak: streak.newStreak,
-        longestStreak: streak.newLongestStreak,
-        lastPlayedDate: today,
-        exploredNodeIds: newExploredIds,
-        totalNodesExplored: newExploredIds.length,
-        deepestDepthReached: Math.max(userProfile.deepestDepthReached, node.depth),
-        understandingScore: calculateUnderstandingScore(newExploredIds.length, totalNodeCount),
-        nodeMemory: newMemory,
+        exploredNodeIds: [...userProfile.exploredNodeIds, nodeId],
+        lastOpenedDate: today,
       });
-
-      if (typeof window !== 'undefined' && (window as any).__triggerExpGain) {
-        (window as any).__triggerExpGain(xpEarned);
-      }
-      if (progression.leveledUp && typeof window !== 'undefined' && (window as any).__triggerLevelUp) {
-        (window as any).__triggerLevelUp(progression.newLevel);
-      }
-    } else if (!isExpanded) {
-      const newMemory = { ...userProfile.nodeMemory };
-      newMemory[nodeId] = updateNodeMemory(newMemory[nodeId], nodeId);
-      setUserProfile({ ...userProfile, nodeMemory: newMemory });
     }
   }, [exploration, userProfile]);
 
@@ -182,7 +145,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
         navigate,
         toggleNode,
         toggleBookmark,
-        updateProfile,
       }}
     >
       {children}

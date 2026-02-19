@@ -1,15 +1,12 @@
 import { useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
-import { useSound } from '../../hooks/useSound';
-import { getLevelTitle } from '../../engine/progressionEngine';
 import { visionTreeData, getChildren } from '../../data/visionTree';
 import NodeContent from '../tree/NodeContent';
 import type { VisionNode } from '../../types/visionTree';
 
 function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
   const { exploration, toggleNode } = useGame();
-  const { play } = useSound();
   const contentRef = useRef<HTMLDivElement>(null);
 
   const isExpanded = exploration.expandedNodes.has(node.id);
@@ -27,14 +24,14 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
     }
   }, [isExpanded, isRoot]);
 
+  // Compact indent: 12px per level, max 48px so deep nodes stay readable
+  const indent = isRoot ? 0 : Math.min(depth * 12, 48);
+
   return (
-    <div className={depth > 0 ? 'outliner-indent' : ''}>
+    <div style={{ paddingLeft: indent }}>
       {/* Node row */}
       <button
-        onClick={() => {
-          play(isExpanded ? 'click' : 'explore');
-          toggleNode(node.id);
-        }}
+        onClick={() => toggleNode(node.id)}
         className={`outliner-row ${isExpanded ? 'outliner-row-expanded' : ''} ${isRoot ? 'outliner-row-root' : ''}`}
         style={{
           borderLeftColor: depth > 0 ? `var(${node.color})` : 'transparent',
@@ -46,16 +43,16 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
         </span>
 
         {/* Icon */}
-        <span className="text-lg shrink-0">{node.icon}</span>
+        <span className="text-xl shrink-0">{node.icon}</span>
 
         {/* Title */}
-        <span className={`flex-1 text-left text-sm truncate ${isExplored ? 'text-[var(--foreground)]' : 'text-[var(--muted)]'}`}>
+        <span className={`flex-1 text-left truncate ${isExplored ? 'text-[var(--foreground)]' : 'text-[var(--muted)]'}`}>
           {node.title}
         </span>
 
-        {/* Subtitle for depth-1 nodes */}
+        {/* Subtitle for branch-level nodes */}
         {node.subtitle && depth <= 1 && (
-          <span className="text-[10px] text-[var(--muted)] shrink-0">{node.subtitle}</span>
+          <span className="text-xs text-[var(--muted)] shrink-0">{node.subtitle}</span>
         )}
       </button>
 
@@ -89,46 +86,16 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
 }
 
 export function HomeScreen() {
-  const { userProfile, overallProgress } = useGame();
-
-  const xpPercent = userProfile.xpToNextLevel > 0
-    ? Math.min(100, (userProfile.currentLevelXP / userProfile.xpToNextLevel) * 100)
-    : 0;
+  const { overallProgress } = useGame();
 
   const rootNode = visionTreeData['root'];
 
   return (
-    <div className="space-y-4 pb-4">
-      {/* Compact header */}
-      <div className="flex items-center gap-3">
-        <div className="relative shrink-0" style={{ width: 52, height: 52 }}>
-          <svg viewBox="0 0 100 100" className="-rotate-90" style={{ width: '100%', height: '100%' }}>
-            <circle cx="50" cy="50" r="42" fill="none" stroke="var(--card-border)" strokeWidth="7" />
-            <motion.circle
-              cx="50" cy="50" r="42"
-              fill="none"
-              stroke="var(--tesla-red)"
-              strokeWidth="7"
-              strokeDasharray={`${xpPercent * 2.64} 264`}
-              strokeLinecap="round"
-              initial={false}
-              animate={{ strokeDasharray: `${xpPercent * 2.64} 264` }}
-              transition={{ duration: 1 }}
-            />
-          </svg>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-base font-extrabold text-[var(--foreground)]">
-              {userProfile.level}
-            </span>
-          </div>
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="text-xs font-bold text-[var(--foreground)]">{getLevelTitle(userProfile.level)}</p>
-          <p className="text-[10px] text-[var(--muted)]">
-            {userProfile.totalXP} XP · 理解度 {overallProgress}%
-            {userProfile.currentStreak > 0 && ` · ${userProfile.currentStreak}日連続`}
-          </p>
-        </div>
+    <div className="space-y-3 pb-4">
+      {/* Simple progress */}
+      <div className="flex items-center justify-between">
+        <p className="text-base font-bold text-[var(--foreground)]">Elon's Vision Tree</p>
+        <span className="text-xs text-[var(--muted)]">{overallProgress}% 探索済</span>
       </div>
 
       {/* Outliner tree */}

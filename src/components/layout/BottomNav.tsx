@@ -1,5 +1,4 @@
 import { useGame } from '../../store/gameContext';
-import { useSound } from '../../hooks/useSound';
 import type { GameScene } from '../../types/game';
 
 const navItems: { scene: GameScene; label: string; icon: string }[] = [
@@ -9,7 +8,6 @@ const navItems: { scene: GameScene; label: string; icon: string }[] = [
 
 export function BottomNav() {
   const { gameState, navigate } = useGame();
-  const { play } = useSound();
 
   const activeTab = gameState.scene === 'profile' ? 'profile' : 'home';
 
@@ -30,10 +28,7 @@ export function BottomNav() {
           return (
             <button
               key={scene}
-              onClick={() => {
-                play('click');
-                navigate(scene);
-              }}
+              onClick={() => navigate(scene)}
               className="flex flex-col items-center gap-0.5 px-8 py-1 transition-colors cursor-pointer"
               style={{
                 color: isActive ? 'var(--foreground)' : 'var(--muted)',
