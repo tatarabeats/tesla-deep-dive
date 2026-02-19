@@ -1,27 +1,10 @@
 import type { UserProfile } from '../types/user';
-import type { ModuleId } from '../types/quiz';
 import { STORAGE_KEYS } from './constants';
 import { xpForLevel } from '../engine/progressionEngine';
 
-const DEFAULT_MODULE_STAT = {
-  questionsAnswered: 0,
-  correctAnswers: 0,
-  bestScore: 0,
-  timesPlayed: 0,
-};
-
 export function createDefaultProfile(): UserProfile {
-  const allModules: ModuleId[] = [
-    'sec_filing', 'earnings_call', 'worst_case', 'competitor', 'segment',
-  ];
-
-  const moduleStats = {} as Record<ModuleId, typeof DEFAULT_MODULE_STAT>;
-  for (const mod of allModules) {
-    moduleStats[mod] = { ...DEFAULT_MODULE_STAT };
-  }
-
   return {
-    name: 'Investor',
+    name: 'Explorer',
     createdAt: Date.now(),
     totalXP: 0,
     level: 1,
@@ -30,16 +13,13 @@ export function createDefaultProfile(): UserProfile {
     currentStreak: 0,
     longestStreak: 0,
     lastPlayedDate: '',
-    totalQuestionsAnswered: 0,
-    totalCorrect: 0,
-    totalRoundsPlayed: 0,
-    bestRoundScore: 0,
-    bestCombo: 0,
-    moduleStats,
+    exploredNodeIds: [],
+    bookmarkedNodeIds: [],
+    totalNodesExplored: 0,
+    deepestDepthReached: 0,
+    understandingScore: 0,
+    nodeMemory: {},
     soundEnabled: true,
-    questionHistory: {},
-    convictionScore: 0,
-    analyses: [],
   };
 }
 
@@ -47,21 +27,7 @@ export function loadUserProgress(): UserProfile {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.USER_PROGRESS);
     if (raw) {
-      const profile = JSON.parse(raw) as UserProfile;
-      const allModules: ModuleId[] = [
-        'sec_filing', 'earnings_call', 'worst_case', 'competitor', 'segment',
-      ];
-      let needsMigration = false;
-      for (const mod of allModules) {
-        if (!profile.moduleStats[mod]) {
-          profile.moduleStats[mod] = { ...DEFAULT_MODULE_STAT };
-          needsMigration = true;
-        }
-      }
-      if (needsMigration) {
-        saveUserProgress(profile);
-      }
-      return profile;
+      return JSON.parse(raw) as UserProfile;
     }
   } catch {
     // corrupted data, reset

@@ -1,8 +1,7 @@
 import { GameProvider, useGame } from './store/gameContext';
 import { GameShell } from './components/layout/GameShell';
 import { HomeScreen } from './components/screens/HomeScreen';
-import { QuizRoundScreen } from './components/screens/QuizRoundScreen';
-import { RoundResultScreen } from './components/screens/RoundResultScreen';
+import TreeExploreScreen from './components/screens/TreeExploreScreen';
 import { ProfileScreen } from './components/screens/ProfileScreen';
 
 function GameRouter() {
@@ -11,8 +10,7 @@ function GameRouter() {
   return (
     <GameShell>
       {gameState.scene === 'home' && <HomeScreen />}
-      {gameState.scene === 'round_active' && <QuizRoundScreen />}
-      {gameState.scene === 'round_result' && <RoundResultScreen />}
+      {gameState.scene === 'explore' && <TreeExploreScreen />}
       {gameState.scene === 'profile' && <ProfileScreen />}
     </GameShell>
   );

@@ -1,12 +1,12 @@
 {
-  "name": "テスラ投資RPG",
-  "short_name": "TeslaRPG",
-  "description": "テスラを深く理解するための投資RPG学習アプリ",
+  "name": "Vision Tree — イーロンの世界観",
+  "short_name": "VisionTree",
+  "description": "イーロン・マスクのビジョンを探索するアプリ",
   "start_url": "/tesla-deep-dive/",
   "scope": "/tesla-deep-dive/",
   "display": "standalone",
-  "background_color": "#0f0f1a",
-  "theme_color": "#0f0f1a",
+  "background_color": "#111111",
+  "theme_color": "#111111",
   "orientation": "portrait",
   "icons": [
     {

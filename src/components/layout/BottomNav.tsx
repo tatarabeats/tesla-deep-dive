@@ -3,7 +3,7 @@ import { useSound } from '../../hooks/useSound';
 import type { GameScene } from '../../types/game';
 
 const navItems: { scene: GameScene; label: string; icon: string }[] = [
-  { scene: 'home', label: 'ホーム', icon: '⚡' },
+  { scene: 'home', label: 'ホーム', icon: '🌳' },
   { scene: 'profile', label: 'MY', icon: '👤' },
 ];
 
@@ -11,7 +11,8 @@ export function BottomNav() {
   const { gameState, navigate } = useGame();
   const { play } = useSound();
 
-  if (gameState.scene === 'round_active') return null;
+  // Hide during explore
+  if (gameState.scene === 'explore') return null;
 
   const activeTab = gameState.scene === 'profile' ? 'profile' : 'home';
 

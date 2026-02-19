@@ -35,20 +35,18 @@ function playTone(
 }
 
 const sounds = {
-  correct: () => {
-    playTone(880, 0.12, 'sine', 0.25);
-    setTimeout(() => playTone(1108.73, 0.12, 'sine', 0.25), 80);
-    setTimeout(() => playTone(1318.51, 0.25, 'sine', 0.3), 160);
+  click: () => {
+    playTone(800, 0.05, 'sine', 0.1);
   },
-  wrong: () => {
-    playTone(330, 0.15, 'square', 0.12);
-    setTimeout(() => playTone(262, 0.25, 'square', 0.1), 120);
+  explore: () => {
+    playTone(523.25, 0.1, 'sine', 0.2);
+    setTimeout(() => playTone(659.25, 0.1, 'sine', 0.2), 80);
+    setTimeout(() => playTone(783.99, 0.15, 'sine', 0.25), 160);
   },
-  combo: () => {
-    const notes = [523.25, 659.25, 783.99, 1046.5];
-    notes.forEach((freq, i) => {
-      setTimeout(() => playTone(freq, 0.15, 'sine', 0.2), i * 50);
-    });
+  deeper: () => {
+    playTone(440, 0.08, 'sine', 0.15);
+    setTimeout(() => playTone(349.23, 0.1, 'sine', 0.15), 60);
+    setTimeout(() => playTone(293.66, 0.15, 'sine', 0.2), 120);
   },
   levelUp: () => {
     const melody = [523.25, 659.25, 783.99, 1046.5, 1318.51];
@@ -59,19 +57,7 @@ const sounds = {
       }, i * 100);
     });
   },
-  click: () => {
-    playTone(800, 0.05, 'sine', 0.1);
-  },
-  select: () => {
-    playTone(600, 0.08, 'sine', 0.15);
-    setTimeout(() => playTone(900, 0.06, 'sine', 0.1), 40);
-  },
-  roundStart: () => {
-    playTone(440, 0.1, 'sine', 0.2);
-    setTimeout(() => playTone(554.37, 0.1, 'sine', 0.2), 100);
-    setTimeout(() => playTone(659.25, 0.15, 'sine', 0.25), 200);
-  },
-  roundComplete: () => {
+  branchComplete: () => {
     const notes = [523.25, 587.33, 659.25, 783.99, 1046.5];
     notes.forEach((freq, i) => {
       setTimeout(() => {
@@ -81,6 +67,10 @@ const sounds = {
         }
       }, i * 120);
     });
+  },
+  bookmark: () => {
+    playTone(1046.5, 0.08, 'sine', 0.15);
+    setTimeout(() => playTone(1318.51, 0.1, 'sine', 0.2), 60);
   },
 };
 

@@ -381,3 +381,153 @@
 .bottom-nav-spacer {
   height: 80px;
 }
+
+/* ===== Vision Tree — Node Card ===== */
+.node-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 18px;
+  border-left-width: 3px;
+}
+
+/* ===== Breadcrumb Trail ===== */
+.breadcrumb-trail {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 0;
+}
+.breadcrumb-trail::-webkit-scrollbar {
+  display: none;
+}
+
+.breadcrumb-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.breadcrumb-pill:hover:not(:disabled) {
+  color: var(--foreground);
+  border-color: var(--muted);
+}
+.breadcrumb-pill-active {
+  color: var(--foreground);
+  background: var(--card-bg);
+  border-color: var(--muted);
+  cursor: default;
+}
+
+/* ===== Why Button ===== */
+.why-button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--tesla-red);
+  color: white;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--tesla-red-dark);
+  transition: all 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.why-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--tesla-red-dark);
+}
+
+/* ===== Child Card ===== */
+.child-card {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.child-card:hover {
+  border-color: var(--muted);
+  background: #1e1e1e;
+}
+.child-card-explored {
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+/* ===== Branch Card ===== */
+.branch-card {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.branch-card:hover {
+  border-color: var(--muted);
+  background: #1e1e1e;
+}
+.branch-card-complete {
+  border-color: var(--gold);
+}
+
+/* ===== Quote Block ===== */
+.quote-block {
+  border-left: 3px solid var(--gold);
+  padding: 10px 14px;
+  background: rgba(212, 160, 23, 0.05);
+  border-radius: 0 8px 8px 0;
+}
+
+/* ===== First Principle Box ===== */
+.first-principle-box {
+  padding: 12px 14px;
+  background: rgba(212, 160, 23, 0.08);
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  border-radius: 10px;
+}
+
+/* ===== Data Point ===== */
+.data-point {
+  padding: 8px 12px;
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+}
+
+/* ===== Analogy Box ===== */
+.analogy-box {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px dashed var(--card-border);
+}
+
+/* ===== Breathe Glow ===== */
+@keyframes breathe-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(212, 160, 23, 0.15); }
+  50% { box-shadow: 0 0 20px rgba(212, 160, 23, 0.35); }
+}
+.animate-breathe {
+  animation: breathe-glow 3s ease-in-out infinite;
+}

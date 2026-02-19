@@ -12,18 +12,18 @@ export function TopBar() {
       }}
     >
       <div className="max-w-lg mx-auto flex items-center justify-between">
-        {/* App title */}
         <div className="flex items-center gap-1.5">
-          <span className="text-lg">⚡</span>
-          <span className="gold-text text-sm font-bold">テスラ投資RPG</span>
+          <span className="text-lg">🌌</span>
+          <span className="text-sm font-bold text-[var(--foreground)]">Vision Tree</span>
         </div>
 
-        {/* Minimal stats */}
         <div className="flex items-center gap-3">
-          <span className="text-xs font-bold" style={{ color: 'var(--muted)' }}>
-            🔥 {userProfile.currentStreak}
-          </span>
-          <span className="text-xs font-bold" style={{ color: 'var(--gold)' }}>
+          {userProfile.currentStreak > 0 && (
+            <span className="text-xs font-bold text-[var(--muted)]">
+              🔥 {userProfile.currentStreak}
+            </span>
+          )}
+          <span className="text-xs font-bold text-[var(--gold)]">
             💎 {userProfile.totalXP.toLocaleString()}
           </span>
           <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"

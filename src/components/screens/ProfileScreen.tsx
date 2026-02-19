@@ -1,13 +1,10 @@
 import { motion } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
 import { getLevelTitle } from '../../engine/progressionEngine';
+import { visionTreeData, getBranchIds } from '../../data/visionTree';
 
 export function ProfileScreen() {
-  const { userProfile, updateProfile } = useGame();
-
-  const accuracy = userProfile.totalQuestionsAnswered > 0
-    ? Math.round((userProfile.totalCorrect / userProfile.totalQuestionsAnswered) * 100)
-    : 0;
+  const { userProfile, updateProfile, branchProgressMap, overallProgress, exploreNode } = useGame();
 
   const xpPercent = userProfile.xpToNextLevel > 0
     ? Math.min(100, (userProfile.currentLevelXP / userProfile.xpToNextLevel) * 100)
@@ -21,9 +18,8 @@ export function ProfileScreen() {
           <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl"
             style={{ backgroundColor: 'var(--surface)', border: '2px solid var(--card-border)' }}
           >
-            🧠
+            🌌
           </div>
-          {/* Level badge */}
           <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
             style={{ backgroundColor: 'var(--tesla-red)', color: 'white', border: '2px solid var(--background)' }}
           >
@@ -33,7 +29,6 @@ export function ProfileScreen() {
         <div className="gold-text text-xl font-bold mb-1">{getLevelTitle(userProfile.level)}</div>
         <div className="text-xs" style={{ color: 'var(--muted)' }}>Lv.{userProfile.level}</div>
 
-        {/* EXP Bar */}
         <div className="mt-4">
           <div className="exp-bar">
             <motion.div
@@ -53,11 +48,11 @@ export function ProfileScreen() {
       <div className="grid grid-cols-2 gap-3">
         {[
           { label: '合計XP', value: userProfile.totalXP.toLocaleString(), icon: '💎', color: 'var(--gold)' },
-          { label: '確信度', value: String(userProfile.convictionScore), icon: '🎯', color: 'var(--tesla-red)' },
-          { label: '正答率', value: `${accuracy}%`, icon: '📊', color: 'var(--accent-blue)' },
+          { label: '理解度', value: `${overallProgress}%`, icon: '🧠', color: 'var(--tesla-red)' },
+          { label: '探索ノード', value: String(userProfile.totalNodesExplored), icon: '🌿', color: 'var(--accent-green)' },
           { label: '連続日数', value: String(userProfile.currentStreak), icon: '🔥', color: 'var(--accent-orange)' },
-          { label: 'ラウンド数', value: String(userProfile.totalRoundsPlayed), icon: '⚔️', color: 'var(--accent-green)' },
-          { label: '最大コンボ', value: `${userProfile.bestCombo}x`, icon: '💥', color: 'var(--accent-purple)' },
+          { label: '最深到達', value: `Depth ${userProfile.deepestDepthReached}`, icon: '⛏️', color: 'var(--accent-blue)' },
+          { label: '最長連続', value: `${userProfile.longestStreak}日`, icon: '🏆', color: 'var(--gold)' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -74,37 +69,56 @@ export function ProfileScreen() {
         ))}
       </div>
 
-      {/* Module Stats */}
+      {/* Branch Progress */}
       <div className="rpg-card">
-        <h2 className="text-sm font-bold mb-3" style={{ color: 'var(--gold)' }}>モジュール別実績</h2>
-        {Object.entries(userProfile.moduleStats).map(([id, stat]) => {
-          const modAccuracy = stat.questionsAnswered > 0
-            ? Math.round((stat.correctAnswers / stat.questionsAnswered) * 100)
+        <h2 className="text-sm font-bold mb-3" style={{ color: 'var(--gold)' }}>ブランチ別進捗</h2>
+        {getBranchIds().map(branchId => {
+          const node = visionTreeData[branchId];
+          const progress = branchProgressMap[branchId];
+          if (!node || !progress) return null;
+          const pct = progress.totalNodes > 0
+            ? Math.round((progress.exploredNodes / progress.totalNodes) * 100)
             : 0;
-          const modNames: Record<string, string> = {
-            sec_filing: '📄 SEC Filing',
-            earnings_call: '🎙️ 決算説明会',
-            worst_case: '🔥 最悪シナリオ',
-            competitor: '📊 競合比較',
-            segment: '📈 セグメント',
-          };
           return (
-            <div key={id} className="flex items-center justify-between py-2"
-              style={{ borderBottom: '1px solid rgba(42,42,74,0.5)' }}
+            <div key={branchId} className="flex items-center justify-between py-2"
+              style={{ borderBottom: '1px solid var(--card-border)' }}
             >
-              <span className="text-xs font-bold" style={{ color: 'var(--foreground)' }}>
-                {modNames[id] || id}
+              <span className="text-xs font-bold text-[var(--foreground)]">
+                {node.icon} {node.subtitle || node.title}
               </span>
-              <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--muted)' }}>
-                <span>{stat.timesPlayed}回</span>
-                <span style={{ color: modAccuracy >= 80 ? 'var(--accent-green)' : 'var(--muted)' }}>
-                  {modAccuracy}%
+              <div className="flex items-center gap-3 text-xs text-[var(--muted)]">
+                <span>{progress.exploredNodes}/{progress.totalNodes}</span>
+                <span style={{ color: progress.fullyExplored ? 'var(--accent-green)' : 'var(--muted)' }}>
+                  {pct}%
                 </span>
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* Bookmarks */}
+      {userProfile.bookmarkedNodeIds.length > 0 && (
+        <div className="rpg-card">
+          <h2 className="text-sm font-bold mb-3" style={{ color: 'var(--gold)' }}>⭐ ブックマーク</h2>
+          {userProfile.bookmarkedNodeIds.map(nodeId => {
+            const node = visionTreeData[nodeId];
+            if (!node) return null;
+            return (
+              <button
+                key={nodeId}
+                onClick={() => exploreNode(nodeId)}
+                className="w-full flex items-center gap-2 py-2 text-left"
+                style={{ borderBottom: '1px solid var(--card-border)' }}
+              >
+                <span>{node.icon}</span>
+                <span className="text-xs text-[var(--foreground)] truncate">{node.title}</span>
+                <span className="text-xs text-[var(--muted)] ml-auto">→</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Sound Toggle */}
       <button

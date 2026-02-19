@@ -1,13 +1,7 @@
 import type { UserProfile } from '../types/user';
 
-const SCORE_TO_XP_RATIO = 0.5;
-
 export function xpForLevel(level: number): number {
   return Math.round(150 * level * (1 + level * 0.05));
-}
-
-export function scoreToXP(score: number): number {
-  return Math.round(score * SCORE_TO_XP_RATIO);
 }
 
 export interface ProgressionResult {
@@ -69,19 +63,20 @@ export function updateDailyStreak(profile: UserProfile): {
   return { newStreak, newLongestStreak };
 }
 
-export function calculateConvictionGain(accuracy: number, questionsAnswered: number): number {
-  if (questionsAnswered === 0) return 0;
-  const base = accuracy >= 80 ? 5 : accuracy >= 60 ? 3 : 1;
-  return base;
+export function calculateUnderstandingScore(
+  exploredCount: number,
+  totalNodes: number
+): number {
+  if (totalNodes === 0) return 0;
+  return Math.round((exploredCount / totalNodes) * 100);
 }
 
-// Tesla-themed level titles
 export function getLevelTitle(level: number): string {
-  if (level >= 20) return '確信の投資家';
-  if (level >= 13) return 'テスラマスター';
-  if (level >= 9) return '能力の輪構築中';
-  if (level >= 6) return 'テスラ分析官';
-  if (level >= 4) return 'SEC Filing探索者';
-  if (level >= 2) return '決算読み見習い';
-  return 'テスラ初心者';
+  if (level >= 20) return 'ビジョナリー';
+  if (level >= 15) return 'First Principles思考者';
+  if (level >= 11) return '深層理解者';
+  if (level >= 8) return 'WHYの探究者';
+  if (level >= 5) return '枝を辿る者';
+  if (level >= 3) return 'ビジョンの芽';
+  return '探索者見習い';
 }

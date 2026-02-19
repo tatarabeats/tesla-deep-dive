@@ -1,90 +1,17 @@
-import { createContext, useContext, useReducer, useCallback, useEffect, type ReactNode } from 'react';
-import type { GameState, GameAction, RoundResult } from '../types/game';
+import { createContext, useContext, useReducer, useCallback, useEffect, useMemo, type ReactNode } from 'react';
+import type { GameState, GameAction, GameScene } from '../types/game';
 import type { UserProfile } from '../types/user';
-import type { ModuleId } from '../types/quiz';
+import type { ExplorationState, BranchProgress, BranchId } from '../types/visionTree';
 import { loadUserProgress, saveUserProgress } from '../utils/storage';
-import { selectQuestionsForRound } from '../engine/questionSelector';
-import { calculateScore } from '../engine/scoringEngine';
-import { applyXP, scoreToXP, updateDailyStreak, calculateConvictionGain } from '../engine/progressionEngine';
-import { updateQuestionMemory } from '../engine/spacedRepetition';
-import { allQuestions } from '../data/questions';
-import { QUESTIONS_PER_ROUND } from '../utils/constants';
+import { applyXP, updateDailyStreak, calculateUnderstandingScore } from '../engine/progressionEngine';
+import { updateNodeMemory } from '../engine/spacedRepetition';
+import { totalNodeCount, getNode, getNodesInBranch, getBranchIds } from '../data/visionTree';
+import { XP_PER_NEW_NODE, XP_DEPTH_BONUS } from '../utils/constants';
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case 'NAVIGATE':
-      return { ...state, scene: action.payload, round: null };
-
-    case 'START_ROUND': {
-      const { questions, moduleId } = action.payload;
-      return {
-        ...state,
-        scene: 'round_active',
-        round: {
-          moduleId,
-          questions,
-          currentQuestionIndex: 0,
-          answers: [],
-          currentScore: 0,
-          currentCombo: 0,
-          maxCombo: 0,
-          questionsPerRound: questions.length,
-          answerState: 'waiting',
-        },
-        lastResult: null,
-      };
-    }
-
-    case 'SUBMIT_ANSWER': {
-      if (!state.round || state.round.answerState !== 'waiting') return state;
-      const { isCorrect, points } = action.payload;
-      const newCombo = isCorrect ? state.round.currentCombo + 1 : 0;
-
-      return {
-        ...state,
-        round: {
-          ...state.round,
-          answers: [
-            ...state.round.answers,
-            {
-              questionId: state.round.questions[state.round.currentQuestionIndex].id,
-              isCorrect,
-              pointsEarned: points,
-              comboAtTime: newCombo,
-            },
-          ],
-          currentScore: state.round.currentScore + points,
-          currentCombo: newCombo,
-          maxCombo: Math.max(state.round.maxCombo, newCombo),
-          answerState: isCorrect ? 'answered_correct' : 'answered_wrong',
-        },
-      };
-    }
-
-    case 'NEXT_QUESTION': {
-      if (!state.round) return state;
-      const nextIndex = state.round.currentQuestionIndex + 1;
-      if (nextIndex >= state.round.questions.length) {
-        return state;
-      }
-      return {
-        ...state,
-        round: {
-          ...state.round,
-          currentQuestionIndex: nextIndex,
-          answerState: 'waiting',
-        },
-      };
-    }
-
-    case 'FINISH_ROUND':
-      return {
-        ...state,
-        scene: 'round_result',
-        round: null,
-        lastResult: action.payload,
-      };
-
+      return { ...state, scene: action.payload };
     default:
       return state;
   }
@@ -92,19 +19,19 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
 const initialGameState: GameState = {
   scene: 'home',
-  round: null,
-  lastResult: null,
 };
 
 interface GameContextType {
   gameState: GameState;
   userProfile: UserProfile;
-  dispatch: React.Dispatch<GameAction>;
-  startRound: (moduleId: ModuleId, isDailyChallenge?: boolean) => void;
-  submitAnswer: (selectedIndex: number | boolean) => void;
-  nextQuestion: () => void;
-  finishRound: () => void;
-  navigate: (scene: GameState['scene']) => void;
+  exploration: ExplorationState;
+  branchProgressMap: Record<BranchId, BranchProgress>;
+  overallProgress: number;
+  navigate: (scene: GameScene) => void;
+  exploreNode: (nodeId: string) => void;
+  goBack: () => void;
+  goToRoot: () => void;
+  toggleBookmark: (nodeId: string) => void;
   updateProfile: (updater: (prev: UserProfile) => UserProfile) => void;
 }
 
@@ -118,11 +45,21 @@ export function GameProvider({ children }: { children: ReactNode }) {
     () => loadUserProgress()
   );
 
+  const [exploration, setExploration] = useReducer(
+    (_prev: ExplorationState, next: ExplorationState) => next,
+    {
+      currentNodeId: 'root',
+      exploredNodes: new Set<string>(loadUserProgress().exploredNodeIds),
+      bookmarkedNodes: loadUserProgress().bookmarkedNodeIds,
+      pathHistory: [],
+    } as ExplorationState,
+  );
+
   useEffect(() => {
     saveUserProgress(userProfile);
   }, [userProfile]);
 
-  const navigate = useCallback((scene: GameState['scene']) => {
+  const navigate = useCallback((scene: GameScene) => {
     dispatch({ type: 'NAVIGATE', payload: scene });
   }, []);
 
@@ -130,139 +67,143 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setUserProfile(updater(userProfile));
   }, [userProfile]);
 
-  const startRound = useCallback((moduleId: ModuleId, isDailyChallenge = false) => {
-    const count = QUESTIONS_PER_ROUND;
-    const questions = selectQuestionsForRound(
-      allQuestions,
-      isDailyChallenge ? 'daily' : moduleId,
-      userProfile.questionHistory,
-      count
-    );
+  const exploreNode = useCallback((nodeId: string) => {
+    const node = getNode(nodeId);
+    if (!node) return;
 
-    if (questions.length === 0) return;
+    const isFirstVisit = !exploration.exploredNodes.has(nodeId);
+    const newExplored = new Set(exploration.exploredNodes);
+    newExplored.add(nodeId);
 
-    dispatch({
-      type: 'START_ROUND',
-      payload: { moduleId, questions },
+    setExploration({
+      ...exploration,
+      currentNodeId: nodeId,
+      exploredNodes: newExplored,
+      pathHistory: [...exploration.pathHistory, exploration.currentNodeId],
     });
-  }, [userProfile]);
 
-  const submitAnswer = useCallback((selected: number | boolean) => {
-    if (!gameState.round || gameState.round.answerState !== 'waiting') return;
+    if (isFirstVisit) {
+      const xpEarned = XP_PER_NEW_NODE + (node.depth * XP_DEPTH_BONUS);
+      const progression = applyXP(userProfile, xpEarned);
+      const streak = updateDailyStreak(userProfile);
+      const today = new Date().toISOString().slice(0, 10);
+      const newExploredIds = [...userProfile.exploredNodeIds, nodeId];
 
-    const question = gameState.round.questions[gameState.round.currentQuestionIndex];
+      const newMemory = { ...userProfile.nodeMemory };
+      newMemory[nodeId] = updateNodeMemory(newMemory[nodeId], nodeId);
 
-    let isCorrect = false;
-    if (question.type === 'true_false') {
-      isCorrect = selected === question.correctAnswer;
+      setUserProfile({
+        ...userProfile,
+        totalXP: progression.newTotalXP,
+        level: progression.newLevel,
+        currentLevelXP: progression.newCurrentLevelXP,
+        xpToNextLevel: progression.newXpToNextLevel,
+        currentStreak: streak.newStreak,
+        longestStreak: streak.newLongestStreak,
+        lastPlayedDate: today,
+        exploredNodeIds: newExploredIds,
+        totalNodesExplored: newExploredIds.length,
+        deepestDepthReached: Math.max(userProfile.deepestDepthReached, node.depth),
+        understandingScore: calculateUnderstandingScore(newExploredIds.length, totalNodeCount),
+        nodeMemory: newMemory,
+      });
+
+      // Trigger XP toast
+      if (typeof window !== 'undefined' && (window as any).__triggerExpGain) {
+        (window as any).__triggerExpGain(xpEarned);
+      }
+      // Trigger level up
+      if (progression.leveledUp && typeof window !== 'undefined' && (window as any).__triggerLevelUp) {
+        (window as any).__triggerLevelUp(progression.newLevel);
+      }
     } else {
-      isCorrect = selected === question.correctIndex;
+      // Revisit: update memory
+      const newMemory = { ...userProfile.nodeMemory };
+      newMemory[nodeId] = updateNodeMemory(newMemory[nodeId], nodeId);
+      setUserProfile({ ...userProfile, nodeMemory: newMemory });
     }
 
-    const scoreResult = calculateScore({
-      isCorrect,
-      difficulty: question.difficulty,
-      currentCombo: gameState.round.currentCombo,
-    });
-
-    dispatch({
-      type: 'SUBMIT_ANSWER',
-      payload: {
-        isCorrect,
-        points: scoreResult.totalPoints,
-      },
-    });
-
-    const newHistory = { ...userProfile.questionHistory };
-    newHistory[question.id] = updateQuestionMemory(
-      newHistory[question.id],
-      question.id,
-      isCorrect
-    );
-    setUserProfile({ ...userProfile, questionHistory: newHistory });
-  }, [gameState.round, userProfile]);
-
-  const nextQuestion = useCallback(() => {
-    if (!gameState.round) return;
-
-    if (gameState.round.currentQuestionIndex >= gameState.round.questions.length - 1) {
-      finishRound();
-    } else {
-      dispatch({ type: 'NEXT_QUESTION' });
+    // Navigate to explore screen if not already there
+    if (gameState.scene !== 'explore') {
+      dispatch({ type: 'NAVIGATE', payload: 'explore' });
     }
-  }, [gameState.round]);
+  }, [exploration, userProfile, gameState.scene]);
 
-  const finishRound = useCallback(() => {
-    if (!gameState.round) return;
+  const goBack = useCallback(() => {
+    if (exploration.pathHistory.length === 0) {
+      dispatch({ type: 'NAVIGATE', payload: 'home' });
+      return;
+    }
+    const newHistory = [...exploration.pathHistory];
+    const previousNodeId = newHistory.pop()!;
+    setExploration({
+      ...exploration,
+      currentNodeId: previousNodeId,
+      pathHistory: newHistory,
+    });
+  }, [exploration]);
 
-    const round = gameState.round;
-    const correctAnswers = round.answers.filter(a => a.isCorrect).length;
-    const totalScore = round.currentScore;
-    const xpEarned = scoreToXP(totalScore);
-    const accuracy = round.answers.length > 0
-      ? Math.round((correctAnswers / round.answers.length) * 100)
-      : 0;
-    const convictionGain = calculateConvictionGain(accuracy, round.answers.length);
+  const goToRoot = useCallback(() => {
+    setExploration({
+      ...exploration,
+      currentNodeId: 'root',
+      pathHistory: [],
+    });
+    dispatch({ type: 'NAVIGATE', payload: 'home' });
+  }, [exploration]);
 
-    const progression = applyXP(userProfile, xpEarned);
-    const streak = updateDailyStreak(userProfile);
-    const today = new Date().toISOString().slice(0, 10);
+  const toggleBookmark = useCallback((nodeId: string) => {
+    const isBookmarked = exploration.bookmarkedNodes.includes(nodeId);
+    const newBookmarks = isBookmarked
+      ? exploration.bookmarkedNodes.filter(id => id !== nodeId)
+      : [...exploration.bookmarkedNodes, nodeId];
 
-    const modStats = { ...userProfile.moduleStats };
-    const mod = modStats[round.moduleId];
-    modStats[round.moduleId] = {
-      questionsAnswered: mod.questionsAnswered + round.answers.length,
-      correctAnswers: mod.correctAnswers + correctAnswers,
-      bestScore: Math.max(mod.bestScore, totalScore),
-      timesPlayed: mod.timesPlayed + 1,
-    };
-
-    const result: RoundResult = {
-      moduleId: round.moduleId,
-      totalScore,
-      questionsAnswered: round.answers.length,
-      correctAnswers,
-      accuracy,
-      maxCombo: round.maxCombo,
-      xpEarned,
-      leveledUp: progression.leveledUp,
-      newLevel: progression.leveledUp ? progression.newLevel : null,
-      answers: round.answers,
-      convictionGain,
-    };
-
+    setExploration({
+      ...exploration,
+      bookmarkedNodes: newBookmarks,
+    });
     setUserProfile({
       ...userProfile,
-      totalXP: progression.newTotalXP,
-      level: progression.newLevel,
-      currentLevelXP: progression.newCurrentLevelXP,
-      xpToNextLevel: progression.newXpToNextLevel,
-      currentStreak: streak.newStreak,
-      longestStreak: streak.newLongestStreak,
-      lastPlayedDate: today,
-      totalQuestionsAnswered: userProfile.totalQuestionsAnswered + round.answers.length,
-      totalCorrect: userProfile.totalCorrect + correctAnswers,
-      totalRoundsPlayed: userProfile.totalRoundsPlayed + 1,
-      bestRoundScore: Math.max(userProfile.bestRoundScore, totalScore),
-      bestCombo: Math.max(userProfile.bestCombo, round.maxCombo),
-      moduleStats: modStats,
-      convictionScore: Math.min(100, userProfile.convictionScore + convictionGain),
+      bookmarkedNodeIds: newBookmarks,
     });
+  }, [exploration, userProfile]);
 
-    dispatch({ type: 'FINISH_ROUND', payload: result });
-  }, [gameState.round, userProfile]);
+  const branchProgressMap = useMemo(() => {
+    const map = {} as Record<BranchId, BranchProgress>;
+    for (const branchId of getBranchIds()) {
+      const branchNodes = getNodesInBranch(branchId);
+      const exploredInBranch = branchNodes.filter(n => exploration.exploredNodes.has(n.id));
+      const maxDepth = exploredInBranch.reduce((max, n) => Math.max(max, n.depth), 0);
+      map[branchId] = {
+        totalNodes: branchNodes.length,
+        exploredNodes: exploredInBranch.length,
+        deepestDepth: maxDepth,
+        fullyExplored: exploredInBranch.length === branchNodes.length,
+      };
+    }
+    return map;
+  }, [exploration.exploredNodes]);
+
+  const overallProgress = useMemo(() => {
+    // Exclude root node from count
+    const explorable = totalNodeCount - 1;
+    const explored = Math.max(0, exploration.exploredNodes.size - (exploration.exploredNodes.has('root') ? 1 : 0));
+    return explorable > 0 ? Math.round((explored / explorable) * 100) : 0;
+  }, [exploration.exploredNodes]);
 
   return (
     <GameContext.Provider
       value={{
         gameState,
         userProfile,
-        dispatch,
-        startRound,
-        submitAnswer,
-        nextQuestion,
-        finishRound,
+        exploration,
+        branchProgressMap,
+        overallProgress,
         navigate,
+        exploreNode,
+        goBack,
+        goToRoot,
+        toggleBookmark,
         updateProfile,
       }}
     >
