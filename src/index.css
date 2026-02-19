@@ -531,3 +531,57 @@
 .animate-breathe {
   animation: breathe-glow 3s ease-in-out infinite;
 }
+
+/* ===== Outliner Tree ===== */
+.outliner-tree {
+  font-size: 14px;
+}
+
+.outliner-indent {
+  padding-left: 20px;
+}
+
+.outliner-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  border-left: 3px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  text-align: left;
+  color: var(--foreground);
+}
+
+.outliner-row:hover {
+  background: var(--surface);
+}
+
+.outliner-row-expanded {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.outliner-row-root {
+  padding: 14px 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.outliner-toggle {
+  width: 16px;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.outliner-content {
+  margin-left: 20px;
+  padding: 8px 14px 14px;
+  border-left: 2px solid var(--card-border);
+}

@@ -37,10 +37,9 @@ export interface NodeDataPoint {
 }
 
 export interface ExplorationState {
-  currentNodeId: string;
+  expandedNodes: Set<string>;
   exploredNodes: Set<string>;
   bookmarkedNodes: string[];
-  pathHistory: string[];
 }
 
 export interface BranchProgress {

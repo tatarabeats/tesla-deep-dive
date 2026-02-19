@@ -1,16 +1,95 @@
-import { motion } from 'framer-motion';
+import { useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
 import { useSound } from '../../hooks/useSound';
 import { getLevelTitle } from '../../engine/progressionEngine';
-import { visionTreeData } from '../../data/visionTree';
-import BranchOverview from '../tree/BranchOverview';
-import type { BranchId } from '../../types/visionTree';
+import { visionTreeData, getChildren } from '../../data/visionTree';
+import NodeContent from '../tree/NodeContent';
+import type { VisionNode } from '../../types/visionTree';
 
-const BRANCH_IDS: BranchId[] = ['spacex', 'tesla', 'neuralink', 'xai', 'optimus', 'x_platform', 'boring'];
+function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
+  const { exploration, toggleNode } = useGame();
+  const { play } = useSound();
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const isExpanded = exploration.expandedNodes.has(node.id);
+  const isExplored = exploration.exploredNodes.has(node.id);
+  const children = getChildren(node.id);
+  const hasChildren = children.length > 0;
+  const isRoot = node.id === 'root';
+
+  // Scroll into view when expanded
+  useEffect(() => {
+    if (isExpanded && contentRef.current && !isRoot) {
+      setTimeout(() => {
+        contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 150);
+    }
+  }, [isExpanded, isRoot]);
+
+  return (
+    <div className={depth > 0 ? 'outliner-indent' : ''}>
+      {/* Node row */}
+      <button
+        onClick={() => {
+          play(isExpanded ? 'click' : 'explore');
+          toggleNode(node.id);
+        }}
+        className={`outliner-row ${isExpanded ? 'outliner-row-expanded' : ''} ${isRoot ? 'outliner-row-root' : ''}`}
+        style={{
+          borderLeftColor: depth > 0 ? `var(${node.color})` : 'transparent',
+        }}
+      >
+        {/* Toggle indicator */}
+        <span className={`outliner-toggle ${!hasChildren ? 'invisible' : ''}`}>
+          {isExpanded ? '▼' : '▶'}
+        </span>
+
+        {/* Icon */}
+        <span className="text-lg shrink-0">{node.icon}</span>
+
+        {/* Title */}
+        <span className={`flex-1 text-left text-sm truncate ${isExplored ? 'text-[var(--foreground)]' : 'text-[var(--muted)]'}`}>
+          {node.title}
+        </span>
+
+        {/* Subtitle for depth-1 nodes */}
+        {node.subtitle && depth <= 1 && (
+          <span className="text-[10px] text-[var(--muted)] shrink-0">{node.subtitle}</span>
+        )}
+      </button>
+
+      {/* Expanded content + children */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            ref={contentRef}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            {/* Content (show for non-root expanded nodes) */}
+            {!isRoot && (
+              <div className="outliner-content" style={{ borderLeftColor: `var(${node.color})` }}>
+                <NodeContent content={node.content} color={node.color} />
+              </div>
+            )}
+
+            {/* Children */}
+            {children.map(child => (
+              <OutlinerNode key={child.id} node={child} depth={depth + 1} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export function HomeScreen() {
-  const { userProfile, exploreNode, branchProgressMap, overallProgress } = useGame();
-  const { play } = useSound();
+  const { userProfile, overallProgress } = useGame();
 
   const xpPercent = userProfile.xpToNextLevel > 0
     ? Math.min(100, (userProfile.currentLevelXP / userProfile.xpToNextLevel) * 100)
@@ -19,22 +98,17 @@ export function HomeScreen() {
   const rootNode = visionTreeData['root'];
 
   return (
-    <div className="space-y-5 pb-4">
-      {/* Level + Progress */}
-      <div className="flex items-center gap-4">
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="relative shrink-0"
-          style={{ width: 72, height: 72 }}
-        >
+    <div className="space-y-4 pb-4">
+      {/* Compact header */}
+      <div className="flex items-center gap-3">
+        <div className="relative shrink-0" style={{ width: 52, height: 52 }}>
           <svg viewBox="0 0 100 100" className="-rotate-90" style={{ width: '100%', height: '100%' }}>
-            <circle cx="50" cy="50" r="42" fill="none" stroke="var(--card-border)" strokeWidth="6" />
+            <circle cx="50" cy="50" r="42" fill="none" stroke="var(--card-border)" strokeWidth="7" />
             <motion.circle
               cx="50" cy="50" r="42"
               fill="none"
               stroke="var(--tesla-red)"
-              strokeWidth="6"
+              strokeWidth="7"
               strokeDasharray={`${xpPercent * 2.64} 264`}
               strokeLinecap="round"
               initial={false}
@@ -43,65 +117,23 @@ export function HomeScreen() {
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xl font-extrabold text-[var(--foreground)]">
+            <span className="text-base font-extrabold text-[var(--foreground)]">
               {userProfile.level}
             </span>
           </div>
-        </motion.div>
-        <div className="min-w-0">
-          <p className="text-sm font-bold text-[var(--foreground)]">{getLevelTitle(userProfile.level)}</p>
-          <p className="text-xs text-[var(--muted)]">
-            {userProfile.totalXP} XP
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-bold text-[var(--foreground)]">{getLevelTitle(userProfile.level)}</p>
+          <p className="text-[10px] text-[var(--muted)]">
+            {userProfile.totalXP} XP · 理解度 {overallProgress}%
             {userProfile.currentStreak > 0 && ` · ${userProfile.currentStreak}日連続`}
-          </p>
-          <p className="text-xs text-[var(--muted)] mt-0.5">
-            理解度 {overallProgress}%
           </p>
         </div>
       </div>
 
-      {/* Root node card */}
-      <motion.button
-        onClick={() => {
-          play('click');
-          exploreNode('root');
-        }}
-        className="w-full node-card animate-breathe text-left"
-        style={{ borderColor: 'var(--gold)' }}
-        whileTap={{ scale: 0.98 }}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-3xl">{rootNode.icon}</span>
-          <div>
-            <h2 className="text-base font-bold text-[var(--foreground)]">{rootNode.title}</h2>
-            <p className="text-xs text-[var(--muted)]">{rootNode.subtitle}</p>
-          </div>
-        </div>
-      </motion.button>
-
-      {/* Branches */}
-      <div>
-        <p className="text-xs text-[var(--muted)] mb-2 px-1">ブランチを探索する:</p>
-        <div className="space-y-2">
-          {BRANCH_IDS.map((branchId, i) => {
-            const branchNode = visionTreeData[branchId];
-            if (!branchNode) return null;
-            return (
-              <BranchOverview
-                key={branchId}
-                node={branchNode}
-                progress={branchProgressMap[branchId]}
-                onClick={() => {
-                  play('click');
-                  exploreNode(branchId);
-                }}
-                index={i}
-              />
-            );
-          })}
-        </div>
+      {/* Outliner tree */}
+      <div className="outliner-tree">
+        <OutlinerNode node={rootNode} depth={0} />
       </div>
     </div>
   );

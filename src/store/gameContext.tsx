@@ -28,9 +28,7 @@ interface GameContextType {
   branchProgressMap: Record<BranchId, BranchProgress>;
   overallProgress: number;
   navigate: (scene: GameScene) => void;
-  exploreNode: (nodeId: string) => void;
-  goBack: () => void;
-  goToRoot: () => void;
+  toggleNode: (nodeId: string) => void;
   toggleBookmark: (nodeId: string) => void;
   updateProfile: (updater: (prev: UserProfile) => UserProfile) => void;
 }
@@ -48,10 +46,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [exploration, setExploration] = useReducer(
     (_prev: ExplorationState, next: ExplorationState) => next,
     {
-      currentNodeId: 'root',
+      expandedNodes: new Set<string>(['root']),
       exploredNodes: new Set<string>(loadUserProgress().exploredNodeIds),
       bookmarkedNodes: loadUserProgress().bookmarkedNodeIds,
-      pathHistory: [],
     } as ExplorationState,
   );
 
@@ -67,9 +64,25 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setUserProfile(updater(userProfile));
   }, [userProfile]);
 
-  const exploreNode = useCallback((nodeId: string) => {
+  const toggleNode = useCallback((nodeId: string) => {
     const node = getNode(nodeId);
     if (!node) return;
+
+    const isExpanded = exploration.expandedNodes.has(nodeId);
+    const newExpanded = new Set(exploration.expandedNodes);
+
+    if (isExpanded) {
+      // Collapse: remove this node and all descendants
+      const removeDescendants = (id: string) => {
+        newExpanded.delete(id);
+        const n = getNode(id);
+        if (n) n.childrenIds.forEach(removeDescendants);
+      };
+      removeDescendants(nodeId);
+    } else {
+      // Expand
+      newExpanded.add(nodeId);
+    }
 
     const isFirstVisit = !exploration.exploredNodes.has(nodeId);
     const newExplored = new Set(exploration.exploredNodes);
@@ -77,9 +90,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
     setExploration({
       ...exploration,
-      currentNodeId: nodeId,
+      expandedNodes: newExpanded,
       exploredNodes: newExplored,
-      pathHistory: [...exploration.pathHistory, exploration.currentNodeId],
     });
 
     if (isFirstVisit) {
@@ -108,49 +120,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
         nodeMemory: newMemory,
       });
 
-      // Trigger XP toast
       if (typeof window !== 'undefined' && (window as any).__triggerExpGain) {
         (window as any).__triggerExpGain(xpEarned);
       }
-      // Trigger level up
       if (progression.leveledUp && typeof window !== 'undefined' && (window as any).__triggerLevelUp) {
         (window as any).__triggerLevelUp(progression.newLevel);
       }
-    } else {
-      // Revisit: update memory
+    } else if (!isExpanded) {
       const newMemory = { ...userProfile.nodeMemory };
       newMemory[nodeId] = updateNodeMemory(newMemory[nodeId], nodeId);
       setUserProfile({ ...userProfile, nodeMemory: newMemory });
     }
-
-    // Navigate to explore screen if not already there
-    if (gameState.scene !== 'explore') {
-      dispatch({ type: 'NAVIGATE', payload: 'explore' });
-    }
-  }, [exploration, userProfile, gameState.scene]);
-
-  const goBack = useCallback(() => {
-    if (exploration.pathHistory.length === 0) {
-      dispatch({ type: 'NAVIGATE', payload: 'home' });
-      return;
-    }
-    const newHistory = [...exploration.pathHistory];
-    const previousNodeId = newHistory.pop()!;
-    setExploration({
-      ...exploration,
-      currentNodeId: previousNodeId,
-      pathHistory: newHistory,
-    });
-  }, [exploration]);
-
-  const goToRoot = useCallback(() => {
-    setExploration({
-      ...exploration,
-      currentNodeId: 'root',
-      pathHistory: [],
-    });
-    dispatch({ type: 'NAVIGATE', payload: 'home' });
-  }, [exploration]);
+  }, [exploration, userProfile]);
 
   const toggleBookmark = useCallback((nodeId: string) => {
     const isBookmarked = exploration.bookmarkedNodes.includes(nodeId);
@@ -185,7 +166,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, [exploration.exploredNodes]);
 
   const overallProgress = useMemo(() => {
-    // Exclude root node from count
     const explorable = totalNodeCount - 1;
     const explored = Math.max(0, exploration.exploredNodes.size - (exploration.exploredNodes.has('root') ? 1 : 0));
     return explorable > 0 ? Math.round((explored / explorable) * 100) : 0;
@@ -200,9 +180,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         branchProgressMap,
         overallProgress,
         navigate,
-        exploreNode,
-        goBack,
-        goToRoot,
+        toggleNode,
         toggleBookmark,
         updateProfile,
       }}

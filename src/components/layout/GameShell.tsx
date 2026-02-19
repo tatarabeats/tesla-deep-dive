@@ -1,7 +1,6 @@
 import { useState, useCallback, type ReactNode } from 'react';
 import { TopBar } from './TopBar';
 import { BottomNav } from './BottomNav';
-import { useGame } from '../../store/gameContext';
 import { LevelUpOverlay } from '../effects/LevelUpOverlay';
 import { ExpGainToast } from '../effects/ExpGainToast';
 import { getLevelTitle } from '../../engine/progressionEngine';
@@ -13,9 +12,6 @@ interface LevelUpEvent {
 }
 
 export function GameShell({ children }: { children: ReactNode }) {
-  const { gameState } = useGame();
-  const isExploring = gameState.scene === 'explore';
-
   const [levelUp, setLevelUp] = useState<LevelUpEvent | null>(null);
   const [expGain, setExpGain] = useState<number | null>(null);
 
@@ -38,9 +34,9 @@ export function GameShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
-      {!isExploring && <TopBar />}
-      <main className={`flex-1 ${!isExploring ? 'pb-20' : ''}`}>
-        <div className={`max-w-lg mx-auto px-4 ${isExploring ? 'py-2 h-[100dvh] flex flex-col' : 'py-5'}`}>
+      <TopBar />
+      <main className="flex-1 pb-20">
+        <div className="max-w-lg mx-auto px-4 py-5">
           {children}
         </div>
       </main>

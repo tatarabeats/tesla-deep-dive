@@ -11,9 +11,6 @@ export function BottomNav() {
   const { gameState, navigate } = useGame();
   const { play } = useSound();
 
-  // Hide during explore
-  if (gameState.scene === 'explore') return null;
-
   const activeTab = gameState.scene === 'profile' ? 'profile' : 'home';
 
   return (

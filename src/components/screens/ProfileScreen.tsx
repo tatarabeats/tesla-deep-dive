@@ -4,7 +4,7 @@ import { getLevelTitle } from '../../engine/progressionEngine';
 import { visionTreeData, getBranchIds } from '../../data/visionTree';
 
 export function ProfileScreen() {
-  const { userProfile, updateProfile, branchProgressMap, overallProgress, exploreNode } = useGame();
+  const { userProfile, updateProfile, branchProgressMap, overallProgress, navigate, toggleNode } = useGame();
 
   const xpPercent = userProfile.xpToNextLevel > 0
     ? Math.min(100, (userProfile.currentLevelXP / userProfile.xpToNextLevel) * 100)
@@ -107,7 +107,10 @@ export function ProfileScreen() {
             return (
               <button
                 key={nodeId}
-                onClick={() => exploreNode(nodeId)}
+                onClick={() => {
+                  toggleNode(nodeId);
+                  navigate('home');
+                }}
                 className="w-full flex items-center gap-2 py-2 text-left"
                 style={{ borderBottom: '1px solid var(--card-border)' }}
               >
