@@ -8,7 +8,6 @@ import MindmapEdge from '../mindmap/MindmapEdge';
 
 const ROOT_ID = 'root';
 
-/* pinch-zoom + pan state */
 interface Camera {
   x: number;
   y: number;
@@ -23,9 +22,9 @@ export function MindmapScreen() {
   const [viewport, setViewport] = useState({ w: window.innerWidth, h: window.innerHeight });
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0, scale: 1 });
 
-  /* track pointer for panning */
   const dragRef = useRef<{ startX: number; startY: number; camX: number; camY: number } | null>(null);
   const pinchRef = useRef<{ dist: number; scale: number } | null>(null);
+  const animFrameRef = useRef<number>(0);
 
   useEffect(() => {
     const onResize = () => setViewport({ w: window.innerWidth, h: window.innerHeight });
@@ -33,7 +32,6 @@ export function MindmapScreen() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  /* compute positions */
   const centerX = viewport.w / 2;
   const centerY = viewport.h / 2;
 
@@ -42,10 +40,48 @@ export function MindmapScreen() {
     [rootNode, mindmap.expandedNodes, centerX, centerY],
   );
 
+  /* smooth pan to target camera position */
+  const smoothPanTo = useCallback((targetX: number, targetY: number) => {
+    cancelAnimationFrame(animFrameRef.current);
+    const startX = camera.x;
+    const startY = camera.y;
+    const startTime = performance.now();
+    const duration = 400;
+
+    const animate = (now: number) => {
+      const t = Math.min(1, (now - startTime) / duration);
+      const ease = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      setCamera(c => ({
+        ...c,
+        x: startX + (targetX - startX) * ease,
+        y: startY + (targetY - startY) * ease,
+      }));
+      if (t < 1) animFrameRef.current = requestAnimationFrame(animate);
+    };
+    animFrameRef.current = requestAnimationFrame(animate);
+  }, [camera.x, camera.y]);
+
+  /* handle orb tap: toggle + auto-pan to keep tapped node centered */
+  const handleOrbTap = useCallback((nodeId: string) => {
+    const willExpand = !mindmap.expandedNodes.has(nodeId);
+    toggleNode(nodeId);
+
+    if (willExpand) {
+      // find this node's position
+      const pos = positions.find(p => p.node.id === nodeId);
+      if (pos) {
+        // pan so that this node is at screen center
+        const targetCamX = centerX - pos.x * camera.scale;
+        const targetCamY = centerY - pos.y * camera.scale;
+        smoothPanTo(targetCamX, targetCamY);
+      }
+    }
+  }, [mindmap.expandedNodes, toggleNode, positions, centerX, centerY, camera.scale, smoothPanTo]);
+
   /* ── Pointer handlers for pan ── */
   const onPointerDown = useCallback((e: React.PointerEvent) => {
-    // ignore if clicking on an orb (handled by orb itself)
-    if ((e.target as HTMLElement).closest?.('g')) return;
+    const tag = (e.target as SVGElement).tagName;
+    if (tag === 'circle' || tag === 'text') return;
     dragRef.current = { startX: e.clientX, startY: e.clientY, camX: camera.x, camY: camera.y };
   }, [camera.x, camera.y]);
 
@@ -93,7 +129,6 @@ export function MindmapScreen() {
     pinchRef.current = null;
   }, []);
 
-  /* transform string */
   const transform = `translate(${camera.x}, ${camera.y}) scale(${camera.scale})`;
 
   return (
@@ -113,7 +148,6 @@ export function MindmapScreen() {
       onTouchEnd={onTouchEnd}
     >
       <g transform={transform}>
-        {/* edges first (behind orbs) */}
         <AnimatePresence>
           {positions.map((p) =>
             p.parentX !== undefined && p.parentY !== undefined ? (
@@ -128,7 +162,6 @@ export function MindmapScreen() {
           )}
         </AnimatePresence>
 
-        {/* orbs */}
         <AnimatePresence>
           {positions.map((p) => (
             <MindmapOrb
@@ -139,7 +172,7 @@ export function MindmapScreen() {
               isRoot={p.node.id === ROOT_ID}
               isExplored={mindmap.exploredNodes.has(p.node.id)}
               isExpanded={mindmap.expandedNodes.has(p.node.id)}
-              onTap={() => toggleNode(p.node.id)}
+              onTap={() => handleOrbTap(p.node.id)}
             />
           ))}
         </AnimatePresence>
