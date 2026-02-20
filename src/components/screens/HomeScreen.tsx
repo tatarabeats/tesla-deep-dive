@@ -5,12 +5,57 @@ import { visionTreeData, getChildren } from '../../data/visionTree';
 import NodeContent from '../tree/NodeContent';
 import type { VisionNode } from '../../types/visionTree';
 
+const smooth = [0.25, 0.1, 0.25, 1] as const;
+
+const nodeVariants = {
+  hidden: { height: 0, opacity: 0 },
+  visible: {
+    height: 'auto',
+    opacity: 1,
+    transition: {
+      height: { duration: 0.35, ease: smooth },
+      opacity: { duration: 0.3, delay: 0.05 },
+    },
+  },
+  exit: {
+    height: 0,
+    opacity: 0,
+    transition: {
+      opacity: { duration: 0.15 },
+      height: { duration: 0.25, ease: smooth },
+    },
+  },
+};
+
+const contentVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, delay: 0.1, ease: smooth },
+  },
+};
+
+const childStagger = {
+  visible: {
+    transition: { staggerChildren: 0.06 },
+  },
+};
+
+const childItem = {
+  hidden: { opacity: 0, x: -6 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.3, ease: smooth },
+  },
+};
+
 function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
   const { exploration, toggleNode } = useGame();
   const contentRef = useRef<HTMLDivElement>(null);
 
   const isExpanded = exploration.expandedNodes.has(node.id);
-  const isExplored = exploration.exploredNodes.has(node.id);
   const children = getChildren(node.id);
   const hasChildren = children.length > 0;
   const isRoot = node.id === 'root';
@@ -19,21 +64,25 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
     if (isExpanded && contentRef.current && !isRoot) {
       setTimeout(() => {
         contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 150);
+      }, 200);
     }
   }, [isExpanded, isRoot]);
 
-  const indent = isRoot ? 0 : Math.min(depth * 16, 64);
-
   return (
-    <div style={{ paddingLeft: indent }}>
-      <button
+    <div>
+      <motion.button
         onClick={() => toggleNode(node.id)}
         className="outliner-row"
+        whileTap={{ scale: 0.98 }}
+        transition={{ duration: 0.1 }}
       >
-        <span className={`outliner-toggle ${!hasChildren ? 'invisible' : ''}`}>
-          {isExpanded ? '▾' : '▸'}
-        </span>
+        <motion.span
+          className={`outliner-toggle ${!hasChildren ? 'invisible' : ''}`}
+          animate={{ rotate: isExpanded ? 0 : -90 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+        >
+          ▾
+        </motion.span>
 
         <span className={`flex-1 text-left ${
           isRoot
@@ -41,34 +90,47 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
             : depth === 1
               ? 'text-xl font-semibold'
               : 'text-lg'
-        } ${isExplored || isRoot ? 'text-[var(--text)]' : 'text-[var(--text-secondary)]'}`}>
+        } text-[var(--text)]`}>
           {node.title}
         </span>
 
         {node.subtitle && depth <= 1 && !isRoot && (
           <span className="text-sm text-[var(--text-secondary)] shrink-0">{node.subtitle}</span>
         )}
-      </button>
+      </motion.button>
 
       <AnimatePresence>
         {isExpanded && (
           <motion.div
             ref={contentRef}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            variants={nodeVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             style={{ overflow: 'hidden' }}
           >
             {!isRoot && (
-              <div className="outliner-content">
+              <motion.div
+                className="outliner-content"
+                variants={contentVariants}
+                initial="hidden"
+                animate="visible"
+              >
                 <NodeContent content={node.content} />
-              </div>
+              </motion.div>
             )}
 
-            {children.map(child => (
-              <OutlinerNode key={child.id} node={child} depth={depth + 1} />
-            ))}
+            <motion.div
+              variants={childStagger}
+              initial="hidden"
+              animate="visible"
+            >
+              {children.map(child => (
+                <motion.div key={child.id} variants={childItem}>
+                  <OutlinerNode node={child} depth={depth + 1} />
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
