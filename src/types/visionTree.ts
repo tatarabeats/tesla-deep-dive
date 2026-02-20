@@ -36,8 +36,12 @@ export interface NodeDataPoint {
   context?: string;
 }
 
+export type TransitionDirection = 'in' | 'out' | 'jump';
+
 export interface ExplorationState {
-  expandedNodes: Set<string>;
+  currentNodeId: string;
+  pathStack: string[];
+  transitionDirection: TransitionDirection;
   exploredNodes: Set<string>;
   bookmarkedNodes: string[];
 }

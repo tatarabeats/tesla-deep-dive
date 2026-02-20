@@ -1,10 +1,10 @@
 import { GameProvider } from './store/gameContext';
-import { HomeScreen } from './components/screens/HomeScreen';
+import { MindmapScreen } from './components/screens/MindmapScreen';
 
 function App() {
   return (
     <GameProvider>
-      <HomeScreen />
+      <MindmapScreen />
     </GameProvider>
   );
 }

@@ -25,22 +25,23 @@
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.85;
     background-color: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     position: relative;
+    overflow-x: hidden;
   }
 
-  /* 和紙テクスチャ — 3層構成 */
+  /* 和紙テクスチャ */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    /* 1) 大きな光のムラ（紙の厚みの不均一さ） */
     background-image:
       radial-gradient(ellipse at 15% 30%, rgba(120, 140, 200, 0.07) 0%, transparent 50%),
       radial-gradient(ellipse at 75% 15%, rgba(160, 150, 120, 0.06) 0%, transparent 45%),
@@ -54,7 +55,6 @@
     content: '';
     position: fixed;
     inset: 0;
-    /* 2) SVGノイズフィルターで繊維感を出す */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
     background-size: 256px 256px;
     opacity: 1;
@@ -65,39 +65,190 @@
 
   #root {
     min-height: 100vh;
+    min-height: 100dvh;
     position: relative;
     z-index: 1;
   }
 }
 
-/* ===== Outliner ===== */
+/* ===== Mindmap Screen ===== */
 
-.outliner-row {
+.mindmap-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  touch-action: pan-y;
+}
+
+/* ===== Breadcrumb ===== */
+
+.breadcrumb {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 44px;
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  width: 100%;
-  padding: 13px 0;
+  align-items: center;
+  padding: 0 16px;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb__scroll {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.breadcrumb__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.breadcrumb__segment {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.breadcrumb__chevron {
+  color: var(--text-secondary);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+.breadcrumb__btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 6px;
   border: none;
   background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
   cursor: pointer;
+  border-radius: 4px;
   -webkit-tap-highlight-color: transparent;
-  text-align: left;
+  white-space: nowrap;
+}
+
+.breadcrumb__btn--current {
+  color: var(--text);
+  cursor: default;
+}
+
+.breadcrumb__icon {
+  font-size: 14px;
+}
+
+.breadcrumb__label {
+  font-size: 13px;
+}
+
+/* ===== Hero ===== */
+
+.hero--root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px 24px;
+  min-height: 220px;
+}
+
+.hero__orb {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(232, 220, 200, 0.12) 0%, rgba(11, 17, 32, 0.8) 70%);
+  border: 1px solid rgba(232, 220, 200, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero__orb-text {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: var(--text);
+  padding: 12px;
+}
+
+.hero__subtitle {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.hero--node {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  margin: 8px 16px 0;
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.hero__icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.hero__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.3;
   color: var(--text);
 }
 
-.outliner-toggle {
-  width: 20px;
-  font-size: 10px;
+.hero__node-subtitle {
+  font-size: 13px;
   color: var(--text-secondary);
-  text-align: center;
-  flex-shrink: 0;
-  padding-top: 4px;
-  display: inline-block;
+  margin: 2px 0 0;
 }
 
-.outliner-content {
-  padding: 4px 0 28px 0;
+/* ===== Universe (per-node view) ===== */
+
+.universe {
+  width: 100%;
+}
+
+.universe__scroll {
+  padding-bottom: 48px;
+}
+
+.universe__root-desc {
+  padding: 0 24px;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text);
+  text-align: center;
+}
+
+/* ===== Content Panel ===== */
+
+.content-panel {
+  padding: 16px 20px 8px;
+}
+
+.content-panel__main {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text);
+  margin: 0 0 8px;
 }
 
 /* ===== Node content blocks ===== */
@@ -105,18 +256,18 @@
 .quote-block {
   border-left: 2px solid var(--text-secondary);
   padding: 8px 16px;
-  margin: 20px 0;
+  margin: 16px 0;
 }
 
 .first-principle-box {
-  padding: 16px 18px;
+  padding: 14px 16px;
   background: var(--surface);
   border-radius: 10px;
-  margin: 20px 0;
+  margin: 16px 0;
 }
 
 .data-point {
-  padding: 12px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -125,8 +276,86 @@
 }
 
 .analogy-box {
-  padding: 16px 18px;
+  padding: 14px 16px;
   background: var(--surface);
   border-radius: 10px;
-  margin: 20px 0;
+  margin: 16px 0;
+}
+
+/* ===== Children Orbit ===== */
+
+.orbit {
+  padding: 16px 20px 24px;
+}
+
+.orbit--root {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 8px 20px 40px;
+}
+
+/* Center the last item if odd number of children */
+.orbit--root > :last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
+.orbit--branch {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ===== Node Pill ===== */
+
+.node-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+.node-pill--root {
+  justify-content: center;
+  text-align: center;
+}
+
+.node-pill__icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.node-pill__title {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.node-pill__glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 12px;
+  border: 1px solid rgba(232, 220, 200, 0.2);
+  pointer-events: none;
+  animation: pill-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes pill-glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
 }
