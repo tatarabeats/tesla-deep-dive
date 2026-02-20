@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #1B2430;
-  --text: #D4DAE0;
-  --text-secondary: #8A95A0;
-  --border: #2A3441;
-  --surface: #222E3A;
+  --bg: #0B1120;
+  --text: #E8DCC8;
+  --text-secondary: #8B7E6A;
+  --border: #1A2540;
+  --surface: #111B2E;
 }
 
 @theme inline {
@@ -25,17 +25,33 @@
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
-    font-size: 16px;
-    line-height: 1.75;
+    font-size: 18px;
+    line-height: 1.85;
     background-color: var(--bg);
     color: var(--text);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+
+  /* 和紙のきらめき — 微細なノイズテクスチャ */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(100, 120, 180, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(140, 130, 100, 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(80, 100, 160, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
   }
 
   #root {
     min-height: 100vh;
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -44,9 +60,9 @@
 .outliner-row {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
-  padding: 11px 0;
+  padding: 13px 0;
   border: none;
   background: transparent;
   cursor: pointer;
@@ -62,15 +78,15 @@
 
 .outliner-toggle {
   width: 20px;
-  font-size: 9px;
+  font-size: 10px;
   color: var(--text-secondary);
   text-align: center;
   flex-shrink: 0;
-  padding-top: 3px;
+  padding-top: 4px;
 }
 
 .outliner-content {
-  padding: 0 0 24px 28px;
+  padding: 0 0 28px 28px;
   border-left: 1px solid var(--border);
   margin-left: 9px;
 }
@@ -79,19 +95,19 @@
 
 .quote-block {
   border-left: 2px solid var(--text-secondary);
-  padding: 6px 14px;
-  margin: 16px 0;
+  padding: 8px 16px;
+  margin: 20px 0;
 }
 
 .first-principle-box {
-  padding: 14px 16px;
+  padding: 16px 18px;
   background: var(--surface);
   border-radius: 10px;
-  margin: 16px 0;
+  margin: 20px 0;
 }
 
 .data-point {
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -100,8 +116,8 @@
 }
 
 .analogy-box {
-  padding: 14px 16px;
+  padding: 16px 18px;
   background: var(--surface);
   border-radius: 10px;
-  margin: 16px 0;
+  margin: 20px 0;
 }

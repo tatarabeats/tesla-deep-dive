@@ -37,16 +37,16 @@ function OutlinerNode({ node, depth }: { node: VisionNode; depth: number }) {
 
         <span className={`flex-1 text-left ${
           isRoot
-            ? 'text-2xl font-bold tracking-tight'
+            ? 'text-3xl font-bold tracking-tight'
             : depth === 1
-              ? 'text-lg font-semibold'
-              : 'text-base'
+              ? 'text-xl font-semibold'
+              : 'text-lg'
         } ${isExplored || isRoot ? 'text-[var(--text)]' : 'text-[var(--text-secondary)]'}`}>
           {node.title}
         </span>
 
         {node.subtitle && depth <= 1 && !isRoot && (
-          <span className="text-xs text-[var(--text-secondary)] shrink-0">{node.subtitle}</span>
+          <span className="text-sm text-[var(--text-secondary)] shrink-0">{node.subtitle}</span>
         )}
       </button>
 
