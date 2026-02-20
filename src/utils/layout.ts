@@ -24,15 +24,13 @@ export function computeLayout(
 ): NodePosition[] {
   const positions: NodePosition[] = [];
 
-  // root children radius: fit within screen with margin
-  // On mobile (~390px), half = 195, minus orb(32) minus text(20) minus padding(15) = 128
-  // Must be small enough that all nodes + text fit on smallest dimension
+  // Root children radius — fit on mobile (min ~390px wide)
   const halfMin = Math.min(viewW, viewH) / 2;
   const rootRadius = Math.min(
-    halfMin - 70,   // enough room for orb(32) + title(20) + breathing room
-    (viewW / 2) - 70,
-    (viewH / 2) - 70,
-    180,             // cap for desktop
+    halfMin - 60,
+    (viewW / 2) - 60,
+    (viewH / 2) - 60,
+    170,
   );
 
   function place(
@@ -62,10 +60,12 @@ export function computeLayout(
         place(child, cx, cy, x, y, depth + 1);
       });
     } else {
-      // Non-root: fan children outward
-      const radius = Math.max(100, 140 - depth * 15);
+      // Non-root: fan children outward from parent direction
+      const radius = Math.max(80, 120 - depth * 12);
       const outAngle = Math.atan2(y - parentY!, x - parentX!);
-      const maxSpread = Math.min(Math.PI * 0.65, children.length * 0.4);
+
+      // Wider fan for more children, narrower for fewer
+      const maxSpread = Math.min(Math.PI * 0.7, Math.max(0.5, children.length * 0.35));
       const angleStep = children.length > 1 ? maxSpread / (children.length - 1) : 0;
       const startAngle = outAngle - maxSpread / 2;
 
