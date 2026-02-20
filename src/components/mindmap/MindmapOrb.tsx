@@ -27,10 +27,11 @@ function wrapTitle(text: string, maxChars: number): string[] {
 }
 
 export default function MindmapOrb({ node, x, y, isRoot, isExplored, isExpanded, onTap }: Props) {
-  const size = isRoot ? 130 : 64;
+  const size = isRoot ? 120 : 56;
   const titleLines = isRoot ? [node.title] : wrapTitle(node.title, 8);
-  const filterId = `glow-${isRoot ? 'root' : node.id}`;
-  const gradId = `orb-grad-${isRoot ? 'root' : node.id}`;
+  // Use shared filter IDs defined in MindmapScreen defs
+  const filterId = isRoot ? 'glow-root' : 'glow-child';
+  const gradId = isRoot ? 'orb-grad-root' : 'orb-grad-child';
 
   return (
     <motion.g
@@ -40,57 +41,42 @@ export default function MindmapOrb({ node, x, y, isRoot, isExplored, isExpanded,
       transition={{ duration: 0.5, ease: 'easeOut' }}
       style={{ cursor: 'pointer' }}
     >
-      <defs>
-        {/* blur filter for glow */}
-        <filter id={filterId} x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation={isRoot ? 18 : 8} />
-        </filter>
-        {/* radial gradient — brighter, more depth */}
-        <radialGradient id={gradId} cx="38%" cy="30%" r="68%">
-          <stop offset="0%" stopColor={isRoot ? 'rgba(232,220,200,0.28)' : 'rgba(232,220,200,0.15)'} />
-          <stop offset="35%" stopColor={isRoot ? 'rgba(180,170,150,0.10)' : 'rgba(140,130,120,0.06)'} />
-          <stop offset="70%" stopColor={isRoot ? 'rgba(60,65,80,0.08)' : 'rgba(40,45,60,0.06)'} />
-          <stop offset="100%" stopColor="rgba(11,17,32,0.92)" />
-        </radialGradient>
-      </defs>
-
-      {/* ─── Root: dramatic glow layers ─── */}
+      {/* ─── Root: dramatic glow layers (no blur filter — use opacity circles) ─── */}
       {isRoot && (
         <>
-          {/* layer 1: wide ambient haze */}
+          {/* layer 1: wide ambient haze — NO filter, just big translucent circle */}
           <motion.circle
             cx={x} cy={y}
-            r={size / 2 + 55}
-            fill="rgba(200,190,170,0.04)"
-            filter={`url(#${filterId})`}
+            r={size / 2 + 50}
+            fill="rgba(200,190,170,0.03)"
             animate={{
-              r: [size / 2 + 45, size / 2 + 65, size / 2 + 45],
-              opacity: [0.7, 1, 0.7],
+              r: [size / 2 + 40, size / 2 + 58, size / 2 + 40],
+              opacity: [0.6, 1, 0.6],
             }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
           />
-          {/* layer 2: closer glow */}
+          {/* layer 2: closer glow — use shared blur filter */}
           <motion.circle
             cx={x} cy={y}
-            r={size / 2 + 20}
-            fill="rgba(232,220,200,0.06)"
+            r={size / 2 + 18}
+            fill="rgba(232,220,200,0.05)"
             filter={`url(#${filterId})`}
             animate={{
-              r: [size / 2 + 15, size / 2 + 30, size / 2 + 15],
-              opacity: [0.8, 1, 0.8],
+              r: [size / 2 + 12, size / 2 + 25, size / 2 + 12],
+              opacity: [0.7, 1, 0.7],
             }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
           />
           {/* ring 1 — slow expanding breath */}
           <motion.circle
             cx={x} cy={y}
-            r={size / 2 + 6}
+            r={size / 2 + 5}
             fill="none"
-            stroke="rgba(232,220,200,0.15)"
-            strokeWidth={1.5}
+            stroke="rgba(232,220,200,0.14)"
+            strokeWidth={1.2}
             animate={{
-              r: [size / 2 + 6, size / 2 + 28, size / 2 + 6],
-              strokeOpacity: [0.18, 0.03, 0.18],
+              r: [size / 2 + 5, size / 2 + 24, size / 2 + 5],
+              strokeOpacity: [0.16, 0.02, 0.16],
             }}
             transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -99,21 +85,20 @@ export default function MindmapOrb({ node, x, y, isRoot, isExplored, isExpanded,
             cx={x} cy={y}
             r={size / 2 + 3}
             fill="none"
-            stroke="rgba(232,220,200,0.10)"
-            strokeWidth={1}
+            stroke="rgba(232,220,200,0.08)"
+            strokeWidth={0.8}
             animate={{
-              r: [size / 2 + 3, size / 2 + 38, size / 2 + 3],
-              strokeOpacity: [0.12, 0.01, 0.12],
+              r: [size / 2 + 3, size / 2 + 32, size / 2 + 3],
+              strokeOpacity: [0.10, 0.01, 0.10],
             }}
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
           />
-          {/* inner core glow */}
+          {/* inner core glow — no filter */}
           <motion.circle
             cx={x} cy={y}
-            r={size / 2 - 8}
-            fill="rgba(232,220,200,0.06)"
-            filter={`url(#${filterId})`}
-            animate={{ opacity: [0.6, 1, 0.6] }}
+            r={size / 2 - 6}
+            fill="rgba(232,220,200,0.05)"
+            animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
           />
         </>
@@ -156,7 +141,7 @@ export default function MindmapOrb({ node, x, y, isRoot, isExplored, isExpanded,
         x={x} y={y}
         textAnchor="middle"
         dominantBaseline="central"
-        fontSize={isRoot ? 34 : 22}
+        fontSize={isRoot ? 30 : 20}
         style={{ pointerEvents: 'none', userSelect: 'none' }}
       >
         {node.icon}
@@ -167,10 +152,10 @@ export default function MindmapOrb({ node, x, y, isRoot, isExplored, isExpanded,
         <text
           key={i}
           x={x}
-          y={y + size / 2 + 14 + i * (isRoot ? 18 : 13)}
+          y={y + size / 2 + 12 + i * (isRoot ? 16 : 12)}
           textAnchor="middle"
           dominantBaseline="central"
-          fontSize={isRoot ? 14 : 10}
+          fontSize={isRoot ? 13 : 9.5}
           fontWeight={isRoot ? 700 : 600}
           fill="#E8DCC8"
           fillOpacity={isRoot ? 0.95 : 0.8}

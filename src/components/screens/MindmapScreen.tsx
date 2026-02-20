@@ -23,7 +23,7 @@ export function MindmapScreen() {
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0, scale: 1 });
 
   const dragRef = useRef<{ startX: number; startY: number; camX: number; camY: number } | null>(null);
-  const pinchRef = useRef<{ dist: number; scale: number } | null>(null);
+  const pinchRef = useRef<{ dist: number; scale: number; camX: number; camY: number; midX: number; midY: number } | null>(null);
   const animFrameRef = useRef<number>(0);
 
   useEffect(() => {
@@ -67,10 +67,8 @@ export function MindmapScreen() {
     toggleNode(nodeId);
 
     if (willExpand) {
-      // find this node's position
       const pos = positions.find(p => p.node.id === nodeId);
       if (pos) {
-        // pan so that this node is at screen center
         const targetCamX = centerX - pos.x * camera.scale;
         const targetCamY = centerY - pos.y * camera.scale;
         smoothPanTo(targetCamX, targetCamY);
@@ -96,32 +94,66 @@ export function MindmapScreen() {
     dragRef.current = null;
   }, []);
 
-  /* ── Wheel zoom ── */
+  /* ── Wheel zoom (desktop) — zoom toward cursor ── */
   const onWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
-    const factor = e.deltaY > 0 ? 0.92 : 1.08;
-    setCamera(c => ({
-      ...c,
-      scale: Math.min(3, Math.max(0.3, c.scale * factor)),
-    }));
+    const factor = e.deltaY > 0 ? 0.93 : 1.07;
+    setCamera(c => {
+      const newScale = Math.min(2.5, Math.max(0.4, c.scale * factor));
+      // Zoom toward cursor position
+      const rect = svgRef.current?.getBoundingClientRect();
+      if (rect) {
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        return {
+          x: mx - (mx - c.x) * (newScale / c.scale),
+          y: my - (my - c.y) * (newScale / c.scale),
+          scale: newScale,
+        };
+      }
+      return { ...c, scale: newScale };
+    });
   }, []);
 
-  /* ── Touch pinch zoom ── */
+  /* ── Touch pinch zoom — zoom toward pinch midpoint ── */
   const onTouchStart = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
-      pinchRef.current = { dist: Math.hypot(dx, dy), scale: camera.scale };
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      pinchRef.current = {
+        dist: Math.hypot(dx, dy),
+        scale: camera.scale,
+        camX: camera.x,
+        camY: camera.y,
+        midX,
+        midY,
+      };
     }
-  }, [camera.scale]);
+  }, [camera.scale, camera.x, camera.y]);
 
   const onTouchMove = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2 && pinchRef.current) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const dist = Math.hypot(dx, dy);
-      const newScale = pinchRef.current.scale * (dist / pinchRef.current.dist);
-      setCamera(c => ({ ...c, scale: Math.min(3, Math.max(0.3, newScale)) }));
+      const newScale = Math.min(2.5, Math.max(0.4, pinchRef.current.scale * (dist / pinchRef.current.dist)));
+
+      // Zoom toward the pinch midpoint
+      const { midX, midY, camX, camY, scale: startScale } = pinchRef.current;
+      const rect = svgRef.current?.getBoundingClientRect();
+      if (rect) {
+        const mx = midX - rect.left;
+        const my = midY - rect.top;
+        setCamera({
+          x: mx - (mx - camX) * (newScale / startScale),
+          y: my - (my - camY) * (newScale / startScale),
+          scale: newScale,
+        });
+      } else {
+        setCamera(c => ({ ...c, scale: newScale }));
+      }
     }
   }, []);
 
@@ -147,6 +179,32 @@ export function MindmapScreen() {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
+      {/* ─── Shared defs: filters & gradients (only 2 of each, not per-node) ─── */}
+      <defs>
+        {/* Root glow blur — smaller region, lower stdDeviation for mobile perf */}
+        <filter id="glow-root" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="12" />
+        </filter>
+        {/* Child glow blur */}
+        <filter id="glow-child" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+        </filter>
+        {/* Root orb gradient */}
+        <radialGradient id="orb-grad-root" cx="38%" cy="30%" r="68%">
+          <stop offset="0%" stopColor="rgba(232,220,200,0.28)" />
+          <stop offset="35%" stopColor="rgba(180,170,150,0.10)" />
+          <stop offset="70%" stopColor="rgba(60,65,80,0.08)" />
+          <stop offset="100%" stopColor="rgba(11,17,32,0.92)" />
+        </radialGradient>
+        {/* Child orb gradient */}
+        <radialGradient id="orb-grad-child" cx="38%" cy="30%" r="68%">
+          <stop offset="0%" stopColor="rgba(232,220,200,0.15)" />
+          <stop offset="35%" stopColor="rgba(140,130,120,0.06)" />
+          <stop offset="70%" stopColor="rgba(40,45,60,0.06)" />
+          <stop offset="100%" stopColor="rgba(11,17,32,0.92)" />
+        </radialGradient>
+      </defs>
+
       <g transform={transform}>
         <AnimatePresence>
           {positions.map((p) =>

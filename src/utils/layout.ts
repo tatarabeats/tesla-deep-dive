@@ -25,11 +25,14 @@ export function computeLayout(
   const positions: NodePosition[] = [];
 
   // root children radius: fit within screen with margin
-  const margin = 110; // orb size + text
+  // On mobile (~390px), half = 195, minus orb(32) minus text(20) minus padding(15) = 128
+  // Must be small enough that all nodes + text fit on smallest dimension
+  const halfMin = Math.min(viewW, viewH) / 2;
   const rootRadius = Math.min(
-    (viewW / 2) - margin,
-    (viewH / 2) - margin,
-    200, // cap so it doesn't get too big on desktop
+    halfMin - 70,   // enough room for orb(32) + title(20) + breathing room
+    (viewW / 2) - 70,
+    (viewH / 2) - 70,
+    180,             // cap for desktop
   );
 
   function place(
