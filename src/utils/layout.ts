@@ -12,14 +12,25 @@ export interface NodePosition {
 /**
  * Recursively compute positions for all visible nodes.
  * Root is at center. Children fan out away from root.
+ * viewW/viewH are used to ensure root children fit on screen.
  */
 export function computeLayout(
   rootNode: VisionNode,
   expandedNodes: Set<string>,
   centerX: number,
   centerY: number,
+  viewW: number,
+  viewH: number,
 ): NodePosition[] {
   const positions: NodePosition[] = [];
+
+  // root children radius: fit within screen with margin
+  const margin = 110; // orb size + text
+  const rootRadius = Math.min(
+    (viewW / 2) - margin,
+    (viewH / 2) - margin,
+    200, // cap so it doesn't get too big on desktop
+  );
 
   function place(
     node: VisionNode,
@@ -36,11 +47,9 @@ export function computeLayout(
     const children = getChildren(node.id);
     if (children.length === 0) return;
 
-    // radius shrinks slightly per depth
-    const radius = depth === 0 ? 220 : Math.max(110, 160 - depth * 15);
-
     if (depth === 0) {
       // Root: place children evenly around the full circle
+      const radius = rootRadius;
       const angleStep = (2 * Math.PI) / children.length;
       const startAngle = -Math.PI / 2; // top
       children.forEach((child, i) => {
@@ -50,14 +59,11 @@ export function computeLayout(
         place(child, cx, cy, x, y, depth + 1);
       });
     } else {
-      // Non-root: fan children outward from parent direction
+      // Non-root: fan children outward
+      const radius = Math.max(100, 140 - depth * 15);
       const outAngle = Math.atan2(y - parentY!, x - parentX!);
-
-      // spread angle: narrower for fewer children, max ~120°
-      const maxSpread = Math.min(Math.PI * 0.7, children.length * 0.45);
-      const angleStep = children.length > 1
-        ? maxSpread / (children.length - 1)
-        : 0;
+      const maxSpread = Math.min(Math.PI * 0.65, children.length * 0.4);
+      const angleStep = children.length > 1 ? maxSpread / (children.length - 1) : 0;
       const startAngle = outAngle - maxSpread / 2;
 
       children.forEach((child, i) => {

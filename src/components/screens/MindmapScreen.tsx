@@ -36,8 +36,8 @@ export function MindmapScreen() {
   const centerY = viewport.h / 2;
 
   const positions = useMemo(
-    () => computeLayout(rootNode, mindmap.expandedNodes, centerX, centerY),
-    [rootNode, mindmap.expandedNodes, centerX, centerY],
+    () => computeLayout(rootNode, mindmap.expandedNodes, centerX, centerY, viewport.w, viewport.h),
+    [rootNode, mindmap.expandedNodes, centerX, centerY, viewport.w, viewport.h],
   );
 
   /* smooth pan to target camera position */
