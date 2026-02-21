@@ -1,12 +1,11 @@
 export type BranchId =
   | 'root'
-  | 'spacex'
-  | 'tesla'
-  | 'neuralink'
-  | 'xai'
-  | 'optimus'
-  | 'x_platform'
-  | 'boring';
+  | 'single-planet'
+  | 'fossil-fuel'
+  | 'intelligence-limits'
+  | 'population-decline'
+  | 'mobility-inefficiency'
+  | 'info-finance-gap';
 
 export interface VisionNode {
   id: string;

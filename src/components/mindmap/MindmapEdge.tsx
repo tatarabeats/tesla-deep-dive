@@ -14,12 +14,12 @@ export default function MindmapEdge({ x1, y1, x2, y2 }: Props) {
       y1={y1}
       x2={x2}
       y2={y2}
-      stroke="rgba(232,220,200,0.12)"
+      stroke="rgba(232,220,200,0.08)"
       strokeWidth={1}
       initial={{ pathLength: 0, opacity: 0 }}
       animate={{ pathLength: 1, opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
     />
   );
 }
