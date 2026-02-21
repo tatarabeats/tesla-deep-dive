@@ -65,6 +65,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '多惑星種への進化 {SpaceX}',
     heroStat: '138億年',
     heroCaption: '宇宙で知的生命が確認された惑星は地球だけ',
+    imageUrl: 'images/extinction-risk.png',
     icon: '🚀',
     color: '--accent-blue',
     content: {
@@ -212,6 +213,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '地球全体の接続 {Starlink}',
     heroStat: '118億ドル',
     heroCaption: '2025年のStarlink年間売上',
+    imageUrl: 'images/starlink-connectivity.png',
     icon: '📡',
     color: '--accent-blue',
     content: {
@@ -306,6 +308,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: 'EVへの移行 {Tesla}',
     heroStat: '4.4倍',
     heroCaption: 'EVはガソリン車よりエネルギー効率が高い',
+    imageUrl: 'images/ev-transition.png',
     icon: '⚡',
     color: '--tesla-red',
     content: {
@@ -407,6 +410,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: 'エネルギー貯蔵革命 {Tesla Energy}',
     heroStat: '114%増',
     heroCaption: '2024年のTesla Energy出荷量成長率',
+    imageUrl: 'images/energy-storage.png',
     icon: '🔋',
     color: '--tesla-red',
     content: {
@@ -477,6 +481,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '太陽光発電 — 根本解 {Tesla Energy}',
     heroStat: '10,000倍',
     heroCaption: '太陽は人類の消費量の10,000倍のエネルギーを供給',
+    imageUrl: 'images/solar-generation.png',
     icon: '☀️',
     color: '--tesla-red',
     content: {
@@ -526,6 +531,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: 'MP3 — 脱炭素計画',
     heroStat: '240TWh',
     heroCaption: '地球全体を持続可能エネルギーに移行する蓄電量',
+    imageUrl: 'images/master-plan-3.png',
     icon: '🌍',
     color: '--tesla-red',
     content: {
@@ -576,6 +582,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: 'AI開発 {xAI}',
     heroStat: '10倍',
     heroCaption: 'xAI Colossusは世界最大のAIクラスター',
+    imageUrl: 'images/ai-development.png',
     icon: '🔬',
     color: '--accent-purple',
     content: {
@@ -666,6 +673,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '脳とAIの融合 {Neuralink}',
     heroStat: '1,024ch',
     heroCaption: 'Neuralink N1チップのチャンネル数',
+    imageUrl: 'images/brain-interface.png',
     icon: '🔌',
     color: '--accent-purple',
     content: {
@@ -814,6 +822,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '汎用ヒューマノイド {Tesla Optimus}',
     heroStat: '$20,000〜',
     heroCaption: 'ヒューマノイドロボットの量産価格目標',
+    imageUrl: 'images/optimus-robot.png',
     icon: '🤖',
     color: '--accent-green',
     content: {
@@ -910,6 +919,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '自律輸送 — 運転手不要の物流 {Tesla}',
     heroStat: '16時間/日',
     heroCaption: 'ロボタクシーは人間より2倍稼働できる',
+    imageUrl: 'images/autonomous-transport.png',
     icon: '🚛',
     color: '--accent-green',
     content: {
@@ -980,6 +990,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '豊かさの時代 — 経済のパラダイムシフト',
     heroStat: 'GDP 2倍',
     heroCaption: 'ロボットで人間の労働力不足を完全補完',
+    imageUrl: 'images/abundance-economy.png',
     icon: '🌊',
     color: '--accent-green',
     content: {
@@ -1035,6 +1046,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '地下に高速移動ネットワークを作る {The Boring Company}',
     heroStat: '1/10',
     heroCaption: 'トンネル掘削コストを10分の1に削減',
+    imageUrl: 'images/underground-network.png',
     icon: '🕳️',
     color: '--muted',
     content: {
@@ -1160,6 +1172,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '地球全体をインターネットで繋ぐ {Starlink}',
     heroStat: '9,400基+',
     heroCaption: '軌道上のStarlink衛星数',
+    imageUrl: 'images/global-connectivity.png',
     icon: '🛰️',
     color: '--foreground',
     content: {
@@ -1229,6 +1242,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '言論の自由を守る {X}',
     heroStat: '6億人',
     heroCaption: 'X（旧Twitter）の月間アクティブユーザー',
+    imageUrl: 'images/free-speech-platform.png',
     icon: '🗣️',
     color: '--foreground',
     content: {
@@ -1302,6 +1316,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '金融の民主化 {X Money}',
     heroStat: '13億人',
     heroCaption: '銀行口座を持てない成人の数',
+    imageUrl: 'images/financial-inclusion.png',
     icon: '💰',
     color: '--foreground',
     content: {
