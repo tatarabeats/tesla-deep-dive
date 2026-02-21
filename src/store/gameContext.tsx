@@ -12,6 +12,7 @@ interface GameContextType {
   userProfile: UserProfile;
   mindmap: MindmapState;
   toggleNode: (nodeId: string) => void;   // expand / collapse children
+  exploreNode: (nodeId: string) => void;  // mark explored without toggling expand
 }
 
 const GameContext = createContext<GameContextType | null>(null);
@@ -26,7 +27,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [mindmap, setMindmap] = useReducer(
     (_prev: MindmapState, next: MindmapState) => next,
     {
-      expandedNodes: new Set<string>(),
+      expandedNodes: new Set<string>(['root']),
       exploredNodes: new Set<string>(loadUserProgress().exploredNodeIds),
     } as MindmapState,
   );
@@ -63,8 +64,22 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setMindmap({ expandedNodes: newExpanded, exploredNodes: newExplored });
   }, [mindmap, userProfile]);
 
+  const exploreNode = useCallback((nodeId: string) => {
+    const newExplored = new Set(mindmap.exploredNodes);
+    if (newExplored.has(nodeId)) return;
+
+    newExplored.add(nodeId);
+    const today = new Date().toISOString().slice(0, 10);
+    setUserProfile({
+      ...userProfile,
+      exploredNodeIds: [...userProfile.exploredNodeIds, nodeId],
+      lastOpenedDate: today,
+    });
+    setMindmap({ expandedNodes: mindmap.expandedNodes, exploredNodes: newExplored });
+  }, [mindmap, userProfile]);
+
   return (
-    <GameContext.Provider value={{ userProfile, mindmap, toggleNode }}>
+    <GameContext.Provider value={{ userProfile, mindmap, toggleNode, exploreNode }}>
       {children}
     </GameContext.Provider>
   );

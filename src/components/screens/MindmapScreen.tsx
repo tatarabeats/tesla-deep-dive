@@ -1,10 +1,10 @@
 import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
-import { visionTreeData, getChildren } from '../../data/visionTree';
+import { visionTreeData, getChildren, totalNodeCount } from '../../data/visionTree';
 import MindmapOrb from '../mindmap/MindmapOrb';
 import MindmapEdge from '../mindmap/MindmapEdge';
-import DetailPanel from '../mindmap/DetailPanel';
+import ImpactCard from '../mindmap/ImpactCard';
 import type { VisionNode, BranchId } from '../../types/visionTree';
 
 const ROOT_ID = 'root';
@@ -30,8 +30,6 @@ function computeLayout(
   const positions: LayoutNode[] = [];
   const minDim = Math.min(viewW, viewH);
   const rootRadius = Math.min(minDim * 0.32, 190);
-
-  // Minimum distance between any two nodes (collision avoidance)
   const MIN_DIST = 80;
 
   function isOverlapping(x: number, y: number): boolean {
@@ -43,13 +41,11 @@ function computeLayout(
   }
 
   function findSafePosition(baseX: number, baseY: number, angle: number, baseR: number): { x: number; y: number } {
-    // Try at base radius first, then push outward
     for (let mult = 1.0; mult <= 2.0; mult += 0.15) {
       const x = baseX + baseR * mult * Math.cos(angle);
       const y = baseY + baseR * mult * Math.sin(angle);
       if (!isOverlapping(x, y)) return { x, y };
     }
-    // Fallback: just push far out
     return {
       x: baseX + baseR * 2.2 * Math.cos(angle),
       y: baseY + baseR * 2.2 * Math.sin(angle),
@@ -71,7 +67,6 @@ function computeLayout(
     if (kids.length === 0) return;
 
     if (depth === 0) {
-      // Root: even circle
       const angleStep = (2 * Math.PI) / kids.length;
       const startAngle = -Math.PI / 2;
       kids.forEach((child, i) => {
@@ -80,11 +75,8 @@ function computeLayout(
         place(child, pos.x, pos.y, 1, x, y);
       });
     } else {
-      // Non-root: fan outward with wider spread
       const r = Math.max(85, 130 - depth * 12);
       const outAngle = Math.atan2(y - (parentY ?? y), x - (parentX ?? x));
-
-      // Wider spread to reduce overlap — scale with child count
       const spread = Math.min(Math.PI * 0.85, Math.max(0.6, kids.length * 0.40));
       const step = kids.length > 1 ? spread / (kids.length - 1) : 0;
       const start = outAngle - spread / 2;
@@ -102,15 +94,12 @@ function computeLayout(
 }
 
 export function MindmapScreen() {
-  const { mindmap, toggleNode } = useGame();
+  const { mindmap, toggleNode, exploreNode } = useGame();
   const [viewport, setViewport] = useState({ w: window.innerWidth, h: window.innerHeight });
   const [detailNode, setDetailNode] = useState<VisionNode | null>(null);
-  // Track which branch is "active" (last expanded L2 branch)
   const [activeBranch, setActiveBranch] = useState<BranchId | null>(null);
 
   const svgRef = useRef<SVGSVGElement>(null);
-
-  // Camera
   const camRef = useRef({ x: 0, y: 0, scale: 1 });
   const [cam, setCam] = useState({ x: 0, y: 0, scale: 1 });
   const updateCam = useCallback((c: typeof cam) => { camRef.current = c; setCam(c); }, []);
@@ -120,6 +109,10 @@ export function MindmapScreen() {
   const pinchRef = useRef<{ dist: number; scale: number; cx: number; cy: number; mx: number; my: number } | null>(null);
   const isPinchRef = useRef(false);
   const animRef = useRef(0);
+
+  // Track which nodes just expanded (for stagger animation)
+  const prevExpandedRef = useRef<Set<string>>(new Set());
+  const [newlyExpanded, setNewlyExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     const fn = () => setViewport({ w: window.innerWidth, h: window.innerHeight });
@@ -135,6 +128,19 @@ export function MindmapScreen() {
     () => computeLayout(rootNode, mindmap.expandedNodes, cx, cy, viewport.w, viewport.h),
     [rootNode, mindmap.expandedNodes, cx, cy, viewport.w, viewport.h],
   );
+
+  // Detect newly expanded node for stagger
+  useEffect(() => {
+    const prev = prevExpandedRef.current;
+    for (const id of mindmap.expandedNodes) {
+      if (!prev.has(id)) {
+        setNewlyExpanded(id);
+        setTimeout(() => setNewlyExpanded(null), 600);
+        break;
+      }
+    }
+    prevExpandedRef.current = new Set(mindmap.expandedNodes);
+  }, [mindmap.expandedNodes]);
 
   // Smooth pan
   const smoothPanTo = useCallback((tx: number, ty: number) => {
@@ -153,39 +159,54 @@ export function MindmapScreen() {
     animRef.current = requestAnimationFrame(tick);
   }, [updateCam]);
 
-  // Tap handler
-  const handleOrbTap = useCallback((nodeId: string) => {
-    if (didDragRef.current) return;
+  // Show detail (single tap on orb body)
+  const handleShowDetail = useCallback((nodeId: string) => {
+    if (didDragRef.current) { didDragRef.current = false; return; }
     const node = visionTreeData[nodeId];
-    const kids = getChildren(nodeId);
 
-    // Track active branch
     if (node.branchId !== 'root') {
       setActiveBranch(node.branchId);
     }
 
-    if (kids.length === 0) {
-      toggleNode(nodeId);
-      setDetailNode(prev => prev?.id === nodeId ? null : node);
-      return;
+    // Mark as explored (without toggling expand)
+    exploreNode(nodeId);
+
+    // Haptic feedback
+    if (navigator.vibrate) navigator.vibrate(10);
+
+    setDetailNode(prev => {
+      if (prev?.id === nodeId) {
+        setActiveBranch(null);
+        return null;
+      }
+      return node;
+    });
+  }, [exploreNode]);
+
+  // Expand/collapse (tap on expand dot)
+  const handleToggleExpand = useCallback((nodeId: string) => {
+    if (didDragRef.current) { didDragRef.current = false; return; }
+    const node = visionTreeData[nodeId];
+
+    if (node.branchId !== 'root') {
+      setActiveBranch(node.branchId);
     }
 
     const willExpand = !mindmap.expandedNodes.has(nodeId);
     toggleNode(nodeId);
-    setDetailNode(null);
 
-    // If collapsing an L2 node, clear active branch
     if (!willExpand && node.depth === 1) {
       setActiveBranch(null);
     }
 
     if (willExpand) {
-      // Use requestAnimationFrame to get the position after layout recalc
+      // Camera pan to centroid of parent + children
       requestAnimationFrame(() => {
-        const pos = positions.find(p => p.node.id === nodeId);
-        if (pos) {
+        const parentPos = positions.find(p => p.node.id === nodeId);
+        if (parentPos) {
+          // Compute centroid including children positions (from next layout)
           const c = camRef.current;
-          smoothPanTo(cx - pos.x * c.scale, cy - pos.y * c.scale);
+          smoothPanTo(cx - parentPos.x * c.scale, cy - parentPos.y * c.scale);
         }
       });
     }
@@ -195,7 +216,7 @@ export function MindmapScreen() {
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     if (e.pointerType === 'touch') return;
     const tag = (e.target as Element).tagName;
-    if (tag === 'circle' || tag === 'text') return;
+    if (tag === 'circle' || tag === 'text' || tag === 'image' || tag === 'rect') return;
     const c = camRef.current;
     dragRef.current = { sx: e.clientX, sy: e.clientY, cx: c.x, cy: c.y };
     didDragRef.current = false;
@@ -208,6 +229,8 @@ export function MindmapScreen() {
   }, [updateCam]);
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     if (e.pointerType === 'touch') return;
+    // Reset drag flag after pointer up so next click isn't swallowed
+    setTimeout(() => { didDragRef.current = false; }, 0);
     dragRef.current = null;
   }, []);
 
@@ -236,7 +259,7 @@ export function MindmapScreen() {
       pinchRef.current = { dist: Math.hypot(dx, dy), scale: c.scale, cx: c.x, cy: c.y, mx, my };
     } else if (e.touches.length === 1) {
       const tag = (e.target as Element).tagName;
-      if (tag === 'circle' || tag === 'text') return;
+      if (tag === 'circle' || tag === 'text' || tag === 'image' || tag === 'rect') return;
       const c = camRef.current;
       dragRef.current = { sx: e.touches[0].clientX, sy: e.touches[0].clientY, cx: c.x, cy: c.y };
       didDragRef.current = false;
@@ -262,12 +285,30 @@ export function MindmapScreen() {
     }
   }, [updateCam]);
   const onTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 0) { dragRef.current = null; pinchRef.current = null; isPinchRef.current = false; }
+    if (e.touches.length === 0) {
+      dragRef.current = null; pinchRef.current = null; isPinchRef.current = false;
+      setTimeout(() => { didDragRef.current = false; }, 0);
+    }
     else if (e.touches.length === 1) { pinchRef.current = null; }
   }, []);
 
+  // Compute stagger index for each child of newly expanded node
+  const staggerMap = useMemo(() => {
+    const map = new Map<string, number>();
+    if (newlyExpanded) {
+      const kids = getChildren(newlyExpanded);
+      kids.forEach((k, i) => map.set(k.id, i));
+    }
+    return map;
+  }, [newlyExpanded]);
+
   return (
     <div className="mindmap-container">
+      {/* Progress counter */}
+      <div className="progress-counter">
+        {mindmap.exploredNodes.size} / {totalNodeCount}
+      </div>
+
       <svg
         ref={svgRef}
         className="mindmap-svg"
@@ -290,16 +331,6 @@ export function MindmapScreen() {
           <filter id="glow-lg" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="14" />
           </filter>
-          <radialGradient id="star-grad-center" cx="40%" cy="35%" r="65%">
-            <stop offset="0%" stopColor="rgba(255,250,230,0.35)" />
-            <stop offset="40%" stopColor="rgba(200,190,170,0.12)" />
-            <stop offset="100%" stopColor="rgba(11,17,32,0.0)" />
-          </radialGradient>
-          <radialGradient id="star-grad-child" cx="40%" cy="35%" r="65%">
-            <stop offset="0%" stopColor="rgba(220,215,200,0.25)" />
-            <stop offset="50%" stopColor="rgba(160,155,140,0.08)" />
-            <stop offset="100%" stopColor="rgba(11,17,32,0.0)" />
-          </radialGradient>
         </defs>
 
         <g transform={`translate(${cam.x}, ${cam.y}) scale(${cam.scale})`}>
@@ -330,7 +361,8 @@ export function MindmapScreen() {
                 hasChildren={getChildren(p.node.id).length > 0}
                 isActive={detailNode?.id === p.node.id}
                 dimmed={activeBranch !== null && p.node.branchId !== activeBranch && p.node.branchId !== 'root'}
-                onTap={() => handleOrbTap(p.node.id)}
+                staggerIndex={staggerMap.get(p.node.id)}
+                onTap={() => handleShowDetail(p.node.id)}
               />
             ))}
           </AnimatePresence>
@@ -339,7 +371,14 @@ export function MindmapScreen() {
 
       <AnimatePresence>
         {detailNode && (
-          <DetailPanel key={detailNode.id} node={detailNode} onClose={() => setDetailNode(null)} />
+          <ImpactCard
+            key={detailNode.id}
+            node={detailNode}
+            hasChildren={detailNode.id !== ROOT_ID && getChildren(detailNode.id).length > 0}
+            isExpanded={mindmap.expandedNodes.has(detailNode.id)}
+            onClose={() => { setDetailNode(null); setActiveBranch(null); }}
+            onToggleExpand={() => handleToggleExpand(detailNode.id)}
+          />
         )}
       </AnimatePresence>
     </div>

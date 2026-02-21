@@ -12,6 +12,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     childrenIds: ['single-planet', 'fossil-fuel', 'intelligence-limits', 'population-decline', 'mobility-inefficiency', 'info-finance-gap'],
     title: '意識を守り、広げる',
     subtitle: 'Protect and Expand Consciousness',
+    heroStat: '6つの脅威',
+    heroCaption: '全てに解を持つ1人の人間',
     icon: '🌌',
     color: '--gold',
     imageUrl: 'images/root.png',
@@ -34,6 +36,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     childrenIds: ['extinction-risk', 'starlink-connectivity'],
     title: '単一惑星への依存',
     subtitle: 'Single Planet Dependency',
+    heroStat: '5回',
+    heroCaption: '地球はすでに5回の大量絶滅を経験',
     icon: '🌍',
     color: '--accent-blue',
     imageUrl: 'images/single-planet.png',
@@ -59,6 +63,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'single-planet',
     childrenIds: ['starship', 'mars-colony'],
     title: '多惑星種への進化 {SpaceX}',
+    heroStat: '138億年',
+    heroCaption: '宇宙で知的生命が確認された惑星は地球だけ',
     icon: '🚀',
     color: '--accent-blue',
     content: {
@@ -82,6 +88,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'extinction-risk',
     childrenIds: ['reusable-rockets'],
     title: 'Starship — コスト100分の1の宇宙船',
+    heroStat: '$10/kg',
+    heroCaption: '宇宙輸送コスト目標 — 従来の100分の1',
     icon: '🚀',
     color: '--accent-blue',
     content: {
@@ -107,6 +115,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'starship',
     childrenIds: [],
     title: '完全再利用 = 航空機モデル',
+    heroStat: '25回+',
+    heroCaption: 'Falcon 9ブースター再利用回数の記録',
     icon: '♻️',
     color: '--accent-blue',
     content: {
@@ -131,6 +141,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'extinction-risk',
     childrenIds: ['isru', 'terraforming'],
     title: '火星コロニー — 自給自足文明',
+    heroStat: '100万人',
+    heroCaption: '自給自足火星都市の目標人口',
     icon: '🔴',
     color: '--accent-blue',
     content: {
@@ -153,6 +165,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'mars-colony',
     childrenIds: [],
     title: '現地資源利用: ISRU',
+    heroStat: '95%',
+    heroCaption: '火星大気のCO2 — 燃料の原料になる',
     icon: '⛏️',
     color: '--accent-blue',
     content: {
@@ -175,6 +189,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'mars-colony',
     childrenIds: [],
     title: 'テラフォーミング — 数百年の計画',
+    heroStat: '数百年',
+    heroCaption: '火星を歩ける惑星にする計画の時間軸',
     icon: '🌱',
     color: '--accent-blue',
     content: {
@@ -194,6 +210,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'single-planet',
     childrenIds: ['direct-to-cell', 'starlink-mars-comms'],
     title: '地球全体の接続 {Starlink}',
+    heroStat: '118億ドル',
+    heroCaption: '2025年のStarlink年間売上',
     icon: '📡',
     color: '--accent-blue',
     content: {
@@ -215,6 +233,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'starlink-connectivity',
     childrenIds: [],
     title: 'Direct to Cell — スマホで衛星通信',
+    heroStat: '80億人',
+    heroCaption: '既存スマホがそのまま衛星電話になる',
     icon: '📱',
     color: '--accent-blue',
     content: {
@@ -237,6 +257,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'starlink-connectivity',
     childrenIds: [],
     title: '火星通信インフラの実験場',
+    heroStat: '4〜24分',
+    heroCaption: '地球-火星間の通信遅延',
     icon: '🔴',
     color: '--accent-blue',
     content: {
@@ -256,6 +278,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     childrenIds: ['ev-transition', 'energy-storage', 'solar-generation', 'master-plan-3'],
     title: '化石燃料への依存',
     subtitle: 'Fossil Fuel Dependency',
+    heroStat: '374億トン/年',
+    heroCaption: '化石燃料によるCO2排出量',
     icon: '🏭',
     color: '--tesla-red',
     imageUrl: 'images/fossil-fuel.png',
@@ -280,6 +304,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'fossil-fuel',
     childrenIds: ['master-plan-strategy', 'fsd-autonomy'],
     title: 'EVへの移行 {Tesla}',
+    heroStat: '4.4倍',
+    heroCaption: 'EVはガソリン車よりエネルギー効率が高い',
     icon: '⚡',
     color: '--tesla-red',
     content: {
@@ -301,6 +327,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'ev-transition',
     childrenIds: [],
     title: 'マスタープラン戦略 — 高級から大衆へ',
+    heroStat: '3段階',
+    heroCaption: 'ロードスター→セダン→大衆車の戦略',
     icon: '🏎️',
     color: '--tesla-red',
     content: {
@@ -325,6 +353,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'ev-transition',
     childrenIds: ['cybercab'],
     title: 'FSD完全自動運転',
+    heroStat: '7倍安全',
+    heroCaption: 'FSDは人間の運転より安全',
     icon: '🧠',
     color: '--tesla-red',
     content: {
@@ -349,6 +379,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'fsd-autonomy',
     childrenIds: [],
     title: 'Cybercab — 専用ロボタクシー',
+    heroStat: '$30,000以下',
+    heroCaption: '運転席のない自動運転専用タクシー',
     icon: '🚕',
     color: '--tesla-red',
     content: {
@@ -373,6 +405,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'fossil-fuel',
     childrenIds: ['megapack-grid', 'powerwall-home'],
     title: 'エネルギー貯蔵革命 {Tesla Energy}',
+    heroStat: '114%増',
+    heroCaption: '2024年のTesla Energy出荷量成長率',
     icon: '🔋',
     color: '--tesla-red',
     content: {
@@ -394,6 +428,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'energy-storage',
     childrenIds: [],
     title: 'Megapack — 送電網を再定義',
+    heroStat: '4GWh',
+    heroCaption: 'Megafactoryの年間生産能力',
     icon: '⚡',
     color: '--tesla-red',
     content: {
@@ -415,6 +451,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'energy-storage',
     childrenIds: [],
     title: 'Powerwall — 家庭の独立',
+    heroStat: '13.5kWh',
+    heroCaption: '1台で家庭の1日分をバックアップ',
     icon: '🏠',
     color: '--tesla-red',
     content: {
@@ -437,6 +475,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'fossil-fuel',
     childrenIds: ['solar-roof'],
     title: '太陽光発電 — 根本解 {Tesla Energy}',
+    heroStat: '10,000倍',
+    heroCaption: '太陽は人類の消費量の10,000倍のエネルギーを供給',
     icon: '☀️',
     color: '--tesla-red',
     content: {
@@ -461,6 +501,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'solar-generation',
     childrenIds: [],
     title: 'Solar Roof — 屋根が発電所に',
+    heroStat: '25年保証',
+    heroCaption: '屋根全体が発電するソーラールーフ',
     icon: '🏗️',
     color: '--tesla-red',
     content: {
@@ -481,7 +523,9 @@ export const visionTreeData: Record<string, VisionNode> = {
     depth: 2,
     parentId: 'fossil-fuel',
     childrenIds: [],
-    title: 'Master Plan Part 3 — 地球全体の脱炭素',
+    title: 'MP3 — 脱炭素計画',
+    heroStat: '240TWh',
+    heroCaption: '地球全体を持続可能エネルギーに移行する蓄電量',
     icon: '🌍',
     color: '--tesla-red',
     content: {
@@ -508,6 +552,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     childrenIds: ['ai-development', 'brain-interface'],
     title: '知能の限界',
     subtitle: 'Limits of Intelligence',
+    heroStat: '5年以内',
+    heroCaption: '全人類を超えるAIの到来予測',
     icon: '🧠',
     color: '--accent-purple',
     imageUrl: 'images/intelligence-limits.png',
@@ -528,6 +574,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'intelligence-limits',
     childrenIds: ['colossus', 'grok', 'openai-departure'],
     title: 'AI開発 {xAI}',
+    heroStat: '10倍',
+    heroCaption: 'xAI Colossusは世界最大のAIクラスター',
     icon: '🔬',
     color: '--accent-purple',
     content: {
@@ -545,6 +593,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'ai-development',
     childrenIds: [],
     title: 'Colossus — 世界最大のAIインフラ',
+    heroStat: '200,000基',
+    heroCaption: 'NVIDIA GPUを搭載した世界最大AIスパコン',
     icon: '🖥️',
     color: '--accent-purple',
     content: {
@@ -567,6 +617,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'ai-development',
     childrenIds: [],
     title: 'Grok — 偏りを排し真実を追求するAI',
+    heroStat: 'リアルタイム',
+    heroCaption: 'Xの投稿データで常に最新の情報にアクセス',
     icon: '🎯',
     color: '--accent-purple',
     content: {
@@ -589,6 +641,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'ai-development',
     childrenIds: [],
     title: 'AI開発の主導権を分散させる',
+    heroStat: '2つの道',
+    heroCaption: '営利AI vs 安全重視AI — イーロンの分岐点',
     icon: '⚖️',
     color: '--accent-purple',
     content: {
@@ -610,6 +664,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'intelligence-limits',
     childrenIds: ['bandwidth-problem', 'blindsight', 'telepathy', 'bci-alignment'],
     title: '脳とAIの融合 {Neuralink}',
+    heroStat: '1,024ch',
+    heroCaption: 'Neuralink N1チップのチャンネル数',
     icon: '🔌',
     color: '--accent-purple',
     content: {
@@ -633,6 +689,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'brain-interface',
     childrenIds: [],
     title: '帯域幅のボトルネック',
+    heroStat: '39bit/s',
+    heroCaption: '人間のタイピング速度 — AIとの帯域幅の壁',
     icon: '📡',
     color: '--accent-purple',
     content: {
@@ -654,6 +712,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'brain-interface',
     childrenIds: [],
     title: 'Blindsight — 視覚の回復',
+    heroStat: '失明者',
+    heroCaption: 'Neuralinkで視覚を取り戻す最初の製品',
     icon: '👁️',
     color: '--accent-purple',
     content: {
@@ -676,6 +736,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'brain-interface',
     childrenIds: [],
     title: 'Telepathy — 思考でコンピュータを操作',
+    heroStat: 'テレパシー',
+    heroCaption: '脳から直接デバイスを操作する技術',
     icon: '💭',
     color: '--accent-purple',
     content: {
@@ -699,6 +761,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'brain-interface',
     childrenIds: [],
     title: 'BCIによるアライメント',
+    heroStat: '共生',
+    heroCaption: '人間がAIと融合して知能格差を解消する',
     icon: '🔗',
     color: '--accent-purple',
     content: {
@@ -720,6 +784,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     childrenIds: ['optimus-robot', 'autonomous-transport', 'abundance-economy'],
     title: '人口・労働力の減少',
     subtitle: 'Population & Labor Decline',
+    heroStat: '0.75',
+    heroCaption: '韓国の出生率 — 世界最低',
     icon: '📉',
     color: '--accent-green',
     imageUrl: 'images/population-decline.png',
@@ -746,6 +812,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'population-decline',
     childrenIds: ['humanoid-design', 'fsd-to-robot', 'optimus-price'],
     title: '汎用ヒューマノイド {Tesla Optimus}',
+    heroStat: '$20,000〜',
+    heroCaption: 'ヒューマノイドロボットの量産価格目標',
     icon: '🤖',
     color: '--accent-green',
     content: {
@@ -769,6 +837,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'optimus-robot',
     childrenIds: [],
     title: 'なぜ人間型？世界は人間用に作られている',
+    heroStat: '28自由度',
+    heroCaption: 'Optimusの手だけで28の関節',
     icon: '🚪',
     color: '--accent-green',
     content: {
@@ -788,6 +858,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'optimus-robot',
     childrenIds: [],
     title: 'FSD技術のロボット転用',
+    heroStat: '同じAI',
+    heroCaption: 'FSDの自動運転技術をロボットに転用',
     icon: '👁️',
     color: '--accent-green',
     content: {
@@ -810,6 +882,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'optimus-robot',
     childrenIds: [],
     title: '目標価格2-3万ドル = 車より安い',
+    heroStat: '$20,000〜',
+    heroCaption: '車より安いヒューマノイドロボット',
     icon: '💵',
     color: '--accent-green',
     content: {
@@ -834,6 +908,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'population-decline',
     childrenIds: ['cybercab-labor', 'semi-truck'],
     title: '自律輸送 — 運転手不要の物流 {Tesla}',
+    heroStat: '16時間/日',
+    heroCaption: 'ロボタクシーは人間より2倍稼働できる',
     icon: '🚛',
     color: '--accent-green',
     content: {
@@ -854,6 +930,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'autonomous-transport',
     childrenIds: [],
     title: 'Cybercab — タクシー運転手の代替',
+    heroStat: '年80%削減',
+    heroCaption: 'ライドシェアの人件費をほぼゼロに',
     icon: '🚕',
     color: '--accent-green',
     content: {
@@ -876,6 +954,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'autonomous-transport',
     childrenIds: [],
     title: 'Tesla Semi — 長距離トラック運転手の代替',
+    heroStat: '500マイル',
+    heroCaption: 'Tesla Semi — EV大型トラックの航続距離',
     icon: '🚛',
     color: '--accent-green',
     content: {
@@ -898,6 +978,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'population-decline',
     childrenIds: [],
     title: '豊かさの時代 — 経済のパラダイムシフト',
+    heroStat: 'GDP 2倍',
+    heroCaption: 'ロボットで人間の労働力不足を完全補完',
     icon: '🌊',
     color: '--accent-green',
     content: {
@@ -925,6 +1007,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     childrenIds: ['underground-network'],
     title: '移動の非効率',
     subtitle: 'Mobility Inefficiency',
+    heroStat: '870億ドル',
+    heroCaption: '米国の年間渋滞コスト',
     icon: '🚗',
     color: '--muted',
     imageUrl: 'images/mobility-inefficiency.png',
@@ -949,6 +1033,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'mobility-inefficiency',
     childrenIds: ['tunnel-cost-reduction', 'intracity-transit', 'intercity-transit'],
     title: '地下に高速移動ネットワークを作る {The Boring Company}',
+    heroStat: '1/10',
+    heroCaption: 'トンネル掘削コストを10分の1に削減',
     icon: '🕳️',
     color: '--muted',
     content: {
@@ -973,6 +1059,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'underground-network',
     childrenIds: [],
     title: 'トンネル掘削コストを桁違いに下げる',
+    heroStat: '$1,000万/マイル',
+    heroCaption: '従来の1/10のトンネル建設コスト目標',
     icon: '⛏️',
     color: '--muted',
     content: {
@@ -995,6 +1083,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'underground-network',
     childrenIds: [],
     title: '都市内の主要拠点間を数分で結ぶ',
+    heroStat: '200km/h',
+    heroCaption: '都市内地下ループの目標速度',
     icon: '🎰',
     color: '--muted',
     content: {
@@ -1017,6 +1107,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'underground-network',
     childrenIds: [],
     title: '都市間の高速地下輸送を実現する',
+    heroStat: 'マッハ級',
+    heroCaption: 'Hyperloopの都市間超高速輸送構想',
     icon: '🚄',
     color: '--muted',
     content: {
@@ -1042,6 +1134,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     childrenIds: ['global-connectivity', 'free-speech-platform', 'financial-inclusion'],
     title: '情報と金融の断絶',
     subtitle: 'Information & Financial Disconnect',
+    heroStat: '22億人',
+    heroCaption: 'インターネット未接続の人口',
     icon: '📡',
     color: '--foreground',
     imageUrl: 'images/info-finance-gap.png',
@@ -1064,6 +1158,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'info-finance-gap',
     childrenIds: ['starlink-stats', 'starlink-disaster'],
     title: '地球全体をインターネットで繋ぐ {Starlink}',
+    heroStat: '9,400基+',
+    heroCaption: '軌道上のStarlink衛星数',
     icon: '🛰️',
     color: '--foreground',
     content: {
@@ -1085,6 +1181,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'global-connectivity',
     childrenIds: [],
     title: 'Starlinkの現状と規模',
+    heroStat: '1,000万人+',
+    heroCaption: 'Starlink加入者数',
     icon: '📊',
     color: '--foreground',
     content: {
@@ -1106,6 +1204,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'global-connectivity',
     childrenIds: [],
     title: '災害・紛争時の通信インフラ',
+    heroStat: '10,000台+',
+    heroCaption: 'ハリケーン・ヘレーンで配布されたStarlinkキット',
     icon: '🆘',
     color: '--foreground',
     content: {
@@ -1127,6 +1227,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'info-finance-gap',
     childrenIds: ['community-notes', 'censorship-problem'],
     title: '言論の自由を守る {X}',
+    heroStat: '6億人',
+    heroCaption: 'X（旧Twitter）の月間アクティブユーザー',
     icon: '🗣️',
     color: '--foreground',
     content: {
@@ -1150,6 +1252,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'free-speech-platform',
     childrenIds: [],
     title: 'コミュニティノート — 集合知による検証',
+    heroStat: 'クラウド',
+    heroCaption: 'コミュニティノート — 集合知によるファクトチェック',
     icon: '📝',
     color: '--foreground',
     content: {
@@ -1172,6 +1276,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'free-speech-platform',
     childrenIds: [],
     title: '検閲への懸念 — Twitter Files',
+    heroStat: '80%以上',
+    heroCaption: 'イーロン買収前のTwitter社員がリベラル寄り',
     icon: '🚫',
     color: '--foreground',
     content: {
@@ -1194,6 +1300,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'info-finance-gap',
     childrenIds: ['x-payments', 'everything-app'],
     title: '金融の民主化 {X Money}',
+    heroStat: '13億人',
+    heroCaption: '銀行口座を持てない成人の数',
     icon: '💰',
     color: '--foreground',
     content: {
@@ -1215,6 +1323,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'financial-inclusion',
     childrenIds: [],
     title: 'X Payments — デジタル決済',
+    heroStat: '送金手数料0',
+    heroCaption: 'X Paymentsの目標 — 金融アクセスの民主化',
     icon: '💳',
     color: '--foreground',
     content: {
@@ -1236,6 +1346,8 @@ export const visionTreeData: Record<string, VisionNode> = {
     parentId: 'financial-inclusion',
     childrenIds: [],
     title: 'Everything App構想',
+    heroStat: 'WeChat型',
+    heroCaption: '1つのアプリで全てが完結するスーパーアプリ',
     icon: '📱',
     color: '--foreground',
     content: {

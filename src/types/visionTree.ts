@@ -19,6 +19,8 @@ export interface VisionNode {
   icon: string;
   color: string;
   imageUrl?: string;
+  heroStat?: string;
+  heroCaption?: string;
 }
 
 export interface NodeContent {
