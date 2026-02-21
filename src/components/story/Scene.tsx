@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useRef, forwardRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, type MotionValue } from 'framer-motion';
 import type { StoryScene } from '../../types/story';
 import SceneImage from './SceneImage';
 import SceneStat from './SceneStat';
@@ -7,16 +7,19 @@ import SceneStat from './SceneStat';
 interface Props {
   scene: StoryScene;
   index: number;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 // Spring config for buttery smooth transforms
 const SPRING = { stiffness: 100, damping: 30, mass: 0.5 };
 
-export default function Scene({ scene }: Props) {
+export default function Scene({ scene, containerRef }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
+  // Track scroll within the container
   const { scrollYProgress } = useScroll({
     target: ref,
+    container: containerRef,
     offset: ['start end', 'end start'],
   });
 
@@ -27,31 +30,32 @@ export default function Scene({ scene }: Props) {
   const imageScale = useSpring(rawImageScale, SPRING);
 
   // ── Text entrance + exit ──
-  const textOpacity = useTransform(scrollYProgress, [0.1, 0.3, 0.7, 0.9], [0, 1, 1, 0]);
-  const rawTextY = useTransform(scrollYProgress, [0.1, 0.3, 0.7, 0.9], [60, 0, 0, -40]);
+  // 0.0 = scene entering from bottom, 0.5 = centered, 1.0 = exited top
+  const textOpacity = useTransform(scrollYProgress, [0.15, 0.35, 0.65, 0.85], [0, 1, 1, 0]);
+  const rawTextY = useTransform(scrollYProgress, [0.15, 0.35, 0.65, 0.85], [60, 0, 0, -40]);
   const textY = useSpring(rawTextY, SPRING);
 
-  // ── Sub text (staggered, slightly later) ──
-  const subOpacity = useTransform(scrollYProgress, [0.18, 0.38, 0.65, 0.85], [0, 1, 1, 0]);
-  const rawSubY = useTransform(scrollYProgress, [0.18, 0.38, 0.65, 0.85], [50, 0, 0, -30]);
+  // ── Sub text (staggered) ──
+  const subOpacity = useTransform(scrollYProgress, [0.22, 0.42, 0.6, 0.82], [0, 1, 1, 0]);
+  const rawSubY = useTransform(scrollYProgress, [0.22, 0.42, 0.6, 0.82], [50, 0, 0, -30]);
   const subY = useSpring(rawSubY, SPRING);
 
   // ── Badge (horizontal slide + fade) ──
-  const badgeOpacity = useTransform(scrollYProgress, [0.08, 0.28, 0.7, 0.88], [0, 1, 1, 0]);
-  const rawBadgeX = useTransform(scrollYProgress, [0.08, 0.28, 0.7, 0.88], [-80, 0, 0, 80]);
+  const badgeOpacity = useTransform(scrollYProgress, [0.12, 0.32, 0.65, 0.85], [0, 1, 1, 0]);
+  const rawBadgeX = useTransform(scrollYProgress, [0.12, 0.32, 0.65, 0.85], [-80, 0, 0, 80]);
   const badgeX = useSpring(rawBadgeX, SPRING);
 
   // ── Chapter line (scaleX from scroll) ──
-  const lineScale = useTransform(scrollYProgress, [0.25, 0.5, 0.7, 0.9], [0, 1, 1, 0]);
+  const lineScale = useTransform(scrollYProgress, [0.28, 0.48, 0.65, 0.85], [0, 1, 1, 0]);
 
   // ── Scale entrance for stat numbers ──
-  const statOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.65, 0.85], [0, 1, 1, 0]);
-  const rawStatScale = useTransform(scrollYProgress, [0.2, 0.4], [0.6, 1]);
+  const statOpacity = useTransform(scrollYProgress, [0.25, 0.42, 0.6, 0.82], [0, 1, 1, 0]);
+  const rawStatScale = useTransform(scrollYProgress, [0.25, 0.42], [0.6, 1]);
   const statScale = useSpring(rawStatScale, { stiffness: 80, damping: 20 });
 
   // ── Multi cards stagger ──
-  const cardOpacity = useTransform(scrollYProgress, [0.15, 0.35, 0.7, 0.88], [0, 1, 1, 0]);
-  const rawCardY = useTransform(scrollYProgress, [0.15, 0.35], [80, 0]);
+  const cardOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.65, 0.85], [0, 1, 1, 0]);
+  const rawCardY = useTransform(scrollYProgress, [0.2, 0.4], [80, 0]);
   const cardY = useSpring(rawCardY, SPRING);
 
   const imgSrc = scene.imageUrl ? `${import.meta.env.BASE_URL}${scene.imageUrl}` : undefined;
@@ -63,7 +67,6 @@ export default function Scene({ scene }: Props) {
 
   // ===== TEXT-ONLY =====
   if (scene.type === 'text-only') {
-    // Determine chapter tint
     const bgTint = getChapterTint(scene.chapter, scene.accentColor);
 
     return (
@@ -90,13 +93,7 @@ export default function Scene({ scene }: Props) {
           )}
           {/* Watermark number in background */}
           {scene.stat && (
-            <motion.div
-              className="scene__watermark"
-              style={{ opacity: useTransform(scrollYProgress, [0.15, 0.4, 0.6, 0.85], [0, 0.04, 0.04, 0]), color: scene.accentColor }}
-              aria-hidden
-            >
-              {scene.stat}
-            </motion.div>
+            <WatermarkNumber scrollYProgress={scrollYProgress} stat={scene.stat} color={scene.accentColor} />
           )}
         </div>
       </section>
@@ -105,10 +102,6 @@ export default function Scene({ scene }: Props) {
 
   // ===== CHAPTER TITLE =====
   if (scene.type === 'chapter-title') {
-    // Chapter number scale entrance
-    const chapterNumScale = useTransform(scrollYProgress, [0.1, 0.35], [0.5, 1]);
-    const chapterNumSpring = useSpring(chapterNumScale, { stiffness: 60, damping: 15 });
-
     return (
       <section ref={ref} className="scene scene--chapter" data-scene={scene.id}>
         {imgSrc && <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />}
@@ -118,7 +111,7 @@ export default function Scene({ scene }: Props) {
             style={{
               color: scene.accentColor,
               opacity: textOpacity,
-              scale: chapterNumSpring,
+              scale: useSpring(useTransform(scrollYProgress, [0.15, 0.4], [0.5, 1]), { stiffness: 60, damping: 15 }),
             }}
           >
             {scene.text}
@@ -143,8 +136,6 @@ export default function Scene({ scene }: Props) {
 
   // ===== EPILOGUE =====
   if (scene.type === 'epilogue') {
-    const quoteOpacity = useTransform(scrollYProgress, [0.35, 0.55, 0.75, 0.95], [0, 0.5, 0.5, 0]);
-
     return (
       <section ref={ref} className="scene scene--epilogue" data-scene={scene.id}>
         {imgSrc && <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />}
@@ -158,7 +149,7 @@ export default function Scene({ scene }: Props) {
           {scene.elonQuote && (
             <motion.blockquote
               className="scene__epilogue-quote"
-              style={{ opacity: quoteOpacity }}
+              style={{ opacity: useTransform(scrollYProgress, [0.35, 0.5, 0.7, 0.88], [0, 0.5, 0.5, 0]) }}
             >
               &ldquo;{scene.elonQuote}&rdquo;
               <cite>— Elon Musk</cite>
@@ -181,14 +172,10 @@ export default function Scene({ scene }: Props) {
             {scene.text}
           </motion.h2>
           <motion.div className="scene__multi-grid" style={{ opacity: cardOpacity, y: cardY }}>
-            {scene.multiItems.map((item, i) => (
-              <motion.div
+            {scene.multiItems.map((item) => (
+              <div
                 key={item.label}
                 className="scene__multi-card"
-                style={{
-                  // Stagger: offset each card slightly via individual transforms
-                  y: useTransform(scrollYProgress, [0.15 + i * 0.05, 0.35 + i * 0.05], [40, 0]),
-                }}
               >
                 <div className="scene__multi-img-wrap">
                   <img
@@ -203,7 +190,7 @@ export default function Scene({ scene }: Props) {
                 <span className="scene__multi-stat" style={{ color: scene.accentColor }}>
                   {item.stat}
                 </span>
-              </motion.div>
+              </div>
             ))}
           </motion.div>
         </div>
@@ -252,7 +239,7 @@ export default function Scene({ scene }: Props) {
         {scene.id === 'open-thesis' && (
           <motion.div
             className="scene__scroll-hint"
-            style={{ opacity: useTransform(scrollYProgress, [0.3, 0.5, 0.65, 0.8], [0, 0.4, 0.4, 0]) }}
+            style={{ opacity: useTransform(scrollYProgress, [0.35, 0.48, 0.6, 0.75], [0, 0.4, 0.4, 0]) }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="6 9 12 15 18 9" />
@@ -264,10 +251,21 @@ export default function Scene({ scene }: Props) {
   );
 }
 
-// ── Prologue special scene ──
-import { forwardRef } from 'react';
-import type { MotionValue } from 'framer-motion';
+// ── Watermark component (avoids hook-in-conditional) ──
+function WatermarkNumber({ scrollYProgress, stat, color }: { scrollYProgress: MotionValue<number>; stat: string; color: string }) {
+  const opacity = useTransform(scrollYProgress, [0.2, 0.4, 0.6, 0.8], [0, 0.04, 0.04, 0]);
+  return (
+    <motion.div
+      className="scene__watermark"
+      style={{ opacity, color }}
+      aria-hidden
+    >
+      {stat}
+    </motion.div>
+  );
+}
 
+// ── Prologue special scene ──
 interface PrologueProps {
   scene: StoryScene;
   scrollYProgress: MotionValue<number>;
@@ -276,46 +274,27 @@ interface PrologueProps {
 const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
   ({ scene, scrollYProgress }, ref) => {
     const chars = scene.text.split('');
-    const [starsVisible, setStarsVisible] = useState(false);
-
-    // Track scroll to trigger stars after text appears
-    useEffect(() => {
-      const unsubscribe = scrollYProgress.on('change', (v) => {
-        if (v > 0.35 && !starsVisible) setStarsVisible(true);
-        if (v < 0.1) setStarsVisible(false);
-      });
-      return unsubscribe;
-    }, [scrollYProgress, starsVisible]);
 
     return (
       <section ref={ref} className="scene scene--prologue" data-scene={scene.id}>
         <div className="scene__content scene__content--center">
           <h2 className="scene__prologue-text" aria-label={scene.text}>
-            {chars.map((char, i) => {
-              // Each character fades in at a slightly different scroll position
-              const startAt = 0.12 + i * 0.04;
-              const endAt = startAt + 0.06;
-              const exitStart = 0.7;
-              const exitEnd = 0.9;
-              return (
-                <PrologueChar
-                  key={i}
-                  char={char}
-                  scrollYProgress={scrollYProgress}
-                  startAt={startAt}
-                  endAt={endAt}
-                  exitStart={exitStart}
-                  exitEnd={exitEnd}
-                />
-              );
-            })}
+            {chars.map((char, i) => (
+              <PrologueChar
+                key={i}
+                char={char}
+                scrollYProgress={scrollYProgress}
+                index={i}
+                total={chars.length}
+              />
+            ))}
           </h2>
         </div>
         {/* Stars fade in after text */}
         <motion.div
           className="scene__prologue-stars"
           style={{
-            opacity: useTransform(scrollYProgress, [0.3, 0.5, 0.75, 0.95], [0, 0.6, 0.6, 0]),
+            opacity: useTransform(scrollYProgress, [0.35, 0.5, 0.7, 0.9], [0, 0.6, 0.6, 0]),
           }}
           aria-hidden
         >
@@ -330,18 +309,20 @@ const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
 function PrologueChar({
   char,
   scrollYProgress,
-  startAt,
-  endAt,
-  exitStart,
-  exitEnd,
+  index,
+  total,
 }: {
   char: string;
   scrollYProgress: MotionValue<number>;
-  startAt: number;
-  endAt: number;
-  exitStart: number;
-  exitEnd: number;
+  index: number;
+  total: number;
 }) {
+  // Spread characters across 0.15-0.45 range (centered around 0.3)
+  const startAt = 0.15 + (index / total) * 0.2;
+  const endAt = startAt + 0.08;
+  const exitStart = 0.65;
+  const exitEnd = 0.85;
+
   const opacity = useTransform(
     scrollYProgress,
     [startAt, endAt, exitStart, exitEnd],
@@ -366,7 +347,6 @@ function PrologueChar({
 // ── Helper: Chapter background tint ──
 function getChapterTint(chapter: number | null, accentColor: string): string {
   if (!chapter) return 'var(--bg)';
-  // Extract RGB from accent color and apply very subtle tint
   const match = accentColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
   if (!match) return 'var(--bg)';
   return `rgba(${match[1]}, ${match[2]}, ${match[3]}, 0.03)`;

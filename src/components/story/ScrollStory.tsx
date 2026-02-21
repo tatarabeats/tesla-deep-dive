@@ -70,7 +70,7 @@ export default function ScrollStory() {
 
       <div ref={containerRef} className="scroll-story">
         {storyScenes.map((scene, i) => (
-          <Scene key={scene.id} scene={scene} index={i} />
+          <Scene key={scene.id} scene={scene} index={i} containerRef={containerRef} />
         ))}
       </div>
     </>
