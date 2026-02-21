@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { storyScenes } from '../../data/storyScenes';
 import Scene from './Scene';
 import ProgressBar from './ProgressBar';
+import VisionTreeExplorer from '../tree/VisionTreeExplorer';
 
 export default function ScrollStory() {
   // Use the window/document as scroll container (no fixed div)
@@ -47,6 +48,9 @@ export default function ScrollStory() {
         {storyScenes.map((scene, i) => (
           <Scene key={scene.id} scene={scene} index={i} />
         ))}
+
+        {/* Interactive Vision Tree — Deep Dive */}
+        <VisionTreeExplorer />
       </main>
     </>
   );

@@ -161,12 +161,24 @@ export default function Scene({ scene }: Props) {
       <section ref={ref} className="scene scene--epilogue" data-scene={scene.id}>
         {imgSrc && <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />}
         <div className="scene__content scene__content--center">
+          {/* Glowing accent line */}
+          <motion.div
+            style={{
+              width: 60,
+              height: 2,
+              background: `linear-gradient(90deg, transparent, ${scene.accentColor}, transparent)`,
+              borderRadius: 1,
+            }}
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={isInView ? { scaleX: 1, opacity: 1 } : {}}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
+          />
           <motion.p
             className="scene__epilogue-text"
             style={{ color: scene.accentColor }}
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
+            transition={{ duration: 1.5, delay: 0.3, ease: 'easeOut' }}
           >
             {scene.text}
           </motion.p>
@@ -175,12 +187,27 @@ export default function Scene({ scene }: Props) {
               className="scene__epilogue-quote"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 0.5 } : {}}
-              transition={{ duration: 1.5, delay: 1.0 }}
+              transition={{ duration: 1.5, delay: 1.2 }}
             >
               &ldquo;{scene.elonQuote}&rdquo;
               <cite>— Elon Musk</cite>
             </motion.blockquote>
           )}
+          {/* Scroll down hint to Deep Dive */}
+          <motion.div
+            className="scene__scroll-hint"
+            style={{ marginTop: 40 }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 0.35 } : { opacity: 0 }}
+            transition={{ duration: 1, delay: 2.5 }}
+          >
+            <span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase' as const, fontWeight: 700, color: 'var(--gold)' }}>
+              Deep Dive
+            </span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </motion.div>
         </div>
       </section>
     );
