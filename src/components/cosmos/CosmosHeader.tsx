@@ -5,23 +5,21 @@ interface Props {
   total: number;
 }
 
-export default function TreeHeader({ explored, total }: Props) {
+export default function CosmosHeader({ explored, total }: Props) {
   const pct = total > 0 ? (explored / total) * 100 : 0;
 
   return (
-    <div className="tree-header">
-      <span className="tree-header__label">Vision Tree</span>
-      <div className="tree-header__bar-bg">
+    <div className="cosmos-header">
+      <span className="cosmos-header__label">Vision Tree</span>
+      <div className="cosmos-header__bar-bg">
         <motion.div
-          className="tree-header__bar-fill"
+          className="cosmos-header__bar-fill"
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         />
       </div>
-      <span className="tree-header__count">
-        {explored}/{total}
-      </span>
+      <span className="cosmos-header__count">{explored}/{total}</span>
     </div>
   );
 }

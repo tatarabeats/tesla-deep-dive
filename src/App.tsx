@@ -1,10 +1,10 @@
 import { GameProvider } from './store/gameContext';
-import { TreeExplorer } from './components/tree/TreeExplorer';
+import CosmosCanvas from './components/cosmos/CosmosCanvas';
 
 function App() {
   return (
     <GameProvider>
-      <TreeExplorer />
+      <CosmosCanvas />
     </GameProvider>
   );
 }
