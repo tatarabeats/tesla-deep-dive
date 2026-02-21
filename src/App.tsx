@@ -1,12 +1,7 @@
-import { GameProvider } from './store/gameContext';
-import CosmosCanvas from './components/cosmos/CosmosCanvas';
+import ScrollStory from './components/story/ScrollStory';
 
 function App() {
-  return (
-    <GameProvider>
-      <CosmosCanvas />
-    </GameProvider>
-  );
+  return <ScrollStory />;
 }
 
 export default App;
