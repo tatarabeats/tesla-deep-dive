@@ -129,6 +129,15 @@ export default function MindmapOrb({ node, x, y, depth, isCenter, isExplored, is
         />
       )}
 
+      {/* Clip path for circular image */}
+      {node.imageUrl && (
+        <defs>
+          <clipPath id={`clip-${node.id}`}>
+            <circle cx={x} cy={y} r={r - 1} />
+          </clipPath>
+        </defs>
+      )}
+
       {/* Main orb — dark fill with colored stroke */}
       <circle
         cx={x} cy={y}
@@ -138,13 +147,43 @@ export default function MindmapOrb({ node, x, y, depth, isCenter, isExplored, is
         strokeWidth={isCenter ? 2 : depth <= 1 ? 1.5 : 1}
       />
 
-      {/* Inner subtle gradient overlay */}
-      <circle
-        cx={x} cy={y}
-        r={r - 1}
-        fill={nodeColor.replace(/[\d.]+\)$/, '0.06)')}
-        style={{ pointerEvents: 'none' }}
-      />
+      {/* Image inside orb (if available) */}
+      {node.imageUrl ? (
+        <>
+          <image
+            href={node.imageUrl}
+            x={x - r + 1}
+            y={y - r + 1}
+            width={(r - 1) * 2}
+            height={(r - 1) * 2}
+            clipPath={`url(#clip-${node.id})`}
+            preserveAspectRatio="xMidYMid slice"
+            style={{ pointerEvents: 'none' }}
+          />
+          {/* Dark overlay for readability */}
+          <circle
+            cx={x} cy={y}
+            r={r - 1}
+            fill="rgba(0,0,0,0.35)"
+            style={{ pointerEvents: 'none' }}
+          />
+          {/* Colored tint overlay */}
+          <circle
+            cx={x} cy={y}
+            r={r - 1}
+            fill={nodeColor.replace(/[\d.]+\)$/, '0.12)')}
+            style={{ pointerEvents: 'none' }}
+          />
+        </>
+      ) : (
+        /* Inner subtle gradient overlay (no image) */
+        <circle
+          cx={x} cy={y}
+          r={r - 1}
+          fill={nodeColor.replace(/[\d.]+\)$/, '0.06)')}
+          style={{ pointerEvents: 'none' }}
+        />
+      )}
 
       {/* Icon */}
       <text
@@ -152,7 +191,11 @@ export default function MindmapOrb({ node, x, y, depth, isCenter, isExplored, is
         textAnchor="middle"
         dominantBaseline="central"
         fontSize={iconSize}
-        style={{ pointerEvents: 'none', userSelect: 'none' }}
+        style={{
+          pointerEvents: 'none',
+          userSelect: 'none',
+          filter: node.imageUrl ? 'drop-shadow(0 1px 2px rgba(0,0,0,0.8))' : 'none',
+        }}
       >
         {node.icon}
       </text>
