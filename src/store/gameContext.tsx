@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer, useCallback, useEffect, type ReactNode } from 'react';
 import type { UserProfile } from '../types/user';
 import { loadUserProgress, saveUserProgress } from '../utils/storage';
+import { visionTreeData, getChildren } from '../data/visionTree';
 
 /* ── State ── */
 interface MindmapState {
@@ -17,6 +18,17 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType | null>(null);
 
+/** Recursively collect all descendant IDs */
+function getSubtreeIds(nodeId: string): string[] {
+  const ids: string[] = [];
+  const kids = getChildren(nodeId);
+  for (const kid of kids) {
+    ids.push(kid.id);
+    ids.push(...getSubtreeIds(kid.id));
+  }
+  return ids;
+}
+
 export function GameProvider({ children }: { children: ReactNode }) {
   const [userProfile, setUserProfile] = useReducer(
     (_prev: UserProfile, next: UserProfile) => next,
@@ -27,7 +39,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [mindmap, setMindmap] = useReducer(
     (_prev: MindmapState, next: MindmapState) => next,
     {
-      expandedNodes: new Set<string>(['root']),
+      expandedNodes: new Set<string>(),
       exploredNodes: new Set<string>(loadUserProgress().exploredNodeIds),
     } as MindmapState,
   );
@@ -41,13 +53,30 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const newExpanded = new Set(mindmap.expandedNodes);
     const newExplored = new Set(mindmap.exploredNodes);
     const isFirstVisit = !newExplored.has(nodeId);
+    const node = visionTreeData[nodeId];
 
     if (newExpanded.has(nodeId)) {
-      // collapse
+      // Collapse: remove this node + all descendants
       newExpanded.delete(nodeId);
+      for (const descId of getSubtreeIds(nodeId)) {
+        newExpanded.delete(descId);
+      }
     } else {
-      // expand
+      // Expand
       newExpanded.add(nodeId);
+
+      // L1 Accordion: if this is a depth-1 node, collapse other L1 siblings + their subtrees
+      if (node && node.depth === 1) {
+        const siblings = getChildren('root');
+        for (const sib of siblings) {
+          if (sib.id !== nodeId && newExpanded.has(sib.id)) {
+            newExpanded.delete(sib.id);
+            for (const descId of getSubtreeIds(sib.id)) {
+              newExpanded.delete(descId);
+            }
+          }
+        }
+      }
     }
 
     newExplored.add(nodeId);

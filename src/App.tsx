@@ -1,10 +1,10 @@
 import { GameProvider } from './store/gameContext';
-import { MindmapScreen } from './components/screens/MindmapScreen';
+import { TreeExplorer } from './components/tree/TreeExplorer';
 
 function App() {
   return (
     <GameProvider>
-      <MindmapScreen />
+      <TreeExplorer />
     </GameProvider>
   );
 }
