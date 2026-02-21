@@ -1,6 +1,11 @@
 /** Scene types for scroll-driven storytelling */
 
-export type SceneType = 'cold-open' | 'root' | 'threat' | 'solution' | 'multi' | 'epilogue';
+export type SceneType =
+  | 'text-only'      // Text on dark bg, no image — "breathing" scene
+  | 'image-hero'     // Full-bleed image with overlaid text + optional stat
+  | 'chapter-title'  // Chapter intro — threat name + ominous stat
+  | 'multi'          // Multi-card grid
+  | 'epilogue';      // Final scene
 
 export interface StoryScene {
   id: string;
@@ -9,19 +14,21 @@ export interface StoryScene {
   chapter: number | null;
   /** Image path relative to public/ */
   imageUrl: string | null;
-  /** Main display text (short, 1-2 lines) */
+  /** Main display text */
   text: string;
-  /** Secondary text below main */
+  /** Secondary line */
   subText?: string;
   /** Big hero number/stat */
   stat?: string;
-  /** Small context for the stat */
+  /** Context for the stat */
   statLabel?: string;
-  /** Accent color for chapter theming */
+  /** Accent color */
   accentColor: string;
-  /** Elon quote for epilogue */
+  /** Elon quote */
   elonQuote?: string;
-  /** For multi-solution scenes: array of sub-items */
+  /** Company badge */
+  badge?: string;
+  /** For multi scenes */
   multiItems?: {
     imageUrl: string;
     label: string;

@@ -20,7 +20,6 @@ export default function SceneImage({ src, imageY, imageScale }: Props) {
           scale: imageScale,
         }}
       />
-      {/* Bottom gradient overlay */}
       <div className="scene-image__overlay" />
     </div>
   );

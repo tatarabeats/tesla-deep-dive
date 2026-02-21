@@ -7,9 +7,7 @@ interface Props {
   color: string;
 }
 
-/** Extract numeric part and suffix for counter animation */
 function parseStatNumber(stat: string): { prefix: string; num: number; suffix: string; hasNum: boolean } {
-  // Match patterns like "374億", "$118億", "4.4倍", "138億年", "0.75", "10,000倍"
   const match = stat.match(/^([^\d]*?)([\d,]+\.?\d*)(.*?)$/);
   if (!match) return { prefix: '', num: 0, suffix: stat, hasNum: false };
   const numStr = match[2].replace(/,/g, '');
@@ -22,15 +20,9 @@ function parseStatNumber(stat: string): { prefix: string; num: number; suffix: s
 }
 
 function formatNumber(n: number, original: string): string {
-  // Preserve comma formatting from original
-  if (original.includes(',')) {
-    return n.toLocaleString('en-US');
-  }
-  // Preserve decimal places
+  if (original.includes(',')) return n.toLocaleString('en-US');
   const match = original.match(/\.(\d+)/);
-  if (match) {
-    return n.toFixed(match[1].length);
-  }
+  if (match) return n.toFixed(match[1].length);
   return Math.round(n).toString();
 }
 
@@ -43,21 +35,17 @@ export default function SceneStat({ stat, label, color }: Props) {
   useEffect(() => {
     if (!isInView || !parsed.hasNum) return;
 
-    const duration = 1200; // ms
+    const duration = 1400;
     const startTime = performance.now();
     const target = parsed.num;
 
     function animate(now: number) {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setDisplayNum(target * eased);
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        setDisplayNum(target);
-      }
+      if (progress < 1) requestAnimationFrame(animate);
+      else setDisplayNum(target);
     }
 
     requestAnimationFrame(animate);
@@ -68,9 +56,9 @@ export default function SceneStat({ stat, label, color }: Props) {
       <motion.div
         className="scene-stat__number"
         style={{ color }}
-        initial={{ opacity: 0, scale: 0.5 }}
+        initial={{ opacity: 0, scale: 0.7 }}
         animate={isInView ? { opacity: 1, scale: 1 } : {}}
-        transition={{ type: 'spring', stiffness: 150, damping: 20, delay: 0.2 }}
+        transition={{ type: 'spring', stiffness: 120, damping: 18, delay: 0.3 }}
       >
         {parsed.hasNum ? (
           <>
@@ -86,8 +74,8 @@ export default function SceneStat({ stat, label, color }: Props) {
         <motion.p
           className="scene-stat__label"
           initial={{ opacity: 0, y: 10 }}
-          animate={isInView ? { opacity: 0.7, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          animate={isInView ? { opacity: 0.65, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.9 }}
         >
           {label}
         </motion.p>

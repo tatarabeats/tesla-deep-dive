@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import type { StoryScene } from '../../types/story';
 import SceneImage from './SceneImage';
-import SceneText from './SceneText';
 import SceneStat from './SceneStat';
 
 interface Props {
@@ -19,29 +18,74 @@ export default function Scene({ scene }: Props) {
     offset: ['start end', 'end start'],
   });
 
-  // Parallax + zoom for images
-  const imageY = useTransform(scrollYProgress, [0, 1], ['10%', '-10%']);
-  const imageScale = useTransform(scrollYProgress, [0, 0.5], [1.15, 1.0]);
+  // Parallax for images
+  const imageY = useTransform(scrollYProgress, [0, 1], ['12%', '-12%']);
+  const imageScale = useTransform(scrollYProgress, [0, 0.5], [1.2, 1.0]);
 
-  // Text reveal
+  // Text animations — staggered from scroll position
   const textOpacity = useTransform(scrollYProgress, [0.15, 0.4], [0, 1]);
-  const textY = useTransform(scrollYProgress, [0.15, 0.4], ['30px', '0px']);
+  const textY = useTransform(scrollYProgress, [0.15, 0.4], [40, 0]);
+  const subOpacity = useTransform(scrollYProgress, [0.25, 0.5], [0, 1]);
+  const subY = useTransform(scrollYProgress, [0.25, 0.5], [30, 0]);
 
   const imgSrc = scene.imageUrl ? `${import.meta.env.BASE_URL}${scene.imageUrl}` : undefined;
 
-  // ===== COLD OPEN =====
-  if (scene.type === 'cold-open') {
+  // ===== TEXT-ONLY =====
+  if (scene.type === 'text-only') {
     return (
-      <section ref={ref} className="scene scene--cold-open" data-scene={scene.id}>
-        <motion.div
-          className="scene__cold-text"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 2, ease: 'easeOut' }}
-        >
-          <span className="scene__cold-ja">{scene.text}</span>
-          <span className="scene__cold-en">{scene.subText}</span>
-        </motion.div>
+      <section ref={ref} className="scene scene--text-only" data-scene={scene.id}>
+        <div className="scene__content scene__content--center">
+          <motion.h2
+            className="scene__text-main"
+            style={{ color: scene.accentColor, opacity: textOpacity, y: textY }}
+          >
+            {scene.text.split('\n').map((line, i) => (
+              <span key={i}>{line}{i < scene.text.split('\n').length - 1 && <br />}</span>
+            ))}
+          </motion.h2>
+          {scene.subText && (
+            <motion.p
+              className="scene__text-sub"
+              style={{ opacity: subOpacity, y: subY }}
+            >
+              {scene.subText}
+            </motion.p>
+          )}
+          {scene.stat && (
+            <SceneStat stat={scene.stat} label={scene.statLabel} color={scene.accentColor} />
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  // ===== CHAPTER TITLE =====
+  if (scene.type === 'chapter-title') {
+    return (
+      <section ref={ref} className="scene scene--chapter" data-scene={scene.id}>
+        {imgSrc && <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />}
+        <div className="scene__content scene__content--center">
+          <motion.span
+            className="scene__chapter-num"
+            style={{ color: scene.accentColor, opacity: textOpacity }}
+          >
+            {scene.text}
+          </motion.span>
+          <motion.h2
+            className="scene__chapter-title"
+            style={{ opacity: subOpacity, y: subY }}
+          >
+            {scene.subText}
+          </motion.h2>
+          {/* Horizontal accent line */}
+          <motion.div
+            className="scene__chapter-line"
+            style={{ backgroundColor: scene.accentColor }}
+            initial={{ scaleX: 0 }}
+            animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
+          />
+        </div>
       </section>
     );
   }
@@ -57,7 +101,7 @@ export default function Scene({ scene }: Props) {
             style={{ color: scene.accentColor }}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1.2, ease: 'easeOut' }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
           >
             {scene.text}
           </motion.p>
@@ -66,9 +110,9 @@ export default function Scene({ scene }: Props) {
               className="scene__epilogue-quote"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 0.5 } : {}}
-              transition={{ duration: 1.5, delay: 0.8 }}
+              transition={{ duration: 1.5, delay: 1.0 }}
             >
-              "{scene.elonQuote}"
+              &ldquo;{scene.elonQuote}&rdquo;
               <cite>— Elon Musk</cite>
             </motion.blockquote>
           )}
@@ -77,14 +121,14 @@ export default function Scene({ scene }: Props) {
     );
   }
 
-  // ===== MULTI (3-card layout) =====
+  // ===== MULTI =====
   if (scene.type === 'multi' && scene.multiItems) {
     return (
       <section ref={ref} className="scene scene--multi" data-scene={scene.id}>
         <div className="scene__content scene__content--center">
           <motion.h2
-            className="scene-text__main"
-            style={{ opacity: textOpacity, y: textY }}
+            className="scene__text-main"
+            style={{ color: scene.accentColor, opacity: textOpacity, y: textY }}
           >
             {scene.text}
           </motion.h2>
@@ -93,9 +137,9 @@ export default function Scene({ scene }: Props) {
               <motion.div
                 key={item.label}
                 className="scene__multi-card"
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
+                transition={{ duration: 0.7, delay: 0.3 + i * 0.2, ease: 'easeOut' }}
               >
                 <div className="scene__multi-img-wrap">
                   <img
@@ -118,31 +162,47 @@ export default function Scene({ scene }: Props) {
     );
   }
 
-  // ===== DEFAULT (threat / solution / root) =====
-  const isThreat = scene.type === 'threat';
-
+  // ===== IMAGE-HERO (default) =====
   return (
-    <section ref={ref} className={`scene ${isThreat ? 'scene--threat' : ''}`} data-scene={scene.id}>
+    <section ref={ref} className="scene scene--image-hero" data-scene={scene.id}>
       {imgSrc && <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />}
       <div className="scene__content">
-        <SceneText
-          text={scene.text}
-          subText={scene.subText}
-          textOpacity={textOpacity}
-          textY={textY}
-          isThreat={isThreat}
-        />
+        {scene.badge && (
+          <motion.span
+            className="scene__badge"
+            style={{ borderColor: scene.accentColor, color: scene.accentColor }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {scene.badge}
+          </motion.span>
+        )}
+        <motion.h2
+          className="scene__hero-text"
+          style={{ opacity: textOpacity, y: textY }}
+        >
+          {scene.text}
+        </motion.h2>
+        {scene.subText && (
+          <motion.p
+            className="scene__hero-sub"
+            style={{ opacity: subOpacity, y: subY }}
+          >
+            {scene.subText}
+          </motion.p>
+        )}
         {scene.stat && (
           <SceneStat stat={scene.stat} label={scene.statLabel} color={scene.accentColor} />
         )}
-        {scene.type === 'root' && (
+        {/* Scroll hint on thesis scene */}
+        {scene.id === 'open-thesis' && (
           <motion.div
             className="scene__scroll-hint"
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           >
             <span className="scene__scroll-arrow">↓</span>
-            <span className="scene__scroll-label">Scroll</span>
           </motion.div>
         )}
       </div>
