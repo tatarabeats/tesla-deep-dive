@@ -287,10 +287,18 @@
   text-shadow: 0 1px 4px rgba(0,0,0,0.8);
 }
 
+.orb-node__caption {
+  font-size: 8px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  opacity: 0.55;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
 .orb-node__stat {
   font-size: 9px;
   font-weight: 700;
   color: var(--cyan);
-  opacity: 0.55;
+  opacity: 0.6;
   text-shadow: 0 1px 4px rgba(0,0,0,0.8);
 }

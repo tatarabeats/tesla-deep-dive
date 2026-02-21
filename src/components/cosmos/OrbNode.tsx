@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { VisionNode } from '../../types/visionTree';
 import { haptic } from '../../utils/haptic';
+import { playSound } from '../../utils/sound';
 
 interface Props {
   node: VisionNode;
@@ -25,15 +26,21 @@ function getBorder(depth: number, expanded: boolean): string {
   return expanded ? 'rgba(80,200,255,0.45)' : 'rgba(80,200,255,0.15)';
 }
 
+function truncate(str: string, max: number): string {
+  return str.length > max ? str.slice(0, max - 1) + '…' : str;
+}
+
 export default function OrbNode({ node, x, y, size, isExplored, isExpanded, onTap, breathDelay }: Props) {
   const glow = getGlow(node.depth);
   const border = getBorder(node.depth, isExpanded);
   const imgUrl = node.imageUrl ? `${import.meta.env.BASE_URL}${node.imageUrl}` : undefined;
-  const iconSize = size * 0.38;
+  const iconSize = size * 0.55;
   const cleanTitle = node.title.replace(/\s*\{[^}]+\}/g, '').replace(/\s*—\s*.+$/, '');
-  // Short title: allow more chars for bigger orbs
-  const maxLen = node.depth <= 1 ? 10 : 8;
-  const label = cleanTitle.length > maxLen ? cleanTitle.slice(0, maxLen - 1) + '…' : cleanTitle;
+  const maxTitleLen = node.depth <= 1 ? 10 : 8;
+  const label = truncate(cleanTitle, maxTitleLen);
+
+  // Short caption from heroCaption
+  const caption = node.heroCaption ? truncate(node.heroCaption, 18) : null;
 
   return (
     <motion.div
@@ -60,6 +67,7 @@ export default function OrbNode({ node, x, y, size, isExplored, isExpanded, onTa
       onClick={(e) => {
         e.stopPropagation();
         haptic('light');
+        playSound(isExpanded ? 'collapse' : 'expand', node.depth);
         onTap(node.id);
       }}
     >
@@ -117,6 +125,7 @@ export default function OrbNode({ node, x, y, size, isExplored, isExpanded, onTa
       {/* Label below */}
       <div className="orb-node__label">
         <span className="orb-node__title">{label}</span>
+        {caption && <span className="orb-node__caption">{caption}</span>}
         {node.heroStat && <span className="orb-node__stat">{node.heroStat}</span>}
       </div>
     </motion.div>
