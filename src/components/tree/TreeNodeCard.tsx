@@ -1,9 +1,10 @@
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { VisionNode } from '../../types/visionTree';
 import { getChildren } from '../../data/visionTree';
+import { haptic } from '../../utils/haptic';
 import NodeOrb from './NodeOrb';
-import NodeInfo from './NodeInfo';
+import NodeContent from './NodeContent';
 
 interface Props {
   node: VisionNode;
@@ -26,40 +27,33 @@ export default function TreeNodeCard({
   depth,
   staggerIndex,
 }: Props) {
-  const [showDetail, setShowDetail] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-
   const children = getChildren(node.id);
   const hasChildren = children.length > 0;
-
-  const orbSize = depth <= 1 ? 56 : depth === 2 ? 48 : 40;
+  const orbSize = depth <= 2 ? 44 : 36;
+  const delay = staggerIndex !== undefined ? staggerIndex * 0.05 : 0;
+  const cleanTitle = node.title.replace(/\s*\{[^}]+\}/g, '');
 
   const handleTap = useCallback(() => {
+    haptic('light');
     onToggle(node.id);
-    // Scroll into view after expand animation starts
     if (!isExpanded) {
       setTimeout(() => {
         cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 80);
+      }, 100);
     }
   }, [node.id, isExpanded, onToggle]);
-
-  const delay = staggerIndex !== undefined ? staggerIndex * 0.06 : 0;
-
-  // Clean title (remove company tags)
-  const cleanTitle = node.title.replace(/\s*\{[^}]+\}/g, '');
 
   return (
     <motion.div
       ref={cardRef}
       className={`tree-card tree-card--d${Math.min(depth, 4)} ${isExpanded ? 'tree-card--expanded' : ''}`}
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
       transition={{ duration: 0.3, delay, ease: 'easeOut' }}
-      layout
     >
-      {/* Tappable row: orb + title + chevron */}
+      {/* Tappable row */}
       <motion.div
         className="tree-card__row"
         onClick={handleTap}
@@ -77,29 +71,22 @@ export default function TreeNodeCard({
 
         <div className="tree-card__text">
           <div className="tree-card__title">{cleanTitle}</div>
-          {node.subtitle && (
-            <div className="tree-card__subtitle">{node.subtitle}</div>
-          )}
-          {/* Inline hero stat preview (collapsed state) */}
+          {node.subtitle && <div className="tree-card__subtitle">{node.subtitle}</div>}
           {!isExpanded && node.heroStat && (
-            <div className="tree-card__stat-preview">
-              {node.heroStat}
-            </div>
+            <div className="tree-card__stat-preview">{node.heroStat}</div>
           )}
         </div>
 
-        {hasChildren && (
-          <motion.div
-            className="tree-card__chevron"
-            animate={{ rotate: isExpanded ? 90 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            &#x203A;
-          </motion.div>
-        )}
+        <motion.div
+          className="tree-card__chevron"
+          animate={{ rotate: isExpanded ? 90 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          ›
+        </motion.div>
       </motion.div>
 
-      {/* Expanded content: NodeInfo + children */}
+      {/* Expanded: content auto-shown + children */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -109,14 +96,9 @@ export default function TreeNodeCard({
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
           >
-            <NodeInfo
-              node={node}
-              showDetail={showDetail}
-              onToggleDetail={() => setShowDetail(!showDetail)}
-            />
+            <NodeContent node={node} compact />
 
-            {/* Children */}
-            {children.length > 0 && (
+            {hasChildren && (
               <div className="tree-card__children">
                 {children.map((child, i) => (
                   <TreeNodeCard

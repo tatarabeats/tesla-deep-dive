@@ -10,16 +10,17 @@ export default function TreeHeader({ explored, total }: Props) {
 
   return (
     <div className="tree-header">
+      <span className="tree-header__label">Vision Tree</span>
       <div className="tree-header__bar-bg">
         <motion.div
           className="tree-header__bar-fill"
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         />
       </div>
       <span className="tree-header__count">
-        {explored} / {total}
+        {explored}/{total}
       </span>
     </div>
   );

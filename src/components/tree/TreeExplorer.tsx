@@ -1,155 +1,176 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../store/gameContext';
 import { visionTreeData, getChildren, totalNodeCount } from '../../data/visionTree';
+import { haptic } from '../../utils/haptic';
 import TreeHeader from './TreeHeader';
 import NodeOrb from './NodeOrb';
-import NodeInfo from './NodeInfo';
+import NodeContent from './NodeContent';
 import TreeNodeCard from './TreeNodeCard';
-import { useState } from 'react';
 
 const ROOT_ID = 'root';
 
 export function TreeExplorer() {
   const { mindmap, toggleNode } = useGame();
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [rootDetail, setRootDetail] = useState(false);
+  const branchRef = useRef<HTMLDivElement>(null);
 
   const rootNode = visionTreeData[ROOT_ID];
   const l1Nodes = getChildren(ROOT_ID);
-
-  // Find which L1 is currently expanded
   const activeL1 = l1Nodes.find(n => mindmap.expandedNodes.has(n.id)) ?? null;
+  const isRootExpanded = mindmap.expandedNodes.has(ROOT_ID);
+
+  const handleRootTap = useCallback(() => {
+    if (!isRootExpanded) {
+      haptic('medium');
+      toggleNode(ROOT_ID);
+    }
+  }, [isRootExpanded, toggleNode]);
 
   const handleL1Tap = useCallback((nodeId: string) => {
+    haptic('light');
     toggleNode(nodeId);
   }, [toggleNode]);
 
-  const handleRootTap = useCallback(() => {
-    // Root tap: expand root if collapsed, or toggle root detail
-    if (!mindmap.expandedNodes.has(ROOT_ID)) {
-      toggleNode(ROOT_ID);
-    } else {
-      setRootDetail(prev => !prev);
+  // Scroll to branch content when L1 changes
+  useEffect(() => {
+    if (activeL1 && branchRef.current) {
+      setTimeout(() => {
+        branchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
     }
-  }, [mindmap.expandedNodes, toggleNode]);
+  }, [activeL1?.id]);
 
   return (
-    <div className="tree-explorer" ref={scrollRef}>
+    <div className="tree-explorer">
       <TreeHeader explored={mindmap.exploredNodes.size} total={totalNodeCount} />
 
       {/* Root Hero */}
       <motion.div
         className="root-hero"
         onClick={handleRootTap}
-        whileTap={{ scale: 0.97 }}
+        whileTap={!isRootExpanded ? { scale: 0.97 } : undefined}
       >
         <NodeOrb
           icon={rootNode.icon}
           imageUrl={rootNode.imageUrl}
-          size={100}
+          size={isRootExpanded ? 72 : 100}
           depth={0}
           isExplored={mindmap.exploredNodes.has(ROOT_ID)}
-          isExpanded={mindmap.expandedNodes.has(ROOT_ID)}
+          isExpanded={isRootExpanded}
         />
         <h1 className="root-hero__title">{rootNode.title}</h1>
         {rootNode.subtitle && (
           <p className="root-hero__subtitle">{rootNode.subtitle}</p>
         )}
 
+        {/* Tap hint when not expanded */}
+        {!isRootExpanded && (
+          <motion.p
+            className="root-hero__hint"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            タップして探索を始める
+          </motion.p>
+        )}
+
+        {/* Root quote - shown after expand */}
         <AnimatePresence>
-          {rootDetail && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              style={{ overflow: 'hidden', width: '100%' }}
+          {isRootExpanded && rootNode.content.analogy && (
+            <motion.p
+              className="root-hero__quote"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
             >
-              <NodeInfo
-                node={rootNode}
-                showDetail={rootDetail}
-                onToggleDetail={() => setRootDetail(!rootDetail)}
-              />
-            </motion.div>
+              {rootNode.content.analogy}
+            </motion.p>
           )}
         </AnimatePresence>
       </motion.div>
 
-      {/* L1 horizontal scroll row */}
+      {/* L1 Branch Cards */}
       <AnimatePresence>
-        {mindmap.expandedNodes.has(ROOT_ID) && (
+        {isRootExpanded && (
           <motion.div
-            className="l1-row-wrapper"
-            initial={{ opacity: 0, y: 20 }}
+            className="l1-grid"
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35 }}
           >
-            <div className="l1-row">
-              {l1Nodes.map((node, i) => {
-                const isActive = activeL1?.id === node.id;
-                return (
-                  <motion.button
-                    key={node.id}
-                    className={`l1-chip ${isActive ? 'l1-chip--active' : ''}`}
-                    onClick={() => handleL1Tap(node.id)}
-                    whileTap={{ scale: 0.93 }}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05, duration: 0.3 }}
-                  >
-                    <NodeOrb
-                      icon={node.icon}
-                      imageUrl={node.imageUrl}
-                      size={56}
-                      depth={1}
-                      isExplored={mindmap.exploredNodes.has(node.id)}
-                      isExpanded={isActive}
-                    />
-                    <span className="l1-chip__title">
-                      {node.title.length > 8 ? node.title.slice(0, 7) + '...' : node.title}
-                    </span>
-                  </motion.button>
-                );
-              })}
-            </div>
+            {l1Nodes.map((node, i) => {
+              const isActive = activeL1?.id === node.id;
+              return (
+                <motion.button
+                  key={node.id}
+                  className={`l1-card ${isActive ? 'l1-card--active' : ''}`}
+                  onClick={() => handleL1Tap(node.id)}
+                  whileTap={{ scale: 0.96 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04, duration: 0.3 }}
+                >
+                  <NodeOrb
+                    icon={node.icon}
+                    imageUrl={node.imageUrl}
+                    size={44}
+                    depth={1}
+                    isExplored={mindmap.exploredNodes.has(node.id)}
+                    isExpanded={isActive}
+                  />
+                  <div className="l1-card__text">
+                    <span className="l1-card__title">{node.title}</span>
+                    {node.heroStat && (
+                      <span className="l1-card__stat">{node.heroStat}</span>
+                    )}
+                  </div>
+                </motion.button>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Expanded L1 branch content */}
+      {/* Active Branch Content */}
       <AnimatePresence mode="wait">
         {activeL1 && (
           <motion.div
             key={activeL1.id}
-            className="branch-content"
-            initial={{ opacity: 0, y: 20 }}
+            ref={branchRef}
+            className="branch-section"
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
           >
-            {/* L1 branch header with hero stat */}
-            <div className="branch-header">
-              <h2 className="branch-header__title">
-                {activeL1.icon} {activeL1.title.replace(/\s*\{[^}]+\}/g, '')}
+            {/* Branch Hero */}
+            <div className="branch-hero">
+              <div className="branch-hero__icon">{activeL1.icon}</div>
+              <h2 className="branch-hero__title">
+                {activeL1.title.replace(/\s*\{[^}]+\}/g, '')}
               </h2>
               {activeL1.heroStat && (
                 <motion.div
-                  className="branch-header__stat"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  className="branch-hero__stat"
+                  initial={{ opacity: 0, scale: 0.85 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1, type: 'spring', damping: 20 }}
+                  transition={{ delay: 0.08, type: 'spring', damping: 22 }}
                 >
                   {activeL1.heroStat}
                 </motion.div>
               )}
               {activeL1.heroCaption && (
-                <p className="branch-header__caption">{activeL1.heroCaption}</p>
+                <p className="branch-hero__caption">{activeL1.heroCaption}</p>
               )}
             </div>
 
-            {/* L2+ children as tree cards */}
+            {/* Branch main content - auto shown */}
+            <NodeContent node={activeL1} />
+
+            {/* L2+ children */}
             <div className="branch-nodes">
               {getChildren(activeL1.id).map((child, i) => (
                 <TreeNodeCard
@@ -169,8 +190,7 @@ export function TreeExplorer() {
         )}
       </AnimatePresence>
 
-      {/* Bottom spacer */}
-      <div style={{ height: 120 }} />
+      <div style={{ height: 100 }} />
     </div>
   );
 }
