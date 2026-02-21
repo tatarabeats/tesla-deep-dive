@@ -39,9 +39,7 @@ export default function Scene({ scene }: Props) {
             className="scene__text-main"
             style={{ color: scene.accentColor, opacity: textOpacity, y: textY }}
           >
-            {scene.text.split('\n').map((line, i) => (
-              <span key={i}>{line}{i < scene.text.split('\n').length - 1 && <br />}</span>
-            ))}
+            {scene.text}
           </motion.h2>
           {scene.subText && (
             <motion.p
