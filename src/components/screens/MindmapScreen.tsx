@@ -309,6 +309,7 @@ export function MindmapScreen() {
                 <MindmapEdge
                   key={`e-${p.node.id}`}
                   x1={p.parentX} y1={p.parentY} x2={p.x} y2={p.y}
+                  targetDepth={p.depth}
                   dimmed={activeBranch !== null && p.node.branchId !== activeBranch && p.node.branchId !== 'root'}
                 />
               ) : null,
