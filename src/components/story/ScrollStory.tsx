@@ -1,36 +1,11 @@
-import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import Lenis from 'lenis';
 import { storyScenes } from '../../data/storyScenes';
 import Scene from './Scene';
 import ProgressBar from './ProgressBar';
 
 export default function ScrollStory() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Lenis smooth scroll on our container
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const lenis = new Lenis({
-      wrapper: container,
-      content: container,
-      lerp: 0.07,
-      smoothWheel: true,
-      touchMultiplier: 1.8,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    return () => lenis.destroy();
-  }, []);
-
-  const { scrollYProgress } = useScroll({ container: containerRef });
+  // Use the window/document as scroll container (no fixed div)
+  const { scrollYProgress } = useScroll();
   const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   // Stars parallax — moves at ~8% of scroll speed for depth
@@ -41,13 +16,13 @@ export default function ScrollStory() {
 
   // Global background color shift based on scroll position
   const bgHue = useTransform(scrollYProgress, [0, 0.15, 0.3, 0.5, 0.65, 0.8, 0.9, 1], [
-    'rgba(11,17,32,1)',      // prologue — deep navy
-    'rgba(11,20,35,1)',      // ch1 — slight cyan tint
+    'rgba(11,17,32,1)',      // prologue
+    'rgba(11,20,35,1)',      // ch1 — slight cyan
     'rgba(18,14,28,1)',      // ch2 — slight red-brown
-    'rgba(14,13,30,1)',      // ch3 — slight purple
-    'rgba(12,18,26,1)',      // ch4 — slight green-dark
-    'rgba(16,15,24,1)',      // ch5 — warm dark
-    'rgba(11,17,32,1)',      // ch6 — back to base
+    'rgba(14,13,30,1)',      // ch3 — purple
+    'rgba(12,18,26,1)',      // ch4 — green-dark
+    'rgba(16,15,24,1)',      // ch5 — warm
+    'rgba(11,17,32,1)',      // ch6
     'rgba(11,17,32,1)',      // epilogue
   ]);
 
@@ -68,11 +43,11 @@ export default function ScrollStory() {
 
       <ProgressBar progress={progress} />
 
-      <div ref={containerRef} className="scroll-story">
+      <main className="scroll-story">
         {storyScenes.map((scene, i) => (
-          <Scene key={scene.id} scene={scene} index={i} containerRef={containerRef} />
+          <Scene key={scene.id} scene={scene} index={i} />
         ))}
-      </div>
+      </main>
     </>
   );
 }

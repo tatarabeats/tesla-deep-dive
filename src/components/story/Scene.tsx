@@ -1,5 +1,5 @@
-import { useRef, forwardRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, type MotionValue } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import type { StoryScene } from '../../types/story';
 import SceneImage from './SceneImage';
 import SceneStat from './SceneStat';
@@ -7,93 +7,110 @@ import SceneStat from './SceneStat';
 interface Props {
   scene: StoryScene;
   index: number;
-  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
-// Spring config for buttery smooth transforms
+// Spring config for parallax
 const SPRING = { stiffness: 100, damping: 30, mass: 0.5 };
 
-export default function Scene({ scene, containerRef }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+// Shared animation variants
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0 },
+};
+const fadeUpSub = {
+  hidden: { opacity: 0, y: 35 },
+  visible: { opacity: 1, y: 0 },
+};
+const slideInLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: { opacity: 1, x: 0 },
+};
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.6 },
+  visible: { opacity: 1, scale: 1 },
+};
+const lineGrow = {
+  hidden: { scaleX: 0 },
+  visible: { scaleX: 1 },
+};
 
-  // Track scroll within the container
+export default function Scene({ scene }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: false, amount: 0.35 });
+
+  // Parallax for images (continuous scroll-linked)
   const { scrollYProgress } = useScroll({
     target: ref,
-    container: containerRef,
     offset: ['start end', 'end start'],
   });
-
-  // ── Parallax (image) with spring ──
-  const rawImageY = useTransform(scrollYProgress, [0, 1], ['15%', '-15%']);
-  const rawImageScale = useTransform(scrollYProgress, [0, 0.5], [1.25, 1.0]);
+  const rawImageY = useTransform(scrollYProgress, [0, 1], ['12%', '-12%']);
+  const rawImageScale = useTransform(scrollYProgress, [0, 0.5], [1.2, 1.0]);
   const imageY = useSpring(rawImageY, SPRING);
   const imageScale = useSpring(rawImageScale, SPRING);
 
-  // ── Text entrance + exit ──
-  // 0.0 = scene entering from bottom, 0.5 = centered, 1.0 = exited top
-  const textOpacity = useTransform(scrollYProgress, [0.15, 0.35, 0.65, 0.85], [0, 1, 1, 0]);
-  const rawTextY = useTransform(scrollYProgress, [0.15, 0.35, 0.65, 0.85], [60, 0, 0, -40]);
-  const textY = useSpring(rawTextY, SPRING);
-
-  // ── Sub text (staggered) ──
-  const subOpacity = useTransform(scrollYProgress, [0.22, 0.42, 0.6, 0.82], [0, 1, 1, 0]);
-  const rawSubY = useTransform(scrollYProgress, [0.22, 0.42, 0.6, 0.82], [50, 0, 0, -30]);
-  const subY = useSpring(rawSubY, SPRING);
-
-  // ── Badge (horizontal slide + fade) ──
-  const badgeOpacity = useTransform(scrollYProgress, [0.12, 0.32, 0.65, 0.85], [0, 1, 1, 0]);
-  const rawBadgeX = useTransform(scrollYProgress, [0.12, 0.32, 0.65, 0.85], [-80, 0, 0, 80]);
-  const badgeX = useSpring(rawBadgeX, SPRING);
-
-  // ── Chapter line (scaleX from scroll) ──
-  const lineScale = useTransform(scrollYProgress, [0.28, 0.48, 0.65, 0.85], [0, 1, 1, 0]);
-
-  // ── Scale entrance for stat numbers ──
-  const statOpacity = useTransform(scrollYProgress, [0.25, 0.42, 0.6, 0.82], [0, 1, 1, 0]);
-  const rawStatScale = useTransform(scrollYProgress, [0.25, 0.42], [0.6, 1]);
-  const statScale = useSpring(rawStatScale, { stiffness: 80, damping: 20 });
-
-  // ── Multi cards stagger ──
-  const cardOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.65, 0.85], [0, 1, 1, 0]);
-  const rawCardY = useTransform(scrollYProgress, [0.2, 0.4], [80, 0]);
-  const cardY = useSpring(rawCardY, SPRING);
-
   const imgSrc = scene.imageUrl ? `${import.meta.env.BASE_URL}${scene.imageUrl}` : undefined;
+  const vis = isInView ? 'visible' : 'hidden';
 
   // ===== PROLOGUE — character-by-character reveal =====
   if (scene.id === 'open-1') {
-    return <PrologueScene ref={ref} scene={scene} scrollYProgress={scrollYProgress} />;
+    return (
+      <PrologueScene
+        ref={ref}
+        scene={scene}
+        isInView={isInView}
+      />
+    );
   }
 
   // ===== TEXT-ONLY =====
   if (scene.type === 'text-only') {
     const bgTint = getChapterTint(scene.chapter, scene.accentColor);
-
     return (
       <section ref={ref} className="scene scene--text-only" data-scene={scene.id} style={{ background: bgTint }}>
         <div className="scene__content scene__content--center">
           <motion.h2
             className="scene__text-main"
-            style={{ color: scene.accentColor, opacity: textOpacity, y: textY }}
+            style={{ color: scene.accentColor }}
+            variants={fadeUp}
+            initial="hidden"
+            animate={vis}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             {scene.text}
           </motion.h2>
           {scene.subText && (
             <motion.p
               className="scene__text-sub"
-              style={{ opacity: subOpacity, y: subY }}
+              variants={fadeUpSub}
+              initial="hidden"
+              animate={vis}
+              transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
             >
               {scene.subText}
             </motion.p>
           )}
           {scene.stat && (
-            <motion.div style={{ opacity: statOpacity, scale: statScale }}>
+            <motion.div
+              variants={scaleIn}
+              initial="hidden"
+              animate={vis}
+              transition={{ type: 'spring', stiffness: 100, damping: 18, delay: 0.35 }}
+            >
               <SceneStat stat={scene.stat} label={scene.statLabel} color={scene.accentColor} />
             </motion.div>
           )}
           {/* Watermark number in background */}
           {scene.stat && (
-            <WatermarkNumber scrollYProgress={scrollYProgress} stat={scene.stat} color={scene.accentColor} />
+            <motion.div
+              className="scene__watermark"
+              style={{ color: scene.accentColor }}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 0.04 } : { opacity: 0 }}
+              transition={{ duration: 1.2, delay: 0.3 }}
+              aria-hidden
+            >
+              {scene.stat}
+            </motion.div>
           )}
         </div>
       </section>
@@ -108,26 +125,30 @@ export default function Scene({ scene, containerRef }: Props) {
         <div className="scene__content scene__content--center">
           <motion.span
             className="scene__chapter-num"
-            style={{
-              color: scene.accentColor,
-              opacity: textOpacity,
-              scale: useSpring(useTransform(scrollYProgress, [0.15, 0.4], [0.5, 1]), { stiffness: 60, damping: 15 }),
-            }}
+            style={{ color: scene.accentColor }}
+            variants={scaleIn}
+            initial="hidden"
+            animate={vis}
+            transition={{ type: 'spring', stiffness: 80, damping: 15 }}
           >
             {scene.text}
           </motion.span>
           <motion.h2
             className="scene__chapter-title"
-            style={{ opacity: subOpacity, y: subY }}
+            variants={fadeUp}
+            initial="hidden"
+            animate={vis}
+            transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
           >
             {scene.subText}
           </motion.h2>
           <motion.div
             className="scene__chapter-line"
-            style={{
-              backgroundColor: scene.accentColor,
-              scaleX: lineScale,
-            }}
+            style={{ backgroundColor: scene.accentColor }}
+            variants={lineGrow}
+            initial="hidden"
+            animate={vis}
+            transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
           />
         </div>
       </section>
@@ -142,14 +163,19 @@ export default function Scene({ scene, containerRef }: Props) {
         <div className="scene__content scene__content--center">
           <motion.p
             className="scene__epilogue-text"
-            style={{ color: scene.accentColor, opacity: textOpacity, y: textY }}
+            style={{ color: scene.accentColor }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
           >
             {scene.text}
           </motion.p>
           {scene.elonQuote && (
             <motion.blockquote
               className="scene__epilogue-quote"
-              style={{ opacity: useTransform(scrollYProgress, [0.35, 0.5, 0.7, 0.88], [0, 0.5, 0.5, 0]) }}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 0.5 } : {}}
+              transition={{ duration: 1.5, delay: 1.0 }}
             >
               &ldquo;{scene.elonQuote}&rdquo;
               <cite>— Elon Musk</cite>
@@ -167,15 +193,22 @@ export default function Scene({ scene, containerRef }: Props) {
         <div className="scene__content scene__content--center">
           <motion.h2
             className="scene__text-main"
-            style={{ color: scene.accentColor, opacity: textOpacity, y: textY }}
+            style={{ color: scene.accentColor }}
+            variants={fadeUp}
+            initial="hidden"
+            animate={vis}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             {scene.text}
           </motion.h2>
-          <motion.div className="scene__multi-grid" style={{ opacity: cardOpacity, y: cardY }}>
-            {scene.multiItems.map((item) => (
-              <div
+          <div className="scene__multi-grid">
+            {scene.multiItems.map((item, i) => (
+              <motion.div
                 key={item.label}
                 className="scene__multi-card"
+                initial={{ opacity: 0, y: 60 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.3 + i * 0.15, ease: 'easeOut' }}
               >
                 <div className="scene__multi-img-wrap">
                   <img
@@ -190,9 +223,9 @@ export default function Scene({ scene, containerRef }: Props) {
                 <span className="scene__multi-stat" style={{ color: scene.accentColor }}>
                   {item.stat}
                 </span>
-              </div>
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
     );
@@ -206,32 +239,42 @@ export default function Scene({ scene, containerRef }: Props) {
         {scene.badge && (
           <motion.span
             className="scene__badge"
-            style={{
-              borderColor: scene.accentColor,
-              color: scene.accentColor,
-              opacity: badgeOpacity,
-              x: badgeX,
-            }}
+            style={{ borderColor: scene.accentColor, color: scene.accentColor }}
+            variants={slideInLeft}
+            initial="hidden"
+            animate={vis}
+            transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
           >
             {scene.badge}
           </motion.span>
         )}
         <motion.h2
           className="scene__hero-text"
-          style={{ opacity: textOpacity, y: textY }}
+          variants={fadeUp}
+          initial="hidden"
+          animate={vis}
+          transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
         >
           {scene.text}
         </motion.h2>
         {scene.subText && (
           <motion.p
             className="scene__hero-sub"
-            style={{ opacity: subOpacity, y: subY }}
+            variants={fadeUpSub}
+            initial="hidden"
+            animate={vis}
+            transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
           >
             {scene.subText}
           </motion.p>
         )}
         {scene.stat && (
-          <motion.div style={{ opacity: statOpacity, scale: statScale }}>
+          <motion.div
+            variants={scaleIn}
+            initial="hidden"
+            animate={vis}
+            transition={{ type: 'spring', stiffness: 100, damping: 18, delay: 0.35 }}
+          >
             <SceneStat stat={scene.stat} label={scene.statLabel} color={scene.accentColor} />
           </motion.div>
         )}
@@ -239,7 +282,9 @@ export default function Scene({ scene, containerRef }: Props) {
         {scene.id === 'open-thesis' && (
           <motion.div
             className="scene__scroll-hint"
-            style={{ opacity: useTransform(scrollYProgress, [0.35, 0.48, 0.6, 0.75], [0, 0.4, 0.4, 0]) }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 0.4 } : { opacity: 0 }}
+            transition={{ duration: 1, delay: 1.5 }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="6 9 12 15 18 9" />
@@ -251,28 +296,16 @@ export default function Scene({ scene, containerRef }: Props) {
   );
 }
 
-// ── Watermark component (avoids hook-in-conditional) ──
-function WatermarkNumber({ scrollYProgress, stat, color }: { scrollYProgress: MotionValue<number>; stat: string; color: string }) {
-  const opacity = useTransform(scrollYProgress, [0.2, 0.4, 0.6, 0.8], [0, 0.04, 0.04, 0]);
-  return (
-    <motion.div
-      className="scene__watermark"
-      style={{ opacity, color }}
-      aria-hidden
-    >
-      {stat}
-    </motion.div>
-  );
-}
-
 // ── Prologue special scene ──
+import { forwardRef } from 'react';
+
 interface PrologueProps {
   scene: StoryScene;
-  scrollYProgress: MotionValue<number>;
+  isInView: boolean;
 }
 
 const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
-  ({ scene, scrollYProgress }, ref) => {
+  ({ scene, isInView }, ref) => {
     const chars = scene.text.split('');
 
     return (
@@ -280,22 +313,29 @@ const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
         <div className="scene__content scene__content--center">
           <h2 className="scene__prologue-text" aria-label={scene.text}>
             {chars.map((char, i) => (
-              <PrologueChar
+              <motion.span
                 key={i}
-                char={char}
-                scrollYProgress={scrollYProgress}
-                index={i}
-                total={chars.length}
-              />
+                style={{ display: 'inline-block' }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.3 + i * 0.15,
+                  ease: 'easeOut',
+                }}
+                aria-hidden
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </motion.span>
             ))}
           </h2>
         </div>
         {/* Stars fade in after text */}
         <motion.div
           className="scene__prologue-stars"
-          style={{
-            opacity: useTransform(scrollYProgress, [0.35, 0.5, 0.7, 0.9], [0, 0.6, 0.6, 0]),
-          }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 0.6 } : { opacity: 0 }}
+          transition={{ duration: 2, delay: 1.5 }}
           aria-hidden
         >
           <div className="cosmos-stars__layer cosmos-stars__layer--1" />
@@ -305,44 +345,6 @@ const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
     );
   }
 );
-
-function PrologueChar({
-  char,
-  scrollYProgress,
-  index,
-  total,
-}: {
-  char: string;
-  scrollYProgress: MotionValue<number>;
-  index: number;
-  total: number;
-}) {
-  // Spread characters across 0.15-0.45 range (centered around 0.3)
-  const startAt = 0.15 + (index / total) * 0.2;
-  const endAt = startAt + 0.08;
-  const exitStart = 0.65;
-  const exitEnd = 0.85;
-
-  const opacity = useTransform(
-    scrollYProgress,
-    [startAt, endAt, exitStart, exitEnd],
-    [0, 1, 1, 0]
-  );
-  const y = useTransform(
-    scrollYProgress,
-    [startAt, endAt],
-    [20, 0]
-  );
-
-  return (
-    <motion.span
-      style={{ opacity, y, display: 'inline-block' }}
-      aria-hidden
-    >
-      {char === ' ' ? '\u00A0' : char}
-    </motion.span>
-  );
-}
 
 // ── Helper: Chapter background tint ──
 function getChapterTint(chapter: number | null, accentColor: string): string {

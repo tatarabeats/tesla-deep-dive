@@ -34,7 +34,7 @@
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
     user-select: none;
     -webkit-user-select: none;
@@ -146,11 +146,7 @@
 }
 
 .scroll-story {
-  position: fixed;
-  inset: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  position: relative;
   z-index: 1;
 }
 
