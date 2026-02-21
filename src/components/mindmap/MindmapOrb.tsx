@@ -7,6 +7,7 @@ interface Props {
   y: number;
   isCenter: boolean;
   isExplored: boolean;
+  isExpanded: boolean;
   hasChildren: boolean;
   isActive: boolean;
   onTap: () => void;
@@ -27,7 +28,7 @@ function wrapTitle(text: string, maxChars: number): string[] {
   return [line1, rest];
 }
 
-export default function MindmapOrb({ node, x, y, isCenter, isExplored, hasChildren, isActive, onTap }: Props) {
+export default function MindmapOrb({ node, x, y, isCenter, isExplored, isExpanded, hasChildren, isActive, onTap }: Props) {
   const r = isCenter ? 52 : 32;
   const titleLines = isCenter ? wrapTitle(node.title, 12) : wrapTitle(node.title, 8);
   const gradId = isCenter ? 'star-grad-center' : 'star-grad-child';
@@ -45,7 +46,14 @@ export default function MindmapOrb({ node, x, y, isCenter, isExplored, hasChildr
   const glowColor = branchColors[node.branchId] || 'rgba(232,220,200,0.5)';
 
   return (
-    <g style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); onTap(); }}>
+    <motion.g
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.5 }}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
+      style={{ cursor: 'pointer' }}
+      onClick={(e) => { e.stopPropagation(); onTap(); }}
+    >
       {/* Outer glow */}
       {isCenter && (
         <>
@@ -96,9 +104,11 @@ export default function MindmapOrb({ node, x, y, isCenter, isExplored, hasChildr
         fill={`url(#${gradId})`}
         stroke={isActive
           ? glowColor.replace(/[\d.]+\)$/, '0.5)')
-          : isCenter
-            ? 'rgba(232,220,200,0.2)'
-            : 'rgba(232,220,200,0.1)'}
+          : isExpanded
+            ? glowColor.replace(/[\d.]+\)$/, '0.35)')
+            : isCenter
+              ? 'rgba(232,220,200,0.2)'
+              : 'rgba(232,220,200,0.1)'}
         strokeWidth={isCenter ? 1.5 : 1}
       />
 
@@ -157,6 +167,6 @@ export default function MindmapOrb({ node, x, y, isCenter, isExplored, hasChildr
           {node.subtitle}
         </text>
       )}
-    </g>
+    </motion.g>
   );
 }
