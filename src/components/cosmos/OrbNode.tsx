@@ -31,8 +31,9 @@ export default function OrbNode({ node, x, y, size, isExplored, isExpanded, onTa
   const imgUrl = node.imageUrl ? `${import.meta.env.BASE_URL}${node.imageUrl}` : undefined;
   const iconSize = size * 0.38;
   const cleanTitle = node.title.replace(/\s*\{[^}]+\}/g, '').replace(/\s*—\s*.+$/, '');
-  // Short title: max 8 chars
-  const label = cleanTitle.length > 8 ? cleanTitle.slice(0, 7) + '…' : cleanTitle;
+  // Short title: allow more chars for bigger orbs
+  const maxLen = node.depth <= 1 ? 10 : 8;
+  const label = cleanTitle.length > maxLen ? cleanTitle.slice(0, maxLen - 1) + '…' : cleanTitle;
 
   return (
     <motion.div
