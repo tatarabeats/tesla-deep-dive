@@ -40,7 +40,7 @@ export default function OrbNode({ node, x, y, size, isExplored, isExpanded, onTa
   const label = truncate(cleanTitle, maxTitleLen);
 
   // Short caption from heroCaption
-  const caption = node.heroCaption ? truncate(node.heroCaption, 18) : null;
+  const caption = node.heroCaption ? truncate(node.heroCaption, 15) : null;
 
   return (
     <motion.div
