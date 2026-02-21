@@ -30,7 +30,6 @@ export default function CosmosCanvas() {
       startOffY: offset.y,
     };
     hasMoved.current = false;
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
   }, [offset]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
@@ -49,8 +48,8 @@ export default function CosmosCanvas() {
   }, []);
 
   // Center of viewport
-  const cx = typeof window !== 'undefined' ? Math.min(window.innerWidth, 480) / 2 : 240;
-  const cy = typeof window !== 'undefined' ? window.innerHeight * 0.38 : 300;
+  const cx = typeof window !== 'undefined' ? window.innerWidth / 2 : 240;
+  const cy = typeof window !== 'undefined' ? window.innerHeight * 0.4 : 300;
 
   // Build orb positions recursively
   const { orbs, edges } = useMemo(() => {
@@ -129,7 +128,7 @@ export default function CosmosCanvas() {
                 key={i}
                 x1={e.x1} y1={e.y1}
                 x2={e.x2} y2={e.y2}
-                stroke={e.depth <= 1 ? 'rgba(255,225,140,0.08)' : e.depth === 2 ? 'rgba(255,90,80,0.06)' : 'rgba(80,200,255,0.05)'}
+                stroke={e.depth <= 1 ? 'rgba(255,225,140,0.18)' : e.depth === 2 ? 'rgba(255,90,80,0.14)' : 'rgba(80,200,255,0.12)'}
                 strokeWidth={e.depth <= 1 ? 1.5 : 1}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
