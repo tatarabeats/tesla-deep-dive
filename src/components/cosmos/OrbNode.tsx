@@ -81,15 +81,17 @@ export default function OrbNode({ node, x, y, size, isExplored, isExpanded, onTa
 
       {/* Glow */}
       {isExpanded && (
-        <div
+        <motion.div
           className="orb-node__glow"
           style={{
             background: `radial-gradient(circle, ${glow} 0%, transparent 70%)`,
-            width: size + 24,
-            height: size + 24,
-            left: -12,
-            top: -12,
+            width: size + 30,
+            height: size + 30,
+            left: -15,
+            top: -15,
           }}
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         />
       )}
 

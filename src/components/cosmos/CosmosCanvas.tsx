@@ -108,6 +108,12 @@ export default function CosmosCanvas() {
 
   return (
     <div className="cosmos-wrapper">
+      {/* Star particles */}
+      <div className="cosmos-stars">
+        <div className="cosmos-stars__layer cosmos-stars__layer--1" />
+        <div className="cosmos-stars__layer cosmos-stars__layer--2" />
+      </div>
+
       <CosmosHeader explored={mindmap.exploredNodes.size} total={totalNodeCount} />
 
       <div

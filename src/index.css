@@ -72,6 +72,51 @@
   }
 }
 
+/* ===== Stars ===== */
+
+.cosmos-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cosmos-stars__layer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.cosmos-stars__layer--1 {
+  width: 1px;
+  height: 1px;
+  box-shadow:
+    30px 50px #ffffff18, 120px 180px #ffffff12, 250px 40px #ffffff15,
+    80px 300px #ffffff10, 340px 120px #ffffff14, 410px 260px #ffffff11,
+    50px 450px #ffffff13, 200px 380px #ffffff16, 470px 80px #ffffff10,
+    300px 500px #ffffff12, 150px 550px #ffffff14, 380px 400px #ffffff11,
+    60px 620px #ffffff15, 440px 550px #ffffff10, 220px 650px #ffffff13,
+    100px 100px #ffffff11, 350px 320px #ffffff14, 180px 240px #ffffff12,
+    420px 460px #ffffff10, 270px 150px #ffffff16;
+  animation: star-drift 80s linear infinite;
+}
+
+.cosmos-stars__layer--2 {
+  width: 2px;
+  height: 2px;
+  box-shadow:
+    160px 90px #ffffff10, 320px 220px #ffffff0d, 40px 360px #ffffff0f,
+    480px 140px #ffffff0c, 200px 480px #ffffff0e, 90px 530px #ffffff0d,
+    370px 600px #ffffff10, 260px 70px #ffffff0c, 130px 420px #ffffff0f,
+    450px 350px #ffffff0e;
+  animation: star-drift 120s linear infinite reverse;
+}
+
+@keyframes star-drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-40px); }
+}
+
 /* ===== Cosmos Wrapper ===== */
 
 .cosmos-wrapper {
@@ -203,7 +248,7 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .orb-node__fallback {
