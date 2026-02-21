@@ -280,17 +280,17 @@
 }
 
 .orb-node__title {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--text);
-  opacity: 0.65;
+  opacity: 0.7;
   text-shadow: 0 1px 4px rgba(0,0,0,0.8);
 }
 
 .orb-node__stat {
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
   color: var(--cyan);
-  opacity: 0.5;
+  opacity: 0.55;
   text-shadow: 0 1px 4px rgba(0,0,0,0.8);
 }

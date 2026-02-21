@@ -49,7 +49,7 @@ export function computeChildPositions(
   }
 
   // For deeper nodes: spread in a fan arc away from parent direction
-  const spreadAngle = Math.min(Math.PI * 0.8, count * 0.5); // wider fan for more children
+  const spreadAngle = Math.min(Math.PI * 1.0, count * 0.55); // wider fan for more children
   const startAngle = parentAngle - spreadAngle / 2;
 
   return childIds.map((id, i) => {
