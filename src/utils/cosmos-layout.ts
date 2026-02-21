@@ -7,8 +7,8 @@ export interface OrbPosition {
   size: number;
 }
 
-const SIZE_BY_DEPTH = [80, 56, 44, 36, 30];
-const RADIUS_BY_DEPTH = [0, 150, 115, 85, 65];
+const SIZE_BY_DEPTH = [80, 52, 42, 34, 28];
+const RADIUS_BY_DEPTH = [0, 130, 95, 72, 55];
 
 export function getOrbSize(depth: number): number {
   return SIZE_BY_DEPTH[Math.min(depth, SIZE_BY_DEPTH.length - 1)];

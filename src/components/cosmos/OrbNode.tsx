@@ -30,9 +30,9 @@ export default function OrbNode({ node, x, y, size, isExplored, isExpanded, onTa
   const border = getBorder(node.depth, isExpanded);
   const imgUrl = node.imageUrl ? `${import.meta.env.BASE_URL}${node.imageUrl}` : undefined;
   const iconSize = size * 0.38;
-  const cleanTitle = node.title.replace(/\s*\{[^}]+\}/g, '');
+  const cleanTitle = node.title.replace(/\s*\{[^}]+\}/g, '').replace(/\s*—\s*.+$/, '');
   // Short title: max 8 chars
-  const label = cleanTitle.length > 10 ? cleanTitle.slice(0, 9) + '…' : cleanTitle;
+  const label = cleanTitle.length > 8 ? cleanTitle.slice(0, 7) + '…' : cleanTitle;
 
   return (
     <motion.div

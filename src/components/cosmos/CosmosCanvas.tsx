@@ -128,8 +128,9 @@ export default function CosmosCanvas() {
                 key={i}
                 x1={e.x1} y1={e.y1}
                 x2={e.x2} y2={e.y2}
-                stroke={e.depth <= 1 ? 'rgba(255,225,140,0.18)' : e.depth === 2 ? 'rgba(255,90,80,0.14)' : 'rgba(80,200,255,0.12)'}
+                stroke={e.depth <= 1 ? 'rgba(255,225,140,0.22)' : e.depth === 2 ? 'rgba(255,90,80,0.18)' : 'rgba(80,200,255,0.15)'}
                 strokeWidth={e.depth <= 1 ? 1.5 : 1}
+                strokeDasharray="4 6"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.1 }}
