@@ -61,6 +61,7 @@ export default function MindmapOrb({ node, x, y, depth, isCenter, isExplored, is
   const maxChars = isCenter ? 12 : depth <= 1 ? 10 : 8;
   const titleLines = wrapTitle(node.title, maxChars);
 
+  const imageHref = node.imageUrl ? `${import.meta.env.BASE_URL}${node.imageUrl}` : undefined;
   const nodeColor = getNodeColor(depth, isCenter);
   const strokeBase = getStrokeColor(depth, isCenter);
 
@@ -151,7 +152,7 @@ export default function MindmapOrb({ node, x, y, depth, isCenter, isExplored, is
       {node.imageUrl ? (
         <>
           <image
-            href={node.imageUrl}
+            href={imageHref}
             x={x - r + 1}
             y={y - r + 1}
             width={(r - 1) * 2}
