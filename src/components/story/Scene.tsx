@@ -1,8 +1,14 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
-import type { StoryScene } from '../../types/story';
-import SceneImage from './SceneImage';
-import SceneStat from './SceneStat';
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useInView,
+} from "framer-motion";
+import type { StoryScene } from "../../types/story";
+import SceneImage from "./SceneImage";
+import SceneStat from "./SceneStat";
 
 interface Props {
   scene: StoryScene;
@@ -41,32 +47,33 @@ export default function Scene({ scene }: Props) {
   // Parallax for images (continuous scroll-linked)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start end', 'end start'],
+    offset: ["start end", "end start"],
   });
-  const rawImageY = useTransform(scrollYProgress, [0, 1], ['12%', '-12%']);
+  const rawImageY = useTransform(scrollYProgress, [0, 1], ["12%", "-12%"]);
   const rawImageScale = useTransform(scrollYProgress, [0, 0.5], [1.2, 1.0]);
   const imageY = useSpring(rawImageY, SPRING);
   const imageScale = useSpring(rawImageScale, SPRING);
 
-  const imgSrc = scene.imageUrl ? `${import.meta.env.BASE_URL}${scene.imageUrl}` : undefined;
-  const vis = isInView ? 'visible' : 'hidden';
+  const imgSrc = scene.imageUrl
+    ? `${import.meta.env.BASE_URL}${scene.imageUrl}`
+    : undefined;
+  const vis = isInView ? "visible" : "hidden";
 
   // ===== PROLOGUE — character-by-character reveal =====
-  if (scene.id === 'open-1') {
-    return (
-      <PrologueScene
-        ref={ref}
-        scene={scene}
-        isInView={isInView}
-      />
-    );
+  if (scene.id === "open-1") {
+    return <PrologueScene ref={ref} scene={scene} isInView={isInView} />;
   }
 
   // ===== TEXT-ONLY =====
-  if (scene.type === 'text-only') {
+  if (scene.type === "text-only") {
     const bgTint = getChapterTint(scene.chapter, scene.accentColor);
     return (
-      <section ref={ref} className="scene scene--text-only" data-scene={scene.id} style={{ background: bgTint }}>
+      <section
+        ref={ref}
+        className="scene scene--text-only"
+        data-scene={scene.id}
+        style={{ background: bgTint }}
+      >
         <div className="scene__content scene__content--center">
           <motion.h2
             className="scene__text-main"
@@ -74,7 +81,7 @@ export default function Scene({ scene }: Props) {
             variants={fadeUp}
             initial="hidden"
             animate={vis}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             {scene.text}
           </motion.h2>
@@ -84,7 +91,7 @@ export default function Scene({ scene }: Props) {
               variants={fadeUpSub}
               initial="hidden"
               animate={vis}
-              transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             >
               {scene.subText}
             </motion.p>
@@ -94,9 +101,18 @@ export default function Scene({ scene }: Props) {
               variants={scaleIn}
               initial="hidden"
               animate={vis}
-              transition={{ type: 'spring', stiffness: 100, damping: 18, delay: 0.35 }}
+              transition={{
+                type: "spring",
+                stiffness: 100,
+                damping: 18,
+                delay: 0.35,
+              }}
             >
-              <SceneStat stat={scene.stat} label={scene.statLabel} color={scene.accentColor} />
+              <SceneStat
+                stat={scene.stat}
+                label={scene.statLabel}
+                color={scene.accentColor}
+              />
             </motion.div>
           )}
           {/* Watermark number in background */}
@@ -118,10 +134,12 @@ export default function Scene({ scene }: Props) {
   }
 
   // ===== CHAPTER TITLE =====
-  if (scene.type === 'chapter-title') {
+  if (scene.type === "chapter-title") {
     return (
       <section ref={ref} className="scene scene--chapter" data-scene={scene.id}>
-        {imgSrc && <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />}
+        {imgSrc && (
+          <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />
+        )}
         <div className="scene__content scene__content--center">
           <motion.span
             className="scene__chapter-num"
@@ -129,7 +147,7 @@ export default function Scene({ scene }: Props) {
             variants={scaleIn}
             initial="hidden"
             animate={vis}
-            transition={{ type: 'spring', stiffness: 80, damping: 15 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15 }}
           >
             {scene.text}
           </motion.span>
@@ -138,7 +156,7 @@ export default function Scene({ scene }: Props) {
             variants={fadeUp}
             initial="hidden"
             animate={vis}
-            transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
           >
             {scene.subText}
           </motion.h2>
@@ -148,7 +166,7 @@ export default function Scene({ scene }: Props) {
             variants={lineGrow}
             initial="hidden"
             animate={vis}
-            transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
+            transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
           />
         </div>
       </section>
@@ -156,10 +174,16 @@ export default function Scene({ scene }: Props) {
   }
 
   // ===== EPILOGUE =====
-  if (scene.type === 'epilogue') {
+  if (scene.type === "epilogue") {
     return (
-      <section ref={ref} className="scene scene--epilogue" data-scene={scene.id}>
-        {imgSrc && <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />}
+      <section
+        ref={ref}
+        className="scene scene--epilogue"
+        data-scene={scene.id}
+      >
+        {imgSrc && (
+          <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />
+        )}
         <div className="scene__content scene__content--center">
           {/* Glowing accent line */}
           <motion.div
@@ -171,14 +195,14 @@ export default function Scene({ scene }: Props) {
             }}
             initial={{ scaleX: 0, opacity: 0 }}
             animate={isInView ? { scaleX: 1, opacity: 1 } : {}}
-            transition={{ duration: 1.2, ease: 'easeOut' }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           />
           <motion.p
             className="scene__epilogue-text"
             style={{ color: scene.accentColor }}
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1.5, delay: 0.3, ease: 'easeOut' }}
+            transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
           >
             {scene.text}
           </motion.p>
@@ -191,33 +215,20 @@ export default function Scene({ scene }: Props) {
             >
               &ldquo;{scene.elonQuote}&rdquo;
               {scene.elonQuoteJp && (
-                <span className="scene__epilogue-quote-jp">{scene.elonQuoteJp}</span>
+                <span className="scene__epilogue-quote-jp">
+                  {scene.elonQuoteJp}
+                </span>
               )}
               <cite>— Elon Musk</cite>
             </motion.blockquote>
           )}
-          {/* Scroll down hint to Deep Dive */}
-          <motion.div
-            className="scene__scroll-hint"
-            style={{ marginTop: 40 }}
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 0.35 } : { opacity: 0 }}
-            transition={{ duration: 1, delay: 2.5 }}
-          >
-            <span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase' as const, fontWeight: 700, color: 'var(--gold)' }}>
-              Deep Dive
-            </span>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </motion.div>
         </div>
       </section>
     );
   }
 
   // ===== MULTI =====
-  if (scene.type === 'multi' && scene.multiItems) {
+  if (scene.type === "multi" && scene.multiItems) {
     return (
       <section ref={ref} className="scene scene--multi" data-scene={scene.id}>
         <div className="scene__content scene__content--center">
@@ -227,7 +238,7 @@ export default function Scene({ scene }: Props) {
             variants={fadeUp}
             initial="hidden"
             animate={vis}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             {scene.text}
           </motion.h2>
@@ -238,7 +249,11 @@ export default function Scene({ scene }: Props) {
                 className="scene__multi-card"
                 initial={{ opacity: 0, y: 60 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.7, delay: 0.3 + i * 0.15, ease: 'easeOut' }}
+                transition={{
+                  duration: 0.7,
+                  delay: 0.3 + i * 0.15,
+                  ease: "easeOut",
+                }}
               >
                 <div className="scene__multi-img-wrap">
                   <img
@@ -250,7 +265,10 @@ export default function Scene({ scene }: Props) {
                   />
                 </div>
                 <span className="scene__multi-label">{item.label}</span>
-                <span className="scene__multi-stat" style={{ color: scene.accentColor }}>
+                <span
+                  className="scene__multi-stat"
+                  style={{ color: scene.accentColor }}
+                >
                   {item.stat}
                 </span>
               </motion.div>
@@ -263,8 +281,14 @@ export default function Scene({ scene }: Props) {
 
   // ===== IMAGE-HERO (default) =====
   return (
-    <section ref={ref} className="scene scene--image-hero" data-scene={scene.id}>
-      {imgSrc && <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />}
+    <section
+      ref={ref}
+      className="scene scene--image-hero"
+      data-scene={scene.id}
+    >
+      {imgSrc && (
+        <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />
+      )}
       <div className="scene__content">
         {scene.badge && (
           <motion.span
@@ -273,7 +297,7 @@ export default function Scene({ scene }: Props) {
             variants={slideInLeft}
             initial="hidden"
             animate={vis}
-            transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
           >
             {scene.badge}
           </motion.span>
@@ -283,7 +307,7 @@ export default function Scene({ scene }: Props) {
           variants={fadeUp}
           initial="hidden"
           animate={vis}
-          transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
         >
           {scene.text}
         </motion.h2>
@@ -293,7 +317,7 @@ export default function Scene({ scene }: Props) {
             variants={fadeUpSub}
             initial="hidden"
             animate={vis}
-            transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           >
             {scene.subText}
           </motion.p>
@@ -303,20 +327,38 @@ export default function Scene({ scene }: Props) {
             variants={scaleIn}
             initial="hidden"
             animate={vis}
-            transition={{ type: 'spring', stiffness: 100, damping: 18, delay: 0.35 }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 18,
+              delay: 0.35,
+            }}
           >
-            <SceneStat stat={scene.stat} label={scene.statLabel} color={scene.accentColor} />
+            <SceneStat
+              stat={scene.stat}
+              label={scene.statLabel}
+              color={scene.accentColor}
+            />
           </motion.div>
         )}
         {/* Scroll hint on thesis scene */}
-        {scene.id === 'open-thesis' && (
+        {scene.id === "open-thesis" && (
           <motion.div
             className="scene__scroll-hint"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 0.4 } : { opacity: 0 }}
             transition={{ duration: 1, delay: 1.5 }}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </motion.div>
@@ -327,7 +369,7 @@ export default function Scene({ scene }: Props) {
 }
 
 // ── Prologue special scene ──
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
 interface PrologueProps {
   scene: StoryScene;
@@ -336,26 +378,32 @@ interface PrologueProps {
 
 const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
   ({ scene, isInView }, ref) => {
-    const chars = scene.text.split('');
+    const chars = scene.text.split("");
 
     return (
-      <section ref={ref} className="scene scene--prologue" data-scene={scene.id}>
+      <section
+        ref={ref}
+        className="scene scene--prologue"
+        data-scene={scene.id}
+      >
         <div className="scene__content scene__content--center">
           <h2 className="scene__prologue-text" aria-label={scene.text}>
             {chars.map((char, i) => (
               <motion.span
                 key={i}
-                style={{ display: 'inline-block' }}
+                style={{ display: "inline-block" }}
                 initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                }
                 transition={{
                   duration: 0.5,
                   delay: 0.3 + i * 0.15,
-                  ease: 'easeOut',
+                  ease: "easeOut",
                 }}
                 aria-hidden
               >
-                {char === ' ' ? '\u00A0' : char}
+                {char === " " ? "\u00A0" : char}
               </motion.span>
             ))}
           </h2>
@@ -373,13 +421,13 @@ const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
         </motion.div>
       </section>
     );
-  }
+  },
 );
 
 // ── Helper: Chapter background tint ──
 function getChapterTint(chapter: number | null, accentColor: string): string {
-  if (!chapter) return 'var(--bg)';
+  if (!chapter) return "var(--bg)";
   const match = accentColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-  if (!match) return 'var(--bg)';
+  if (!match) return "var(--bg)";
   return `rgba(${match[1]}, ${match[2]}, ${match[3]}, 0.03)`;
 }

@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from 'react';
-import { useInView } from 'framer-motion';
+import { useRef, useEffect, useState } from "react";
+import { useInView } from "framer-motion";
 
 interface Props {
   stat: string;
@@ -7,10 +7,15 @@ interface Props {
   color: string;
 }
 
-function parseStatNumber(stat: string): { prefix: string; num: number; suffix: string; hasNum: boolean } {
+function parseStatNumber(stat: string): {
+  prefix: string;
+  num: number;
+  suffix: string;
+  hasNum: boolean;
+} {
   const match = stat.match(/^([^\d]*?)([\d,]+\.?\d*)(.*?)$/);
-  if (!match) return { prefix: '', num: 0, suffix: stat, hasNum: false };
-  const numStr = match[2].replace(/,/g, '');
+  if (!match) return { prefix: "", num: 0, suffix: stat, hasNum: false };
+  const numStr = match[2].replace(/,/g, "");
   return {
     prefix: match[1],
     num: parseFloat(numStr),
@@ -20,9 +25,7 @@ function parseStatNumber(stat: string): { prefix: string; num: number; suffix: s
 }
 
 function formatNumber(n: number, original: string): string {
-  if (original.includes(',')) return n.toLocaleString('en-US');
-  const match = original.match(/\.(\d+)/);
-  if (match) return n.toFixed(match[1].length);
+  if (original.includes(",")) return Math.round(n).toLocaleString("en-US");
   return Math.round(n).toString();
 }
 
@@ -74,11 +77,7 @@ export default function SceneStat({ stat, label, color }: Props) {
           stat
         )}
       </div>
-      {label && (
-        <p className="scene-stat__label">
-          {label}
-        </p>
-      )}
+      {label && <p className="scene-stat__label">{label}</p>}
     </div>
   );
 }

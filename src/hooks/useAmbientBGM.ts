@@ -8,7 +8,7 @@ export function useAmbientBGM() {
   useEffect(() => {
     const audio = new Audio(`${import.meta.env.BASE_URL}audio/bgm.mp3`);
     audio.loop = true;
-    audio.volume = 0.35;
+    audio.volume = 0.12;
     audioRef.current = audio;
 
     return () => {

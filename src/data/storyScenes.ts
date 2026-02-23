@@ -95,6 +95,19 @@ export const storyScenes: StoryScene[] = [
     accentColor: CYAN,
   },
 
+  {
+    id: "ch1-data",
+    type: "text-only",
+    chapter: 1,
+    imageUrl: null,
+    text: "ロケットを、\n回収して再使用する。",
+    subText:
+      "Falcon 9は同じブースターを20回以上再利用した記録を持つ。宇宙のコストが、劇的に下がった。",
+    stat: "20回+",
+    statLabel: "Falcon 9ブースターの最大再使用記録",
+    accentColor: CYAN,
+  },
+
   // ============================================================
   // CHAPTER 2 — 化石燃料への依存
   // ============================================================
@@ -123,10 +136,10 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 2,
     imageUrl: "images/ev-transition.webp",
-    text: "まず、走る車を電気に変える。",
+    text: "ガソリン車を、EVに変える。",
     badge: "Tesla",
-    stat: "4.4倍",
-    statLabel: "EVはガソリン車より4.4倍エネルギー効率が高い",
+    stat: "4倍+",
+    statLabel: "EVはガソリン車より4倍以上エネルギー効率が高い",
     accentColor: RED,
   },
   {
@@ -138,6 +151,19 @@ export const storyScenes: StoryScene[] = [
     badge: "Tesla Energy",
     stat: "114%",
     statLabel: "2024年のTesla Energy出荷量は前年比114%増",
+    accentColor: RED,
+  },
+
+  {
+    id: "ch2-data",
+    type: "text-only",
+    chapter: 2,
+    imageUrl: null,
+    text: "電気は、\n貯められるようになった。",
+    subText:
+      "Tesla Megapack 1基は、家庭1,000軒分の電力を蓄えられる。太陽光+蓄電池が電力網を変える。",
+    stat: "1,000軒",
+    statLabel: "Megapack 1基あたりの給電能力（一般家庭換算）",
     accentColor: RED,
   },
 
@@ -196,6 +222,19 @@ export const storyScenes: StoryScene[] = [
     accentColor: PURPLE,
   },
 
+  {
+    id: "ch3-data",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "脳とコンピュータの\n接続が、始まった。",
+    subText:
+      "2024年1月、人類初のNeuralinkチップ移植が行われた。患者は今、思考だけでPCを操作している。",
+    stat: "初",
+    statLabel: "2024年1月 — 人類で初めてN1チップを脳に移植した患者の記録",
+    accentColor: PURPLE,
+  },
+
   // ============================================================
   // CHAPTER 4 — 人口・労働力の減少
   // ============================================================
@@ -215,8 +254,6 @@ export const storyScenes: StoryScene[] = [
     imageUrl: null,
     text: "韓国の出生率、0.75。",
     subText: "世界中で子どもが生まれなくなっている。働く人が、いなくなる。",
-    stat: "0.75",
-    statLabel: "韓国の出生率 — 人類史上最低水準",
     accentColor: GREEN,
   },
   {
@@ -237,8 +274,21 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/autonomous-transport.webp",
     text: "運転手のいない物流。",
     badge: "Tesla",
-    stat: "16時間/日",
-    statLabel: "ロボタクシーは人間の2倍稼働する",
+    stat: "24時間",
+    statLabel: "自律走行は止まらない。ドライバー不要の物流",
+    accentColor: GREEN,
+  },
+
+  {
+    id: "ch4-data",
+    type: "text-only",
+    chapter: 4,
+    imageUrl: null,
+    text: "2030年代、工場では\nOptimusが働いている。",
+    subText:
+      "2024年末、TeslaはOptimus Gen2の工場試験を開始。長期目標は車より安い価格での量産。",
+    stat: "$10,000",
+    statLabel: "Optimusの長期目標価格 — 多くの国の月収以下",
     accentColor: GREEN,
   },
 
@@ -251,7 +301,7 @@ export const storyScenes: StoryScene[] = [
     chapter: 5,
     imageUrl: "images/mobility-inefficiency.webp",
     text: "脅威 05",
-    subText: "移動の非効率",
+    subText: "人類の時間浪費",
     accentColor: WARM,
   },
   {
@@ -259,10 +309,10 @@ export const storyScenes: StoryScene[] = [
     type: "text-only",
     chapter: 5,
     imageUrl: null,
-    text: "大都市の車は、平均16mph。",
-    subText: "渋滞の中、100年前の馬車とほとんど変わらない速度で動いている。",
-    stat: "16",
-    statLabel: "mph — 現代都市交通の現実",
+    text: "アメリカ人は渋滞で、\n年間51時間を失っている。",
+    subText: "渋滞は「移動の問題」ではない。人類の時間を奪う、静かな脅威だ。",
+    stat: "51時間",
+    statLabel: "アメリカ人が年間渋滞で失う時間 — INRIX 2023",
     accentColor: WARM,
   },
   {
@@ -274,6 +324,19 @@ export const storyScenes: StoryScene[] = [
     badge: "The Boring Company",
     stat: "1/10",
     statLabel: "トンネル掘削コストを従来の10分の1に",
+    accentColor: WARM,
+  },
+
+  {
+    id: "ch5-data",
+    type: "text-only",
+    chapter: 5,
+    imageUrl: null,
+    text: "地下に作れば、\n信号も渋滞もない。",
+    subText:
+      "Las Vegas Convention Center Loopは従来の地下鉄の4分の1のコストで建設された。",
+    stat: "1/4",
+    statLabel: "Vegas Loopの建設コスト — 従来地下鉄との比較",
     accentColor: WARM,
   },
 
@@ -318,6 +381,19 @@ export const storyScenes: StoryScene[] = [
     badge: "X",
     stat: "6億人",
     statLabel: "月間アクティブユーザー — 世界最大級の言論プラットフォーム",
+    accentColor: TEXT,
+  },
+
+  {
+    id: "ch6-data",
+    type: "text-only",
+    chapter: 6,
+    imageUrl: null,
+    text: "いまも13億人が、\n銀行口座を持てずにいる。",
+    subText:
+      "スマートフォンがあれば、銀行はいらない。X Moneyは送金・支払い・貯蓄を一つのアプリに。",
+    stat: "13億人",
+    statLabel: "世界の金融サービスから取り残された人々 — X Moneyのターゲット",
     accentColor: TEXT,
   },
 
