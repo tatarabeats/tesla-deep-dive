@@ -31,6 +31,15 @@ export const storyScenes: StoryScene[] = [
     accentColor: TEXT,
   },
   {
+    id: "open-3",
+    type: "text-only",
+    chapter: null,
+    imageUrl: null,
+    text: "その地球に、\nある一人の男がいる。",
+    subText: "彼は毎朝目を覚ますたびに、こう考えている。",
+    accentColor: GOLD,
+  },
+  {
     id: "open-elon",
     type: "image-hero",
     chapter: null,
@@ -39,12 +48,20 @@ export const storyScenes: StoryScene[] = [
     accentColor: GOLD,
   },
   {
+    id: "open-4",
+    type: "text-only",
+    chapter: null,
+    imageUrl: null,
+    text: "急ぐ理由は、6つある。",
+    subText: "6つの脅威。6つの会社。1人の男の、狂気じみた確信。",
+    accentColor: GOLD,
+  },
+  {
     id: "open-thesis",
     type: "image-hero",
     chapter: null,
     imageUrl: "images/root.webp",
-    text: "答えは6つある。",
-    subText: "6つの脅威。6つの会社。1つの信念。",
+    text: "これは、その物語だ。",
     stat: "6",
     statLabel: "つの事業が世界を救う",
     accentColor: GOLD,
@@ -68,7 +85,60 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: null,
     text: "地球は過去5回、\nほぼ全ての生命を失った。",
-    subText: "6回目がいつ来るかは、誰にも分からない。",
+    subText: "隕石、火山、氷河期。6回目がいつ来るかは、誰にも分からない。",
+    accentColor: CYAN,
+  },
+  {
+    id: "ch1-elon-reads",
+    type: "text-only",
+    chapter: 1,
+    imageUrl: null,
+    text: "2001年。\nイーロンは一冊の本を読んだ。",
+    subText:
+      "『The Case for Mars』——人類が火星に移住するためのロードマップ。\n\n「なぜNASAはこれをやらないのか？」",
+    accentColor: CYAN,
+  },
+  {
+    id: "ch1-cost-problem",
+    type: "text-only",
+    chapter: 1,
+    imageUrl: null,
+    text: "宇宙へ行くコストは、\n1kgあたり約100万円。",
+    subText:
+      "これでは人類は永遠に地球を出られない。\nイーロンは「これはコストの問題だ」と確信した。\n問題が分かれば、解決できる。",
+    stat: "¥1,000,000",
+    statLabel: "1kgを宇宙に運ぶコスト（従来）",
+    accentColor: CYAN,
+  },
+  {
+    id: "ch1-founded",
+    type: "image-hero",
+    chapter: 1,
+    imageUrl: "images/single-planet.webp",
+    text: "2002年。SpaceX設立。",
+    subText:
+      "「民間ロケット会社が成功するわけがない」\nNASA関係者、航空宇宙業界、全員が笑った。",
+    badge: "SpaceX",
+    accentColor: CYAN,
+  },
+  {
+    id: "ch1-failure1",
+    type: "text-only",
+    chapter: 1,
+    imageUrl: null,
+    text: "2006年、Falcon 1\n初打ち上げ——爆発。",
+    subText: "エンジンの燃料漏れ。33秒で終わった。",
+    stat: "33秒",
+    statLabel: "初打ち上げ、爆発までの時間",
+    accentColor: CYAN,
+  },
+  {
+    id: "ch1-failure2",
+    type: "text-only",
+    chapter: 1,
+    imageUrl: null,
+    text: "2007年、2回目——\nまた爆発。",
+    subText: "軌道に届かなかった。\n資金は底をつきかけていた。",
     accentColor: CYAN,
   },
   {
@@ -76,10 +146,20 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 1,
     imageUrl: "images/spacex-crisis.webp",
-    text: "2008年。3回連続爆発。",
-    subText: "チームは泣いていた。「次が最後のチャンスだ」",
+    text: "2008年。3回目——爆発。",
+    subText: "「チームは泣いていた。次が本当に最後の1機だ。」",
     stat: "3回",
-    statLabel: "連続失敗。全財産を賭けた、最後の1機",
+    statLabel: "連続失敗。全財産を賭けた、最後の挑戦",
+    accentColor: CYAN,
+  },
+  {
+    id: "ch1-darkest",
+    type: "text-only",
+    chapter: 1,
+    imageUrl: null,
+    text: "同じ年。\nテスラも倒産寸前だった。",
+    subText:
+      "イーロンはこう語った。\n\n「最後の2000万ドルを SpaceXとテスラに半分ずつ入れた。両方潰れると思っていた。」",
     accentColor: CYAN,
   },
   {
@@ -87,14 +167,14 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 1,
     imageUrl: "images/extinction-risk.webp",
-    text: "4回目——成功した。",
-    subText: "人類は初めて、民間企業のロケットで宇宙に届いた。",
+    text: "2008年9月28日。\n4回目——成功した。",
+    subText:
+      "人類史上初めて、民間企業のロケットが軌道に到達した。\nNASAは翌年、SpaceXと16億ドルの契約を結んだ。",
     badge: "SpaceX",
-    stat: "138億年",
-    statLabel: "宇宙の歴史。人類は今、初めて複数惑星への道を開いた",
+    stat: "$1.6B",
+    statLabel: "NASAとの契約額。民間宇宙時代の幕開け",
     accentColor: CYAN,
   },
-
   {
     id: "ch1-data",
     type: "text-only",
@@ -102,7 +182,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: null,
     text: "ロケットを、\n回収して再使用する。",
     subText:
-      "Falcon 9は同じブースターを20回以上再利用した記録を持つ。宇宙のコストが、劇的に下がった。",
+      "Falcon 9は同じブースターを20回以上再利用した記録を持つ。\n打ち上げコストは従来の10分の1以下になった。",
     stat: "20回+",
     statLabel: "Falcon 9ブースターの最大再使用記録",
     accentColor: CYAN,
@@ -126,9 +206,31 @@ export const storyScenes: StoryScene[] = [
     chapter: 2,
     imageUrl: null,
     text: "毎年374億トン。",
-    subText: "人類が大気に吐き出し続けるCO₂。この星を、ゆっくり殺している。",
+    subText: "人類が大気に吐き出し続けるCO₂。\nこの星を、ゆっくり殺している。",
     stat: "374億",
     statLabel: "トン/年 — 人類のCO₂排出量",
+    accentColor: RED,
+  },
+  {
+    id: "ch2-gasoline",
+    type: "text-only",
+    chapter: 2,
+    imageUrl: null,
+    text: "問題はシンプルだ。\n車がガソリンで動いている。",
+    subText:
+      "世界に約15億台の自動車。\nその99%が化石燃料で走っている。\n\n解決策も、シンプルだ。",
+    stat: "15億台",
+    statLabel: "世界の自動車台数。ほぼ全てがガソリン車",
+    accentColor: RED,
+  },
+  {
+    id: "ch2-eberhard",
+    type: "text-only",
+    chapter: 2,
+    imageUrl: null,
+    text: "2003年。\nマーティン・エバーハードが\nTeslaを設立した。",
+    subText:
+      "「EVを作りたいが、資金がない。」\nイーロンに話を持ち込んだ。\n\n「やろう。俺が出資する。」",
     accentColor: RED,
   },
   {
@@ -136,10 +238,22 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 2,
     imageUrl: "images/ev-transition.webp",
-    text: "ガソリン車を、EVに変える。",
+    text: "2006年、Roadster発表。\n「EVはダサい」が覆された。",
+    subText:
+      "0-100km/h 3.9秒。航続距離394km。\nスポーツカーとしても世界トップクラス。\n自動車業界は初めて震えた。",
     badge: "Tesla",
-    stat: "4倍+",
-    statLabel: "EVはガソリン車より4倍以上エネルギー効率が高い",
+    stat: "3.9秒",
+    statLabel: "0→100km/h。フェラーリより速いEV",
+    accentColor: RED,
+  },
+  {
+    id: "ch2-industry-laughs",
+    type: "text-only",
+    chapter: 2,
+    imageUrl: null,
+    text: "でも業界の反応は——",
+    subText:
+      "「テスラ？玩具だ。本物の車は作れない。」\n— 大手自動車メーカー幹部、2008年\n\n「EVに未来はない。バッテリーのコストが高すぎる。」\n— トヨタ幹部、2010年",
     accentColor: RED,
   },
   {
@@ -147,13 +261,14 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 2,
     imageUrl: "images/energy-storage.webp",
-    text: "次に、電気を貯める。",
+    text: "車だけじゃない。\n電気を貯める。",
+    subText:
+      "Megapackは工場・病院・街全体に電力を供給する。\n太陽光と組み合わせれば、化石燃料は不要になる。",
     badge: "Tesla Energy",
     stat: "114%",
-    statLabel: "2024年のTesla Energy出荷量は前年比114%増",
+    statLabel: "2024年のTesla Energy出荷量、前年比",
     accentColor: RED,
   },
-
   {
     id: "ch2-data",
     type: "text-only",
@@ -161,7 +276,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: null,
     text: "電気は、\n貯められるようになった。",
     subText:
-      "Tesla Megapack 1基は、家庭1,000軒分の電力を蓄えられる。太陽光+蓄電池が電力網を変える。",
+      "Tesla Megapack 1基は、家庭1,000軒分の電力を蓄えられる。\n太陽光+蓄電池が電力網を変える。",
     stat: "1,000軒",
     statLabel: "Megapack 1基あたりの給電能力（一般家庭換算）",
     accentColor: RED,
@@ -184,18 +299,83 @@ export const storyScenes: StoryScene[] = [
     type: "text-only",
     chapter: 3,
     imageUrl: null,
-    text: "5年以内に、\nAIは全人類を超える。",
-    subText: "制御できない超知能は、人類最大のリスクになりうる。",
+    text: "人工知能は今、\n人類の限界を超えようとしている。",
+    subText:
+      "チェス、囲碁、画像認識——AIは次々と人間を超えた。\n次は「全ての知的作業」だ。",
     accentColor: PURPLE,
   },
   {
-    id: "ch3-drama",
+    id: "ch3-danger",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "問題は「賢すぎるAI」が\n人類の制御を離れることだ。",
+    subText:
+      "核爆弾と同じだ。使い方次第で、文明を終わらせる。\nイーロンはこれを、人類最大のリスクだと考えた。",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-openai-founding",
     type: "image-hero",
     chapter: 3,
     imageUrl: "images/ai-development.webp",
-    text: "2015年。イーロンはOpenAIを共同設立した。",
-    subText: "2018年、彼は去った。「安全に向き合っていない」",
-    badge: "OpenAI → xAI",
+    text: "2015年。\nイーロンとサム・アルトマンが\nOpenAIを共同設立した。",
+    subText:
+      "「AIを特定の企業が独占させてはいけない。\n人類のために、安全に開発する。」\nシリコンバレーの最高頭脳が集まった。",
+    badge: "OpenAI",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-altman",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "サム・アルトマン。",
+    subText:
+      "OpenAI CEO。元Yコンビネーター社長。\nスタートアップ界の「天才発掘人」として知られる男が、\n今度は「人類最大の技術」を作ることになった。",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-split",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "2018年。\nイーロンはOpenAIを去った。",
+    subText:
+      "「彼らは安全性より能力の向上を優先し始めた。\n私が設立した理由と真逆だ。」\n\nそして2022年、ChatGPTが公開された。",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-chatgpt-shock",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "ChatGPT公開。\n5日で100万ユーザー。",
+    subText:
+      "Netflixは3.5年かかった。\nInstagramは2.5ヶ月かかった。\nChatGPTは——5日。\n\n世界が変わった瞬間だった。",
+    stat: "5日",
+    statLabel: "ChatGPTが100万ユーザーに到達するまでの時間",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-altman-drama",
+    type: "image-hero",
+    chapter: 3,
+    imageUrl: "images/ai-development.webp",
+    text: "2023年11月。\nサム・アルトマンが\n突然解雇された。",
+    subText:
+      "取締役会が「信頼を失った」と発表。\n理由は非公開。世界が震撼した。",
+    badge: "OpenAI",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-altman-returns",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "4日後。\n700人の社員が\n「辞める」と署名した。",
+    subText:
+      "Microsoft、主要投資家が圧力をかけた。\nアルトマンは復帰した。\n\nイーロンはこれを見て言った。\n「だから言った。」",
     accentColor: PURPLE,
   },
   {
@@ -204,10 +384,21 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: "images/ai-development.webp",
     text: "ならば、自ら作る。",
-    subText: "「宇宙の本質を理解する」AIを。",
+    subText:
+      "「宇宙の本質を理解する」AIを。\nxAIはNVIDIAのジェンセン・ファンに言った。\n「持っているGPUを全部くれ。」",
     badge: "xAI",
     stat: "200,000基",
-    statLabel: "世界最大のAIスーパーコンピュータ「Colossus」のGPU数",
+    statLabel: "Colossus — 世界最大AIスーパーコンピュータのGPU数",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-jensen",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "ジェンセン・ファン（NVIDIA CEO）は\n今、世界で最も重要な男の一人だ。",
+    subText:
+      "ChatGPT、Grok、Gemini——\n全てのAIがNVIDIAのGPUで動く。\n「AIの石油」を握る男。\n\n革ジャンはシリコンバレーの新しいシンボルになった。",
     accentColor: PURPLE,
   },
   {
@@ -215,21 +406,22 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 3,
     imageUrl: "images/brain-interface.webp",
-    text: "脳とAIを、直接つなぐ。",
+    text: "さらに先へ。\n脳とAIを、直接つなぐ。",
+    subText:
+      "AIが賢くなっても、人間との接点が「画面」のままでは遅すぎる。\nNeuralink N1チップは、脳に直接埋め込まれる。",
     badge: "Neuralink",
     stat: "1,024ch",
-    statLabel: "脳に埋め込むN1チップ — 思考でコンピュータを操作する",
+    statLabel: "N1チップの読み取りチャンネル数",
     accentColor: PURPLE,
   },
-
   {
     id: "ch3-data",
     type: "text-only",
     chapter: 3,
     imageUrl: null,
-    text: "脳とコンピュータの\n接続が、始まった。",
+    text: "2024年1月。\n人類初のチップ移植が行われた。",
     subText:
-      "2024年1月、人類初のNeuralinkチップ移植が行われた。患者は今、思考だけでPCを操作している。",
+      "患者は今、思考だけでPCのカーソルを動かしている。\nチェスも、文章作成も、脳だけで。\n\nこれはSFではない。もう起きている。",
     stat: "初",
     statLabel: "2024年1月 — 人類で初めてN1チップを脳に移植した患者の記録",
     accentColor: PURPLE,
@@ -253,7 +445,41 @@ export const storyScenes: StoryScene[] = [
     chapter: 4,
     imageUrl: null,
     text: "韓国の出生率、0.75。",
-    subText: "世界中で子どもが生まれなくなっている。働く人が、いなくなる。",
+    subText:
+      "世界中で子どもが生まれなくなっている。\n2100年には世界人口が減少に転じる予測もある。\n働く人が、いなくなる。",
+    accentColor: GREEN,
+  },
+  {
+    id: "ch4-japan",
+    type: "text-only",
+    chapter: 4,
+    imageUrl: null,
+    text: "日本では今、\n約1000万人が介護に従事している。",
+    subText:
+      "しかし介護が必要な高齢者は4000万人を超えようとしている。\n\n「もし人間と同じように動けるロボットがいたら？」",
+    stat: "4,000万人",
+    statLabel: "日本の介護需要 — 人手が圧倒的に足りない",
+    accentColor: GREEN,
+  },
+  {
+    id: "ch4-optimus-reveal",
+    type: "image-hero",
+    chapter: 4,
+    imageUrl: "images/optimus-robot.webp",
+    text: "2022年。\nイーロンはOptimus Gen1を発表した。",
+    subText:
+      "会場は笑いとため息が混ざった。\nよちよち歩き。人間どころかルンバより遅い。\n「冗談か？」",
+    badge: "Tesla Optimus",
+    accentColor: GREEN,
+  },
+  {
+    id: "ch4-optimus-progress",
+    type: "text-only",
+    chapter: 4,
+    imageUrl: null,
+    text: "2024年。Gen2。",
+    subText:
+      "工場でバッテリーを仕分け、ネジを締め、荷物を運ぶ。\n指の動きは人間と変わらない。\n\n2年で、ここまで来た。",
     accentColor: GREEN,
   },
   {
@@ -262,9 +488,11 @@ export const storyScenes: StoryScene[] = [
     chapter: 4,
     imageUrl: "images/optimus-robot.webp",
     text: "人間以外の労働力を作ればいい。",
+    subText:
+      "目標価格は$20,000以下。\n「車より安くする。24時間働ける。\n危険な仕事も、退屈な仕事も、全部引き受ける。」",
     badge: "Tesla Optimus",
     stat: "$20,000〜",
-    statLabel: "車より安い。24時間働ける。危険も退屈も引き受ける",
+    statLabel: "目標価格。車より安く、24時間動ける労働力",
     accentColor: GREEN,
   },
   {
@@ -273,12 +501,13 @@ export const storyScenes: StoryScene[] = [
     chapter: 4,
     imageUrl: "images/autonomous-transport.webp",
     text: "運転手のいない物流。",
+    subText:
+      "Teslaのロボタクシーは眠らない。休憩もない。\n人間のドライバーが働く時間を超えて、24時間稼働する。",
     badge: "Tesla",
     stat: "24時間",
     statLabel: "自律走行は止まらない。ドライバー不要の物流",
     accentColor: GREEN,
   },
-
   {
     id: "ch4-data",
     type: "text-only",
@@ -286,14 +515,14 @@ export const storyScenes: StoryScene[] = [
     imageUrl: null,
     text: "2030年代、工場では\nOptimusが働いている。",
     subText:
-      "2024年末、TeslaはOptimus Gen2の工場試験を開始。長期目標は車より安い価格での量産。",
+      "長期目標価格は$10,000以下。\nアフリカ、東南アジアの平均年収以下で「人間と同等の労働力」が手に入る。\n\nこれは労働の再定義だ。",
     stat: "$10,000",
     statLabel: "Optimusの長期目標価格 — 多くの国の月収以下",
     accentColor: GREEN,
   },
 
   // ============================================================
-  // CHAPTER 5 — 移動の非効率
+  // CHAPTER 5 — 人類の時間浪費
   // ============================================================
   {
     id: "ch5-threat",
@@ -310,9 +539,20 @@ export const storyScenes: StoryScene[] = [
     chapter: 5,
     imageUrl: null,
     text: "アメリカ人は渋滞で、\n年間51時間を失っている。",
-    subText: "渋滞は「移動の問題」ではない。人類の時間を奪う、静かな脅威だ。",
+    subText:
+      "毎日1時間以上、渋滞の中で過ごすことと同じだ。\n渋滞は「不便」ではない。\n人類の命を、ゆっくり奪っている。",
     stat: "51時間",
     statLabel: "アメリカ人が年間渋滞で失う時間 — INRIX 2023",
+    accentColor: WARM,
+  },
+  {
+    id: "ch5-tweet",
+    type: "text-only",
+    chapter: 5,
+    imageUrl: null,
+    text: "2016年。\nイーロンはLAの渋滞にはまった。",
+    subText:
+      "その瞬間、ツイートした。\n\n「私はトンネル掘削機を作る会社を設立しようと思っている。」\n\n誰もが笑った。",
     accentColor: WARM,
   },
   {
@@ -321,12 +561,13 @@ export const storyScenes: StoryScene[] = [
     chapter: 5,
     imageUrl: "images/underground-network.webp",
     text: "地下に、もう一つの交通網を作る。",
+    subText:
+      "The Boring Companyはトンネル掘削コストを従来の10分の1に下げた。\nLas Vegas Convention Center Loopは2021年に開通。\n料金$2.50。渋滞なし。",
     badge: "The Boring Company",
     stat: "1/10",
-    statLabel: "トンネル掘削コストを従来の10分の1に",
+    statLabel: "トンネル掘削コストを従来比10分の1に削減",
     accentColor: WARM,
   },
-
   {
     id: "ch5-data",
     type: "text-only",
@@ -334,7 +575,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: null,
     text: "地下に作れば、\n信号も渋滞もない。",
     subText:
-      "Las Vegas Convention Center Loopは従来の地下鉄の4分の1のコストで建設された。",
+      "Las Vegas Loopは従来地下鉄の4分の1のコストで建設された。\n次はマイアミ、テキサス、そして東京へ。",
     stat: "1/4",
     statLabel: "Vegas Loopの建設コスト — 従来地下鉄との比較",
     accentColor: WARM,
@@ -358,7 +599,31 @@ export const storyScenes: StoryScene[] = [
     chapter: 6,
     imageUrl: null,
     text: "22億人が、まだ\nインターネットに繋がっていない。",
-    subText: "13億人が、銀行口座を持てない。",
+    subText:
+      "アフリカ、中央アジア、太平洋の島々。\n地理的・経済的な理由で、「情報」から切り離されている。\n13億人が、銀行口座を持てない。",
+    accentColor: TEXT,
+  },
+  {
+    id: "ch6-ukraine",
+    type: "image-hero",
+    chapter: 6,
+    imageUrl: "images/global-connectivity.webp",
+    text: "2022年2月。\nロシアがウクライナに侵攻した。",
+    subText:
+      "通信インフラが破壊された。\nウクライナのミハイロ・フェドロフ副首相は、\nツイッターでイーロンに直接DMを送った。",
+    badge: "Starlink",
+    accentColor: TEXT,
+  },
+  {
+    id: "ch6-starlink-response",
+    type: "text-only",
+    chapter: 6,
+    imageUrl: null,
+    text: "12時間後。\nStarlinkの端末が\nウクライナに届いた。",
+    subText:
+      "政府の手続きなし。大使館なし。\nツイートからたった12時間。\n\nこれが「宇宙からのインターネット」の本当の意味だ。",
+    stat: "12時間",
+    statLabel: "DM送信からStarlink端末到着まで — ウクライナ危機",
     accentColor: TEXT,
   },
   {
@@ -367,9 +632,23 @@ export const storyScenes: StoryScene[] = [
     chapter: 6,
     imageUrl: "images/global-connectivity.webp",
     text: "空から、世界を繋ぐ。",
+    subText:
+      "9,400基以上の衛星が軌道上を回っている。\n砂漠でも、海の上でも、紛争地帯でも。\n電波が届く場所に、インターネットが届く。",
     badge: "Starlink",
     stat: "9,400基+",
-    statLabel: "軌道上の衛星が、地球のどこにでもネットを届ける",
+    statLabel: "軌道上の衛星数。地球のどこにでもネットを届ける",
+    accentColor: TEXT,
+  },
+  {
+    id: "ch6-twitter-why",
+    type: "text-only",
+    chapter: 6,
+    imageUrl: null,
+    text: "2022年。\nイーロンはTwitterを\n440億ドルで買収した。",
+    subText:
+      "「なぜそんな金を使うのか？」\n世界中が疑問を持った。\n\n彼の答えは「言論の自由がないと、民主主義は死ぬ」だった。",
+    stat: "$44B",
+    statLabel: "Twitter（現X）の買収額 — 2022年",
     accentColor: TEXT,
   },
   {
@@ -378,12 +657,13 @@ export const storyScenes: StoryScene[] = [
     chapter: 6,
     imageUrl: "images/free-speech-platform.webp",
     text: "検閲のない、声の広場を作る。",
+    subText:
+      "月間アクティブユーザー6億人。\nX Moneyは送金・支払い・貯蓄を一つのアプリに統合する。\n「銀行口座がなくてもいい」世界へ。",
     badge: "X",
     stat: "6億人",
     statLabel: "月間アクティブユーザー — 世界最大級の言論プラットフォーム",
     accentColor: TEXT,
   },
-
   {
     id: "ch6-data",
     type: "text-only",
@@ -391,7 +671,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: null,
     text: "いまも13億人が、\n銀行口座を持てずにいる。",
     subText:
-      "スマートフォンがあれば、銀行はいらない。X Moneyは送金・支払い・貯蓄を一つのアプリに。",
+      "スマートフォンがあれば、銀行はいらない。\nX Moneyは送金・支払い・貯蓄を一つのアプリに。\n「金融から排除された人々」を、世界経済に接続する。",
     stat: "13億人",
     statLabel: "世界の金融サービスから取り残された人々 — X Moneyのターゲット",
     accentColor: TEXT,
