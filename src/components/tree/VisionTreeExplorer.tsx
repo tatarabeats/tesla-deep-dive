@@ -307,30 +307,43 @@ function WebtoonBranch({
 function WebtoonHero({ branch, color }: { branch: VisionNode; color: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const hasImage = Boolean(branch.imageUrl);
 
   return (
     <motion.div
       ref={ref}
-      className="wt-hero"
+      className={`wt-hero ${hasImage ? "wt-hero--has-image" : ""}`}
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : {}}
       transition={{ duration: 0.8 }}
     >
-      <span className="wt-hero__icon">{branch.icon}</span>
-      <h2 className="wt-hero__title" style={{ color }}>
-        {branch.title}
-      </h2>
-      {branch.subtitle && (
-        <p className="wt-hero__subtitle">{branch.subtitle}</p>
-      )}
-      {branch.heroStat && (
-        <div className="wt-hero__stat">
-          <span className="wt-hero__stat-num" style={{ color }}>
-            {branch.heroStat}
-          </span>
-          <span className="wt-hero__stat-caption">{branch.heroCaption}</span>
+      {hasImage && (
+        <div className="wt-panel__bg">
+          <img
+            src={`${import.meta.env.BASE_URL}${branch.imageUrl}`}
+            alt=""
+            loading="eager"
+          />
+          <div className="wt-panel__bg-overlay" />
         </div>
       )}
+      <div className={hasImage ? "wt-hero__content" : undefined}>
+        <span className="wt-hero__icon">{branch.icon}</span>
+        <h2 className="wt-hero__title" style={{ color }}>
+          {branch.title}
+        </h2>
+        {branch.subtitle && (
+          <p className="wt-hero__subtitle">{branch.subtitle}</p>
+        )}
+        {branch.heroStat && (
+          <div className="wt-hero__stat">
+            <span className="wt-hero__stat-num" style={{ color }}>
+              {branch.heroStat}
+            </span>
+            <span className="wt-hero__stat-caption">{branch.heroCaption}</span>
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 }
@@ -430,6 +443,7 @@ function WebtoonPanel({
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const isDeep = node.depth >= 3;
+  const hasImage = Boolean(node.imageUrl);
 
   const mainLines = splitSentences(node.content.mainText);
   const principleLines = node.content.firstPrinciple
@@ -442,70 +456,85 @@ function WebtoonPanel({
   return (
     <motion.div
       ref={ref}
-      className={`wt-panel ${isDeep ? "wt-panel--deep" : ""}`}
+      className={`wt-panel ${isDeep ? "wt-panel--deep" : ""} ${hasImage ? "wt-panel--has-image" : ""}`}
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5 }}
     >
-      {/* Panel header */}
-      <div className="wt-panel__head">
-        <span className="wt-panel__icon">{node.icon}</span>
-        <div className="wt-panel__titles">
-          <h3 className="wt-panel__title">{node.title}</h3>
-          {node.heroStat && (
-            <span
-              className="wt-panel__hero-stat"
-              style={{ color: branchColor }}
-            >
-              {node.heroStat}
-            </span>
-          )}
+      {/* Full-bleed background image */}
+      {hasImage && (
+        <div className="wt-panel__bg">
+          <img
+            src={`${import.meta.env.BASE_URL}${node.imageUrl}`}
+            alt=""
+            loading="lazy"
+          />
+          <div className="wt-panel__bg-overlay" />
         </div>
+      )}
+
+      {/* Content wrapper */}
+      <div className="wt-panel__content">
+        {/* Panel header */}
+        <div className="wt-panel__head">
+          <span className="wt-panel__icon">{node.icon}</span>
+          <div className="wt-panel__titles">
+            <h3 className="wt-panel__title">{node.title}</h3>
+            {node.heroStat && (
+              <span
+                className="wt-panel__hero-stat"
+                style={{ color: branchColor }}
+              >
+                {node.heroStat}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Hero caption */}
+        {node.heroCaption && (
+          <p className="wt-panel__caption">{node.heroCaption}</p>
+        )}
+
+        {/* Main text — 1文1パネル */}
+        {mainLines.map((line, i) => (
+          <MangaLine key={`m-${i}`} text={line} />
+        ))}
+
+        {/* Data points — big visual numbers */}
+        {node.content.data && node.content.data.length > 0 && (
+          <DataCards data={node.content.data} color={branchColor} />
+        )}
+
+        {/* Elon quote bubble */}
+        {node.content.elonQuote && (
+          <QuoteBubble
+            quote={node.content.elonQuote}
+            source={node.content.quoteSource}
+            color={branchColor}
+          />
+        )}
+
+        {/* First Principle — 1文1パネル */}
+        {principleLines.map((line, i) => (
+          <MangaLine
+            key={`p-${i}`}
+            text={line}
+            variant="principle"
+            showPrefix={i === 0 ? "🔬" : undefined}
+          />
+        ))}
+
+        {/* Analogy — 1文1パネル */}
+        {analogyLines.map((line, i) => (
+          <MangaLine
+            key={`a-${i}`}
+            text={line}
+            variant="analogy"
+            showPrefix={i === 0 ? "💡" : undefined}
+          />
+        ))}
       </div>
-
-      {/* Hero caption */}
-      {node.heroCaption && (
-        <p className="wt-panel__caption">{node.heroCaption}</p>
-      )}
-
-      {/* Main text — 1文1パネル */}
-      {mainLines.map((line, i) => (
-        <MangaLine key={`m-${i}`} text={line} />
-      ))}
-
-      {/* Data points — big visual numbers */}
-      {node.content.data && node.content.data.length > 0 && (
-        <DataCards data={node.content.data} color={branchColor} />
-      )}
-
-      {/* Elon quote bubble */}
-      {node.content.elonQuote && (
-        <QuoteBubble
-          quote={node.content.elonQuote}
-          source={node.content.quoteSource}
-          color={branchColor}
-        />
-      )}
-
-      {/* First Principle — 1文1パネル */}
-      {principleLines.map((line, i) => (
-        <MangaLine
-          key={`p-${i}`}
-          text={line}
-          variant="principle"
-          showPrefix={i === 0 ? "🔬" : undefined}
-        />
-      ))}
-
-      {/* Analogy — 1文1パネル */}
-      {analogyLines.map((line, i) => (
-        <MangaLine
-          key={`a-${i}`}
-          text={line}
-          variant="analogy"
-          showPrefix={i === 0 ? "💡" : undefined}
-        />
-      ))}
     </motion.div>
   );
 }

@@ -16,7 +16,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     heroCaption: '全てに解を持つ1人の人間',
     icon: '🌌',
     color: '--gold',
-    imageUrl: 'images/root.png',
+    imageUrl: 'images/root.webp',
     content: {
       mainText: 'イーロン・マスクの全事業は一つの信念から生まれている。「意識は宇宙で極めて稀で貴重。その灯を消さず、広げることが最重要」。6つの脅威に対し、複数の企業が連携して立ち向かう。',
       elonQuote: 'Consciousness is a very rare and precious thing. We should take whatever steps we can to preserve the light of consciousness.',
@@ -40,7 +40,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     heroCaption: '地球はすでに5回の大量絶滅を経験',
     icon: '🌍',
     color: '--accent-blue',
-    imageUrl: 'images/single-planet.png',
+    imageUrl: 'images/single-planet.webp',
     content: {
       mainText: '人類は45億年の地球史の中で、たった一つの惑星だけに存在している。全ての卵を一つのカゴに入れた状態。小惑星衝突、超大規模噴火、核戦争、パンデミック — どれか一つでも文明を終わらせうる。単一惑星種であることは、人類が抱える最も根本的な脆弱性。',
       elonQuote: 'There is a profound difference between single-planet & multiplanet species. If we are able to visit other stars one day, we may discover many long-dead single-planet civilizations.',
@@ -65,7 +65,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '多惑星種への進化 {SpaceX}',
     heroStat: '138億年',
     heroCaption: '宇宙で知的生命が確認された惑星は地球だけ',
-    imageUrl: 'images/extinction-risk.png',
+    imageUrl: 'images/extinction-risk.webp',
     icon: '🚀',
     color: '--accent-blue',
     content: {
@@ -213,7 +213,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '地球全体の接続 {Starlink}',
     heroStat: '118億ドル',
     heroCaption: '2025年のStarlink年間売上',
-    imageUrl: 'images/starlink-connectivity.png',
+    imageUrl: 'images/starlink-connectivity.webp',
     icon: '📡',
     color: '--accent-blue',
     content: {
@@ -284,7 +284,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     heroCaption: '化石燃料によるCO2排出量',
     icon: '🏭',
     color: '--tesla-red',
-    imageUrl: 'images/fossil-fuel.png',
+    imageUrl: 'images/fossil-fuel.webp',
     content: {
       mainText: '化石燃料の燃焼は年間374億トンのCO2を排出し、気候変動を加速させている。しかも石油は約50年、天然ガスも約50年で枯渇する有限資源。一方、太陽は地球のエネルギー消費量の10,000倍を常時供給している。問題は発電量ではなく、貯蔵と配電。文明の持続には太陽電気経済への完全移行が不可欠。',
       elonQuote: 'The overarching purpose of Tesla Motors is to help expedite the move from a mine-and-burn hydrocarbon economy towards a solar electric economy.',
@@ -308,7 +308,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: 'EVへの移行 {Tesla}',
     heroStat: '4.4倍',
     heroCaption: 'EVはガソリン車よりエネルギー効率が高い',
-    imageUrl: 'images/ev-transition.png',
+    imageUrl: 'images/ev-transition.webp',
     icon: '⚡',
     color: '--tesla-red',
     content: {
@@ -410,7 +410,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: 'エネルギー貯蔵革命 {Tesla Energy}',
     heroStat: '114%増',
     heroCaption: '2024年のTesla Energy出荷量成長率',
-    imageUrl: 'images/energy-storage.png',
+    imageUrl: 'images/energy-storage.webp',
     icon: '🔋',
     color: '--tesla-red',
     content: {
@@ -481,7 +481,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '太陽光発電 — 根本解 {Tesla Energy}',
     heroStat: '10,000倍',
     heroCaption: '太陽は人類の消費量の10,000倍のエネルギーを供給',
-    imageUrl: 'images/solar-generation.png',
+    imageUrl: 'images/solar-generation.webp',
     icon: '☀️',
     color: '--tesla-red',
     content: {
@@ -531,7 +531,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: 'MP3 — 脱炭素計画',
     heroStat: '240TWh',
     heroCaption: '地球全体を持続可能エネルギーに移行する蓄電量',
-    imageUrl: 'images/master-plan-3.png',
+    imageUrl: 'images/master-plan-3.webp',
     icon: '🌍',
     color: '--tesla-red',
     content: {
@@ -562,7 +562,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     heroCaption: '全人類を超えるAIの到来予測',
     icon: '🧠',
     color: '--accent-purple',
-    imageUrl: 'images/intelligence-limits.png',
+    imageUrl: 'images/intelligence-limits.webp',
     content: {
       mainText: '人間の知能には生物学的な上限がある。脳の処理速度、記憶容量、通信帯域幅 — すべてが進化の偶然で決まった限界に縛られている。AIは指数関数的に賢くなり、やがて全ての知的領域で人間を凌駕する。イーロンはこの避けられない未来に対して3つの道を同時に推進している: (1) AIを正しく開発する、(2) 脳とAIを融合する、(3) AIが人間の価値観に沿うよう設計する。',
       elonQuote: 'We will have AI that is smarter than any one human probably around end of next year. AI that is smarter than all humans combined is probably within five years.',
@@ -582,7 +582,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: 'AI開発 {xAI}',
     heroStat: '10倍',
     heroCaption: 'xAI Colossusは世界最大のAIクラスター',
-    imageUrl: 'images/ai-development.png',
+    imageUrl: 'images/ai-development.webp',
     icon: '🔬',
     color: '--accent-purple',
     content: {
@@ -673,7 +673,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '脳とAIの融合 {Neuralink}',
     heroStat: '1,024ch',
     heroCaption: 'Neuralink N1チップのチャンネル数',
-    imageUrl: 'images/brain-interface.png',
+    imageUrl: 'images/brain-interface.webp',
     icon: '🔌',
     color: '--accent-purple',
     content: {
@@ -796,7 +796,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     heroCaption: '韓国の出生率 — 世界最低',
     icon: '📉',
     color: '--accent-green',
-    imageUrl: 'images/population-decline.png',
+    imageUrl: 'images/population-decline.webp',
     content: {
       mainText: '先進国を中心に出生率が急落している。日本は2024年に出生数が初めて70万人を割り、韓国は出生率0.75で世界最低。中国は3年連続で人口減少し、2025年には339万人減。2100年までに世界の97%の国が人口置換水準を下回る。労働力の物理的制約を突破しなければ、経済も文明も止まる。',
       elonQuote: 'Population collapse due to low birth rates is a much bigger risk to civilization than global warming.',
@@ -822,7 +822,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '汎用ヒューマノイド {Tesla Optimus}',
     heroStat: '$20,000〜',
     heroCaption: 'ヒューマノイドロボットの量産価格目標',
-    imageUrl: 'images/optimus-robot.png',
+    imageUrl: 'images/optimus-robot.webp',
     icon: '🤖',
     color: '--accent-green',
     content: {
@@ -919,7 +919,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '自律輸送 — 運転手不要の物流 {Tesla}',
     heroStat: '16時間/日',
     heroCaption: 'ロボタクシーは人間より2倍稼働できる',
-    imageUrl: 'images/autonomous-transport.png',
+    imageUrl: 'images/autonomous-transport.webp',
     icon: '🚛',
     color: '--accent-green',
     content: {
@@ -990,7 +990,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '豊かさの時代 — 経済のパラダイムシフト',
     heroStat: 'GDP 2倍',
     heroCaption: 'ロボットで人間の労働力不足を完全補完',
-    imageUrl: 'images/abundance-economy.png',
+    imageUrl: 'images/abundance-economy.webp',
     icon: '🌊',
     color: '--accent-green',
     content: {
@@ -1022,7 +1022,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     heroCaption: '米国の年間渋滞コスト',
     icon: '🚗',
     color: '--muted',
-    imageUrl: 'images/mobility-inefficiency.png',
+    imageUrl: 'images/mobility-inefficiency.webp',
     content: {
       mainText: '都市の渋滞は年間数千億ドルの経済損失と膨大な時間の浪費を生んでいる。道路を増やしても誘発需要で渋滞は解消しない。現代の交通網は2D平面に閉じ込められており、都市の成長とともに構造的に破綻する。',
       data: [
@@ -1046,7 +1046,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '地下に高速移動ネットワークを作る {The Boring Company}',
     heroStat: '1/10',
     heroCaption: 'トンネル掘削コストを10分の1に削減',
-    imageUrl: 'images/underground-network.png',
+    imageUrl: 'images/underground-network.webp',
     icon: '🕳️',
     color: '--muted',
     content: {
@@ -1150,7 +1150,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     heroCaption: 'インターネット未接続の人口',
     icon: '📡',
     color: '--foreground',
-    imageUrl: 'images/info-finance-gap.png',
+    imageUrl: 'images/info-finance-gap.webp',
     content: {
       mainText: '世界の22億人がまだインターネットに接続されておらず、その96%が低・中所得国に集中。13億人の成人が銀行口座を持てない。情報と金融へのアクセスの不平等は、人類全体の知的能力と経済力を制限している。デジタル格差の解消だけで2030年までにGDPを1.5兆ドル押し上げられる。',
       firstPrinciple: '知能の総量は人口×一人あたりの知識アクセス。22億人をインターネットに繋げれば、人類全体の問題解決能力が飛躍的に向上する。',
@@ -1172,7 +1172,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '地球全体をインターネットで繋ぐ {Starlink}',
     heroStat: '9,400基+',
     heroCaption: '軌道上のStarlink衛星数',
-    imageUrl: 'images/global-connectivity.png',
+    imageUrl: 'images/global-connectivity.webp',
     icon: '🛰️',
     color: '--foreground',
     content: {
@@ -1242,7 +1242,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '言論の自由を守る {X}',
     heroStat: '6億人',
     heroCaption: 'X（旧Twitter）の月間アクティブユーザー',
-    imageUrl: 'images/free-speech-platform.png',
+    imageUrl: 'images/free-speech-platform.webp',
     icon: '🗣️',
     color: '--foreground',
     content: {
@@ -1316,7 +1316,7 @@ export const visionTreeData: Record<string, VisionNode> = {
     title: '金融の民主化 {X Money}',
     heroStat: '13億人',
     heroCaption: '銀行口座を持てない成人の数',
-    imageUrl: 'images/financial-inclusion.png',
+    imageUrl: 'images/financial-inclusion.webp',
     icon: '💰',
     color: '--foreground',
     content: {
