@@ -190,6 +190,9 @@ export default function Scene({ scene }: Props) {
               transition={{ duration: 1.5, delay: 1.2 }}
             >
               &ldquo;{scene.elonQuote}&rdquo;
+              {scene.elonQuoteJp && (
+                <span className="scene__epilogue-quote-jp">{scene.elonQuoteJp}</span>
+              )}
               <cite>— Elon Musk</cite>
             </motion.blockquote>
           )}

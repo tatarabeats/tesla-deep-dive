@@ -26,6 +26,8 @@ export interface StoryScene {
   accentColor: string;
   /** Elon quote */
   elonQuote?: string;
+  /** Japanese translation of Elon quote */
+  elonQuoteJp?: string;
   /** Company badge */
   badge?: string;
   /** For multi scenes */
