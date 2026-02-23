@@ -3,7 +3,7 @@
 :root {
   --bg: #0b1120;
   --text: #e8dcc8;
-  --text-secondary: #8b7e6a;
+  --text-secondary: #c4b5a5;
   --gold: rgba(255, 225, 140, 0.9);
   --red: rgba(255, 90, 80, 0.9);
   --cyan: rgba(80, 200, 255, 0.9);
@@ -287,12 +287,12 @@
 }
 
 .scene__text-sub {
-  font-size: clamp(17px, 4.5vw, 22px);
+  font-size: clamp(19px, 5vw, 26px);
   font-weight: 400;
   color: var(--text-secondary);
   line-height: 1.7;
   margin-top: 12px;
-  max-width: 400px;
+  max-width: 420px;
 }
 
 /* ===== CHAPTER TITLE scene ===== */
@@ -351,7 +351,7 @@
 }
 
 .scene__hero-sub {
-  font-size: clamp(17px, 4.5vw, 22px);
+  font-size: clamp(19px, 5vw, 26px);
   font-weight: 400;
   color: var(--text-secondary);
 }
