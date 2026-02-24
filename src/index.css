@@ -1239,3 +1239,197 @@
   opacity: 0.5;
   margin-top: 20px;
 }
+
+/* ============================================================
+   TIMELINE — Vertical staggered cards with extinction bars
+   ============================================================ */
+.scene--timeline {
+  min-height: 100vh;
+  height: auto;
+  padding: 80px 0 60px;
+}
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+  max-width: 420px;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.timeline__line {
+  position: absolute;
+  left: 32px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(80, 200, 255, 0.2) 10%,
+    rgba(255, 90, 80, 0.2) 90%,
+    transparent 100%
+  );
+}
+
+.timeline__card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(232, 220, 200, 0.03);
+  border: 1px solid rgba(232, 220, 200, 0.06);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline__icon {
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.timeline__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.timeline__era {
+  font-size: clamp(15px, 4vw, 18px);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.timeline__years {
+  font-size: clamp(11px, 3vw, 13px);
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.timeline__cause {
+  font-size: clamp(12px, 3.2vw, 14px);
+  color: var(--text-secondary);
+}
+
+.timeline__bar-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.timeline__bar {
+  height: 4px;
+  border-radius: 2px;
+  width: 100%;
+  transform-origin: left center;
+}
+
+.timeline__percent {
+  font-size: clamp(13px, 3.5vw, 16px);
+  font-weight: 800;
+  white-space: nowrap;
+  min-width: 40px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline__footer {
+  margin-top: 24px;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* ============================================================
+   MANGA PANEL — Image bg + SF speech bubbles
+   ============================================================ */
+.scene--manga-panel {
+  align-items: center;
+}
+
+.scene--manga-panel .scene__content {
+  gap: 20px;
+  max-width: 600px;
+}
+
+.manga__subtitle {
+  font-size: clamp(16px, 4.5vw, 22px);
+  line-height: 1.7;
+  color: var(--text);
+  text-align: center;
+  opacity: 0.9;
+}
+
+.manga__bubble {
+  position: relative;
+  padding: 16px 22px;
+  border-radius: 16px;
+  background: rgba(80, 200, 255, 0.06);
+  border: 1px solid rgba(80, 200, 255, 0.25);
+  max-width: 360px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow:
+    0 0 20px rgba(80, 200, 255, 0.06),
+    inset 0 0 20px rgba(80, 200, 255, 0.02);
+}
+
+.manga__bubble--right {
+  align-self: flex-end;
+  border-top-right-radius: 4px;
+}
+
+.manga__bubble--left {
+  align-self: flex-start;
+  border-top-left-radius: 4px;
+}
+
+.manga__bubble--center {
+  align-self: center;
+}
+
+.manga__bubble-tail {
+  position: absolute;
+  top: -8px;
+  width: 16px;
+  height: 8px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: rgba(80, 200, 255, 0.25);
+}
+
+.manga__bubble--right .manga__bubble-tail {
+  right: 20px;
+}
+
+.manga__bubble--left .manga__bubble-tail {
+  left: 20px;
+}
+
+.manga__bubble--center .manga__bubble-tail {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.manga__bubble-text {
+  font-size: clamp(15px, 4vw, 19px);
+  line-height: 1.7;
+  color: var(--text);
+  font-style: italic;
+  letter-spacing: 0.02em;
+}

@@ -1,11 +1,13 @@
 /** Scene types for scroll-driven storytelling */
 
 export type SceneType =
-  | 'text-only'      // Text on dark bg, no image — "breathing" scene
-  | 'image-hero'     // Full-bleed image with overlaid text + optional stat
-  | 'chapter-title'  // Chapter intro — threat name + ominous stat
-  | 'multi'          // Multi-card grid
-  | 'epilogue';      // Final scene
+  | "text-only" // Text on dark bg, no image — "breathing" scene
+  | "image-hero" // Full-bleed image with overlaid text + optional stat
+  | "chapter-title" // Chapter intro — threat name + ominous stat
+  | "multi" // Multi-card grid
+  | "timeline" // Vertical timeline with staggered cards
+  | "manga-panel" // Image bg + speech bubbles (manga-style)
+  | "epilogue"; // Final scene
 
 export interface StoryScene {
   id: string;
@@ -35,5 +37,19 @@ export interface StoryScene {
     imageUrl: string;
     label: string;
     stat: string;
+  }[];
+  /** For timeline scenes */
+  timelineItems?: {
+    icon: string;
+    era: string;
+    years: string;
+    cause: string;
+    percent: number;
+  }[];
+  /** For manga-panel speech bubbles */
+  speechBubbles?: {
+    text: string;
+    position?: "left" | "right" | "center";
+    delay?: number;
   }[];
 }

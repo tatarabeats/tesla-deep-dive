@@ -74,28 +74,66 @@ export const storyScenes: StoryScene[] = [
   },
   {
     id: "ch1-fear",
-    type: "text-only",
+    type: "timeline",
     chapter: 1,
     imageUrl: null,
     text: "地球は過去5回、\nほぼ全ての生命を失った。",
-    subText:
-      "① 白亜紀末（6600万年前）— 隕石衝突、76%絶滅\n" +
-      "② 三畳紀末（2億年前）— 火山活動、76%絶滅\n" +
-      "③ ペルム紀末（2億5100万年前）— 96%絶滅、史上最大\n" +
-      "④ デボン紀末（3億7500万年前）— 海洋変動、75%絶滅\n" +
-      "⑤ オルドビシア末（4億4300万年前）— 寒冷化、85%絶滅\n\n" +
-      "6回目がいつ来るかは——誰にも分からない。",
+    subText: "6回目がいつ来るかは——誰にも分からない。",
     accentColor: CYAN,
+    timelineItems: [
+      {
+        icon: "\u2744\uFE0F",
+        era: "オルドビシア末",
+        years: "4億4300万年前",
+        cause: "寒冷化",
+        percent: 85,
+      },
+      {
+        icon: "\uD83C\uDF0A",
+        era: "デボン紀末",
+        years: "3億7500万年前",
+        cause: "海洋変動",
+        percent: 75,
+      },
+      {
+        icon: "\uD83D\uDD25",
+        era: "ペルム紀末",
+        years: "2億5100万年前",
+        cause: "大量噴火",
+        percent: 96,
+      },
+      {
+        icon: "\uD83C\uDF0B",
+        era: "三畳紀末",
+        years: "2億年前",
+        cause: "火山活動",
+        percent: 76,
+      },
+      {
+        icon: "\u2604\uFE0F",
+        era: "白亜紀末",
+        years: "6600万年前",
+        cause: "隕石衝突",
+        percent: 76,
+      },
+    ],
   },
   {
     id: "ch1-elon-reads",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 1,
-    imageUrl: null,
+    imageUrl: "images/elon_nebula.webp",
     text: "2001年。\nイーロンは一冊の本を読んだ。",
-    subText:
-      "『The Case for Mars』——人類が火星に移住するためのロードマップ。\n\n「なぜNASAはこれをやらないのか？」",
+    subText: "『The Case for Mars』——人類が火星に移住するためのロードマップ。",
     accentColor: CYAN,
+    speechBubbles: [
+      { text: "なぜNASAはこれをやらないのか？", position: "right", delay: 0.8 },
+      {
+        text: "問題はコストだ。ロケットを再利用すれば解決できる。",
+        position: "left",
+        delay: 1.4,
+      },
+    ],
   },
   {
     id: "ch1-cost-problem",

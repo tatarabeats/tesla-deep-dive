@@ -227,6 +227,160 @@ export default function Scene({ scene }: Props) {
     );
   }
 
+  // ===== TIMELINE =====
+  if (scene.type === "timeline" && scene.timelineItems) {
+    const bgTint = getChapterTint(scene.chapter, scene.accentColor);
+    return (
+      <section
+        ref={ref}
+        className="scene scene--timeline"
+        data-scene={scene.id}
+        style={{ background: bgTint }}
+      >
+        <div className="scene__content scene__content--center">
+          <motion.h2
+            className="scene__text-main"
+            style={{ color: scene.accentColor }}
+            variants={fadeUp}
+            initial="hidden"
+            animate={vis}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            {scene.text}
+          </motion.h2>
+
+          <div className="timeline">
+            <div className="timeline__line" />
+            {scene.timelineItems.map((item, i) => (
+              <motion.div
+                key={item.era}
+                className="timeline__card"
+                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40, y: 20 }}
+                animate={
+                  isInView
+                    ? { opacity: 1, x: 0, y: 0 }
+                    : { opacity: 0, x: i % 2 === 0 ? -40 : 40, y: 20 }
+                }
+                transition={{
+                  duration: 0.7,
+                  delay: 0.3 + i * 0.2,
+                  ease: "easeOut",
+                }}
+              >
+                <span className="timeline__icon">{item.icon}</span>
+                <div className="timeline__info">
+                  <span className="timeline__era">{item.era}</span>
+                  <span className="timeline__years">{item.years}</span>
+                  <span className="timeline__cause">{item.cause}</span>
+                </div>
+                <div className="timeline__bar-wrap">
+                  <motion.div
+                    className="timeline__bar"
+                    style={{
+                      background: `linear-gradient(90deg, ${scene.accentColor}, rgba(255, 90, 80, 0.9))`,
+                    }}
+                    initial={{ scaleX: 0 }}
+                    animate={
+                      isInView ? { scaleX: item.percent / 100 } : { scaleX: 0 }
+                    }
+                    transition={{
+                      duration: 1,
+                      delay: 0.6 + i * 0.2,
+                      ease: "easeOut",
+                    }}
+                  />
+                  <motion.span
+                    className="timeline__percent"
+                    style={{ color: scene.accentColor }}
+                    initial={{ opacity: 0 }}
+                    animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                    transition={{ duration: 0.5, delay: 1.0 + i * 0.2 }}
+                  >
+                    {item.percent}%
+                  </motion.span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {scene.subText && (
+            <motion.p
+              className="scene__text-sub timeline__footer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{
+                duration: 0.8,
+                delay: 0.3 + scene.timelineItems.length * 0.2 + 0.3,
+                ease: "easeOut",
+              }}
+            >
+              {scene.subText}
+            </motion.p>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  // ===== MANGA PANEL =====
+  if (scene.type === "manga-panel") {
+    return (
+      <section
+        ref={ref}
+        className="scene scene--manga-panel"
+        data-scene={scene.id}
+      >
+        {imgSrc && (
+          <SceneImage src={imgSrc} imageY={imageY} imageScale={imageScale} />
+        )}
+        <div className="scene__content scene__content--center">
+          <motion.h2
+            className="scene__hero-text"
+            variants={fadeUp}
+            initial="hidden"
+            animate={vis}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+          >
+            {scene.text}
+          </motion.h2>
+
+          {scene.subText && (
+            <motion.p
+              className="manga__subtitle"
+              variants={fadeUpSub}
+              initial="hidden"
+              animate={vis}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            >
+              {scene.subText}
+            </motion.p>
+          )}
+
+          {scene.speechBubbles?.map((bubble, i) => (
+            <motion.div
+              key={i}
+              className={`manga__bubble manga__bubble--${bubble.position || "right"}`}
+              initial={{ opacity: 0, scale: 0.85, y: 15 }}
+              animate={
+                isInView
+                  ? { opacity: 1, scale: 1, y: 0 }
+                  : { opacity: 0, scale: 0.85, y: 15 }
+              }
+              transition={{
+                duration: 0.6,
+                delay: (bubble.delay ?? 0.6) + i * 0.3,
+                ease: "easeOut",
+              }}
+            >
+              <span className="manga__bubble-tail" />
+              <p className="manga__bubble-text">{bubble.text}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
   // ===== MULTI =====
   if (scene.type === "multi" && scene.multiItems) {
     return (
