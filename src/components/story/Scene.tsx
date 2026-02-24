@@ -60,7 +60,7 @@ export default function Scene({ scene }: Props) {
   const vis = isInView ? "visible" : "hidden";
 
   // ===== PROLOGUE — character-by-character reveal =====
-  if (scene.id === "prologue-silence") {
+  if (scene.id === "prologue-crisis") {
     return <PrologueScene ref={ref} scene={scene} isInView={isInView} />;
   }
 

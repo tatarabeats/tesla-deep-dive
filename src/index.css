@@ -228,12 +228,15 @@
 }
 
 .scene__prologue-text {
-  font-size: clamp(42px, 12vw, 76px);
-  font-weight: 800;
-  line-height: 1.4;
-  letter-spacing: 0.06em;
-  color: var(--text);
+  font-size: clamp(32px, 9vw, 56px);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #fff;
   text-align: center;
+  text-shadow:
+    0 0 60px rgba(255, 255, 255, 0.1),
+    0 2px 30px rgba(0, 0, 0, 0.5);
 }
 
 .scene__prologue-stars {
@@ -279,20 +282,21 @@
 }
 
 .scene__text-main {
-  font-size: clamp(30px, 9vw, 54px);
-  font-weight: 800;
-  line-height: 1.5;
+  font-size: clamp(28px, 8vw, 48px);
+  font-weight: 700;
+  line-height: 1.4;
   letter-spacing: 0.02em;
   white-space: pre-line;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
 }
 
 .scene__text-sub {
-  font-size: clamp(19px, 5vw, 26px);
+  font-size: clamp(14px, 3.8vw, 18px);
   font-weight: 400;
   color: var(--text-secondary);
   line-height: 1.7;
-  margin-top: 12px;
-  max-width: 420px;
+  margin-top: 8px;
+  max-width: 400px;
 }
 
 /* ===== CHAPTER TITLE scene ===== */
@@ -303,18 +307,21 @@
 }
 
 .scene__chapter-num {
-  font-size: clamp(18px, 5vw, 24px);
+  font-size: clamp(13px, 3.5vw, 16px);
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
 }
 
 .scene__chapter-title {
-  font-size: clamp(44px, 13vw, 72px);
-  font-weight: 800;
+  font-size: clamp(36px, 10vw, 60px);
+  font-weight: 700;
   line-height: 1.2;
-  color: var(--text);
+  color: #fff;
   margin-top: 8px;
+  text-shadow:
+    0 0 50px rgba(255, 255, 255, 0.12),
+    0 2px 30px rgba(0, 0, 0, 0.5);
 }
 
 .scene__chapter-line {
@@ -345,15 +352,19 @@
 
 .scene__hero-text {
   font-size: clamp(28px, 8vw, 48px);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.35;
-  color: var(--text);
+  color: #fff;
+  text-shadow:
+    0 0 40px rgba(255, 255, 255, 0.15),
+    0 2px 20px rgba(0, 0, 0, 0.6);
 }
 
 .scene__hero-sub {
-  font-size: clamp(19px, 5vw, 26px);
+  font-size: clamp(13px, 3.5vw, 17px);
   font-weight: 400;
-  color: var(--text-secondary);
+  color: rgba(232, 220, 200, 0.7);
+  line-height: 1.6;
 }
 
 /* ===== EPILOGUE ===== */
@@ -427,8 +438,15 @@
   width: 100%;
   height: 130%;
   object-fit: cover;
-  object-position: center 30%;
+  object-position: center 20%;
   will-change: transform;
+}
+
+/* Mobile: keep faces visible */
+@media (max-width: 640px) {
+  .scene-image__img {
+    object-position: center 15%;
+  }
 }
 
 .scene-image__overlay {
@@ -1146,34 +1164,44 @@
 }
 
 /* ============================================================
-   BGM BUTTON
+   CHAPTER INDICATOR — Fixed at top
    ============================================================ */
 
-.bgm-btn {
+.chapter-indicator {
   position: fixed;
-  bottom: 28px;
-  right: 20px;
-  z-index: 200;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(232, 220, 200, 0.18);
-  background: rgba(11, 17, 32, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--text);
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 150;
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  opacity: 0.65;
+  gap: 10px;
+  padding: 6px 18px;
+  border-radius: 100px;
+  background: rgba(11, 17, 32, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 220, 200, 0.1);
+  white-space: nowrap;
 }
 
-.bgm-btn:hover {
-  opacity: 1;
-  border-color: rgba(255, 225, 140, 0.4);
-  background: rgba(11, 17, 32, 0.9);
+.chapter-indicator__num {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.chapter-indicator__divider {
+  width: 1px;
+  height: 12px;
+  background: rgba(232, 220, 200, 0.15);
+}
+
+.chapter-indicator__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
 }
 
 /* ============================================================
