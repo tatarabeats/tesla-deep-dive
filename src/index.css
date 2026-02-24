@@ -1389,12 +1389,15 @@
    MANGA PANEL — Image bg + SF speech bubbles
    ============================================================ */
 .scene--manga-panel {
-  align-items: center;
+  align-items: flex-end;
 }
 
 .scene--manga-panel .scene__content {
   gap: 20px;
   max-width: 600px;
+  justify-content: flex-end;
+  padding-bottom: 64px;
+  height: auto;
 }
 
 .manga__subtitle {
