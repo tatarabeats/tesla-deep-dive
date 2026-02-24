@@ -60,7 +60,7 @@ export default function Scene({ scene }: Props) {
   const vis = isInView ? "visible" : "hidden";
 
   // ===== PROLOGUE — character-by-character reveal =====
-  if (scene.id === "open-1") {
+  if (scene.id === "prologue-silence") {
     return <PrologueScene ref={ref} scene={scene} isInView={isInView} />;
   }
 
@@ -296,7 +296,7 @@ export default function Scene({ scene }: Props) {
                     animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                     transition={{ duration: 0.5, delay: 1.0 + i * 0.2 }}
                   >
-                    {item.percent}%
+                    全種の{item.percent}%が絶滅
                   </motion.span>
                 </div>
               </motion.div>
@@ -496,7 +496,7 @@ export default function Scene({ scene }: Props) {
           </motion.div>
         )}
         {/* Scroll hint on thesis scene */}
-        {scene.id === "open-thesis" && (
+        {scene.id === "prologue-thesis" && (
           <motion.div
             className="scene__scroll-hint"
             initial={{ opacity: 0 }}

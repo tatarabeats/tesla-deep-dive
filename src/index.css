@@ -1342,11 +1342,12 @@
 }
 
 .timeline__percent {
-  font-size: clamp(13px, 3.5vw, 16px);
-  font-weight: 800;
+  font-size: clamp(11px, 3vw, 14px);
+  font-weight: 700;
   white-space: nowrap;
-  min-width: 40px;
+  min-width: auto;
   text-align: right;
+  letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
 }
 
