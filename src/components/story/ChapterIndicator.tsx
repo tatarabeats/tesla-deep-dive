@@ -1,11 +1,5 @@
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-} from "framer-motion";
-import { useMemo, useState } from "react";
-import { storyScenes } from "../../data/storyScenes";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const CHAPTER_META: Record<number, { label: string; color: string }> = {
   1: { label: "単一惑星への依存", color: "rgba(80, 200, 255, 0.9)" },
@@ -16,56 +10,108 @@ const CHAPTER_META: Record<number, { label: string; color: string }> = {
   6: { label: "つながれない22億人", color: "rgba(232, 220, 200, 0.9)" },
 };
 
-export default function ChapterIndicator() {
-  const { scrollYProgress } = useScroll();
-  const [showIndicator, setShowIndicator] = useState(false);
-  const [currentChapter, setCurrentChapter] = useState<number | null>(null);
+const CHAPTER_IDS: [number, string][] = [
+  [1, "ch1-title"],
+  [2, "ch2-title"],
+  [3, "ch3-title"],
+  [4, "ch4-title"],
+  [5, "ch5-title"],
+  [6, "ch6-title"],
+];
 
-  const chapterTitleIndices = useMemo(() => {
-    const map: Record<number, number> = {};
-    storyScenes.forEach((scene, i) => {
-      if (scene.type === "chapter-title" && scene.chapter) {
-        map[scene.chapter] = i;
+export default function ChapterIndicator() {
+  const [activeChapter, setActiveChapter] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Track which chapter-title elements are currently visible
+    const visible = new Set<number>();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const ch = Number(entry.target.getAttribute("data-chapter"));
+          if (entry.isIntersecting) {
+            visible.add(ch);
+          } else {
+            visible.delete(ch);
+          }
+        }
+
+        // Find the highest chapter whose title has scrolled OUT of view
+        // by checking scroll position relative to each title element
+        let best: number | null = null;
+        for (const [ch, id] of CHAPTER_IDS) {
+          const el = document.querySelector(`[data-scene="${id}"]`);
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          // Title has scrolled past (bottom edge is above viewport)
+          if (rect.bottom < 0 && !visible.has(ch)) {
+            best = ch;
+          }
+        }
+        setActiveChapter(best);
+      },
+      { threshold: 0 },
+    );
+
+    // Wait for DOM to be ready, then observe chapter-title elements
+    const timer = setTimeout(() => {
+      for (const [, id] of CHAPTER_IDS) {
+        const el = document.querySelector(`[data-scene="${id}"]`);
+        if (el) {
+          el.setAttribute(
+            "data-chapter",
+            String(CHAPTER_IDS.find(([, i]) => i === id)![0]),
+          );
+          observer.observe(el);
+        }
       }
-    });
-    return map;
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
   }, []);
 
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const total = storyScenes.length;
-    const idx = Math.min(Math.floor(v * total), total - 1);
-    const scene = storyScenes[idx];
-    const chapter = scene?.chapter ?? null;
+  // Also listen to scroll to update which chapter is "past"
+  useEffect(() => {
+    const onScroll = () => {
+      let best: number | null = null;
+      for (const [ch, id] of CHAPTER_IDS) {
+        const el = document.querySelector(`[data-scene="${id}"]`);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom < 0) {
+          best = ch;
+        }
+      }
+      setActiveChapter(best);
+    };
 
-    setCurrentChapter(chapter);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    if (chapter && chapterTitleIndices[chapter] !== undefined) {
-      const titleIdx = chapterTitleIndices[chapter];
-      setShowIndicator(idx > titleIdx + 1);
-    } else {
-      setShowIndicator(false);
-    }
-  });
-
-  const meta = currentChapter ? CHAPTER_META[currentChapter] : null;
+  const meta = activeChapter ? CHAPTER_META[activeChapter] : null;
 
   return (
     <div className="chapter-indicator-wrapper">
       <AnimatePresence>
-        {showIndicator && meta && (
+        {activeChapter && meta && (
           <motion.div
             className="chapter-indicator"
-            key={currentChapter}
+            key={activeChapter}
             initial={{ opacity: 0, scale: 1.5 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
           >
             <span
               className="chapter-indicator__num"
               style={{ color: meta.color }}
             >
-              危機 {String(currentChapter).padStart(2, "0")}
+              危機 {String(activeChapter).padStart(2, "0")}
             </span>
             <span className="chapter-indicator__divider" />
             <span className="chapter-indicator__label">{meta.label}</span>
