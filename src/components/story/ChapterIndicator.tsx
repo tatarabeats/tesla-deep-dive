@@ -1,5 +1,10 @@
-import { motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { storyScenes } from "../../data/storyScenes";
 
 const CHAPTER_META: Record<number, { label: string; color: string }> = {
@@ -14,6 +19,8 @@ const CHAPTER_META: Record<number, { label: string; color: string }> = {
 export default function ChapterIndicator() {
   const { scrollYProgress } = useScroll();
   const [current, setCurrent] = useState<number | null>(null);
+  const [justChanged, setJustChanged] = useState(false);
+  const prevChapter = useRef<number | null>(null);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     const idx = Math.floor(v * storyScenes.length);
@@ -21,27 +28,44 @@ export default function ChapterIndicator() {
     setCurrent(scene?.chapter ?? null);
   });
 
+  useEffect(() => {
+    if (current !== prevChapter.current && current !== null) {
+      setJustChanged(true);
+      const timer = setTimeout(() => setJustChanged(false), 1500);
+      prevChapter.current = current;
+      return () => clearTimeout(timer);
+    }
+    if (current === null) {
+      prevChapter.current = null;
+    }
+  }, [current]);
+
   const meta = current ? CHAPTER_META[current] : null;
 
   return (
-    <motion.div
-      className="chapter-indicator"
-      initial={{ opacity: 0, y: -20 }}
-      animate={meta ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-    >
+    <AnimatePresence>
       {meta && (
-        <>
+        <motion.div
+          className="chapter-indicator"
+          key={current}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{
+            opacity: justChanged ? 0.95 : 0.4,
+            scale: justChanged ? 1.05 : 1,
+          }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <span
             className="chapter-indicator__num"
             style={{ color: meta.color }}
           >
-            危機 {String(current).padStart(2, "0")} / 06
+            危機 {String(current).padStart(2, "0")}
           </span>
           <span className="chapter-indicator__divider" />
           <span className="chapter-indicator__label">{meta.label}</span>
-        </>
+        </motion.div>
       )}
-    </motion.div>
+    </AnimatePresence>
   );
 }

@@ -612,15 +612,15 @@ export const storyScenes: StoryScene[] = [
       "人口を維持するには2.1が必要。先進国はどこも下回っている。介護する人も、工場で働く人も、トラックを運転する人も、いなくなる。",
     accentColor: GREEN,
   },
-  // Optimus Gen1 vs Gen2
+  // Optimus 進化
   {
     id: "ch4-optimus-gen1",
     type: "image-hero",
     chapter: 4,
     imageUrl: "images/optimus-gen1.webp",
-    text: "2022年。最初の試作機。",
+    text: "2023年3月。Optimus Gen 1。",
     subText:
-      "ゴツくて不格好。露出した配線、ぎこちない動き。でも、ここから始まった。",
+      "まだ荒削り。露出した配線、ぎこちない歩行。でも、二足歩行ロボットの量産という狂気の挑戦が始まった。",
     badge: "Optimus Gen1",
     accentColor: GREEN,
   },
@@ -629,8 +629,9 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 4,
     imageUrl: "images/optimus-gen2.webp",
-    text: "2024年。Gen2。\n別物になった。",
-    subText: "洗練されたデザイン。卵を割らずに持てる指の精度。24時間稼働。",
+    text: "9ヶ月後。Gen 2。\n別物になった。",
+    subText:
+      "2023年12月。洗練されたデザイン。卵を割らずに持てる指の精度。30%の軽量化。24時間稼働。",
     badge: "Optimus Gen2",
     stat: "$20,000",
     statLabel: "目標価格（約300万円）",
