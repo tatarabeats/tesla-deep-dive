@@ -555,7 +555,16 @@ const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
             {chars.map((char, i) => (
               <motion.span
                 key={i}
-                style={{ display: "inline-block" }}
+                style={{
+                  display: "inline-block",
+                  ...(char === "6"
+                    ? {
+                        color: scene.accentColor,
+                        textShadow: `0 0 20px ${scene.accentColor}`,
+                        fontWeight: 800,
+                      }
+                    : {}),
+                }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={
                   isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }

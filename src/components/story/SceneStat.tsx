@@ -25,6 +25,18 @@ function parseStatNumber(stat: string): {
 }
 
 function formatNumber(n: number, original: string): string {
+  // Preserve decimal precision from original stat string
+  const decMatch = original.match(/\.(\d+)/);
+  const decimals = decMatch ? decMatch[1].length : 0;
+
+  if (decimals > 0) {
+    const fixed = n.toFixed(decimals);
+    if (original.includes(",")) {
+      const [intPart, decPart] = fixed.split(".");
+      return `${parseInt(intPart).toLocaleString("en-US")}.${decPart}`;
+    }
+    return fixed;
+  }
   if (original.includes(",")) return Math.round(n).toLocaleString("en-US");
   return Math.round(n).toString();
 }

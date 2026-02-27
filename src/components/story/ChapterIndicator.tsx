@@ -6,7 +6,7 @@ const CHAPTER_META: Record<number, { label: string; color: string }> = {
   2: { label: "化石燃料への依存", color: "rgba(255, 90, 80, 0.9)" },
   3: { label: "制御できないAI", color: "rgba(180, 130, 255, 0.9)" },
   4: { label: "労働力の消滅", color: "rgba(80, 220, 140, 0.9)" },
-  5: { label: "渋滞で失われる命", color: "rgba(200, 180, 150, 0.9)" },
+  5: { label: "動かない車、消える時間", color: "rgba(200, 180, 150, 0.9)" },
   6: { label: "つながれない22億人", color: "rgba(232, 220, 200, 0.9)" },
 };
 
@@ -102,10 +102,10 @@ export default function ChapterIndicator() {
           <motion.div
             className="chapter-indicator"
             key={activeChapter}
-            initial={{ opacity: 0, scale: 1.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <span
               className="chapter-indicator__num"
