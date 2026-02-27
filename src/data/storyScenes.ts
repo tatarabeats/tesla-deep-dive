@@ -1,6 +1,8 @@
 import type { StoryScene } from "../types/story";
 
 const ELON = "images/elon-avatar.webp";
+const ELON_A = "images/elon-real.jpg";
+const ELON_B = "images/elon-celebration.webp";
 
 const GOLD = "rgba(255, 225, 140, 0.9)";
 const CYAN = "rgba(80, 200, 255, 0.9)";
@@ -26,7 +28,7 @@ export const storyScenes: StoryScene[] = [
     id: "prologue-elon",
     type: "image-hero",
     chapter: null,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "ある一人の男が、\n立ち上がった。",
     accentColor: GOLD,
   },
@@ -112,7 +114,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-extinction-next",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -140,7 +142,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-elon-reads",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -240,7 +242,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-last-chance",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -304,7 +306,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-mars-goal",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -325,7 +327,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-1-2",
     type: "manga-panel",
     chapter: null,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -366,7 +368,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-car-problem",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "",
     accentColor: RED,
     speechBubbles: [
@@ -384,7 +386,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-tesla-founding",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "2004年。イーロンはあるスタートアップに出会った。",
     subText:
       "マーティン・エバーハードとマーク・ターペニングが設立したテスラ・モーターズ。イーロンは$650万を出資し、会長に就任した。",
@@ -447,7 +449,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-energy-problem",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "",
     accentColor: RED,
     speechBubbles: [
@@ -481,7 +483,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-2-3",
     type: "manga-panel",
     chapter: null,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -511,7 +513,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-threat",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -597,7 +599,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-xai",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -640,7 +642,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-neuralink",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -674,7 +676,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-3-4",
     type: "manga-panel",
     chapter: null,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -779,7 +781,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch5-tweet",
     type: "manga-panel",
     chapter: 5,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "2016年12月17日。",
     accentColor: WARM,
     speechBubbles: [
@@ -824,7 +826,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-5-6",
     type: "manga-panel",
     chapter: null,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -877,7 +879,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch6-elon-response",
     type: "manga-panel",
     chapter: 6,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "10時間後。",
     accentColor: TEXT,
     speechBubbles: [
@@ -895,7 +897,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch6-starlink-explain",
     type: "manga-panel",
     chapter: 6,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_B,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -943,7 +945,7 @@ export const storyScenes: StoryScene[] = [
     id: "epilogue-still",
     type: "image-hero",
     chapter: null,
-    imageUrl: "images/elon-real.jpg",
+    imageUrl: ELON_A,
     text: "この男は、今も急いでいる。",
     accentColor: GOLD,
   },
