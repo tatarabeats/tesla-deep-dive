@@ -3,6 +3,7 @@ import { storyScenes } from "../../data/storyScenes";
 import Scene from "./Scene";
 import ProgressBar from "./ProgressBar";
 import ChapterIndicator from "./ChapterIndicator";
+import FurtherReading from "./FurtherReading";
 
 export default function ScrollStory() {
   const { scrollYProgress } = useScroll();
@@ -63,6 +64,7 @@ export default function ScrollStory() {
         {storyScenes.map((scene, i) => (
           <Scene key={scene.id} scene={scene} index={i} />
         ))}
+        <FurtherReading />
       </main>
     </>
   );
