@@ -53,5 +53,7 @@ export interface StoryScene {
     delay?: number;
     speaker?: string;
     speakerName?: string;
+    /** "hero" = dramatic key line, "quiet" = subdued narration */
+    emphasis?: "hero" | "quiet";
   }[];
 }

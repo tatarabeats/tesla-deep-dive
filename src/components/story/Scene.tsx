@@ -359,7 +359,7 @@ export default function Scene({ scene }: Props) {
           {scene.speechBubbles?.map((bubble, i) => (
             <motion.div
               key={i}
-              className={`manga__bubble manga__bubble--${bubble.position || "right"}`}
+              className={`manga__bubble manga__bubble--${bubble.position || "right"}${bubble.emphasis ? ` manga__bubble--${bubble.emphasis}` : ""}`}
               initial={{ opacity: 0, scale: 0.85, y: 15 }}
               animate={
                 isInView
