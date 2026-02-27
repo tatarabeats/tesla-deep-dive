@@ -50,26 +50,28 @@ export default function ChapterIndicator() {
   const meta = currentChapter ? CHAPTER_META[currentChapter] : null;
 
   return (
-    <AnimatePresence>
-      {showIndicator && meta && (
-        <motion.div
-          className="chapter-indicator"
-          key={currentChapter}
-          initial={{ opacity: 0, y: -10, scale: 1.6 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -10, scale: 0.8 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          <span
-            className="chapter-indicator__num"
-            style={{ color: meta.color }}
+    <div className="chapter-indicator-wrapper">
+      <AnimatePresence>
+        {showIndicator && meta && (
+          <motion.div
+            className="chapter-indicator"
+            key={currentChapter}
+            initial={{ opacity: 0, scale: 1.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            危機 {String(currentChapter).padStart(2, "0")}
-          </span>
-          <span className="chapter-indicator__divider" />
-          <span className="chapter-indicator__label">{meta.label}</span>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            <span
+              className="chapter-indicator__num"
+              style={{ color: meta.color }}
+            >
+              危機 {String(currentChapter).padStart(2, "0")}
+            </span>
+            <span className="chapter-indicator__divider" />
+            <span className="chapter-indicator__label">{meta.label}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

@@ -3,6 +3,10 @@ import type { StoryScene } from "../types/story";
 const ELON = "images/elon-avatar.webp";
 const ELON_A = "images/elon-real.jpg";
 const ELON_B = "images/elon-celebration.webp";
+const ELON_C = "images/elon-photo-3.webp"; // SpaceX press conf
+const ELON_D = "images/elon-photo-4.webp"; // Tesla Battery Day
+const ELON_E = "images/elon-photo-5.webp"; // Speaking at academy
+const ELON_F = "images/elon-photo-6.webp"; // AI Summit 2023
 
 const GOLD = "rgba(255, 225, 140, 0.9)";
 const CYAN = "rgba(80, 200, 255, 0.9)";
@@ -114,7 +118,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-extinction-next",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: ELON_B,
+    imageUrl: ELON_E,
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -142,7 +146,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-elon-reads",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: ELON_A,
+    imageUrl: ELON_F,
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -242,7 +246,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-last-chance",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: ELON_B,
+    imageUrl: ELON_C,
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -368,7 +372,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-car-problem",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: ELON_A,
+    imageUrl: ELON_D,
     text: "",
     accentColor: RED,
     speechBubbles: [
@@ -386,7 +390,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-tesla-founding",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: ELON_B,
+    imageUrl: ELON_A,
     text: "2004年。イーロンはあるスタートアップに出会った。",
     subText:
       "マーティン・エバーハードとマーク・ターペニングが設立したテスラ・モーターズ。イーロンは$650万を出資し、会長に就任した。",
@@ -449,7 +453,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-energy-problem",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: ELON_A,
+    imageUrl: ELON_E,
     text: "",
     accentColor: RED,
     speechBubbles: [
@@ -483,7 +487,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-2-3",
     type: "manga-panel",
     chapter: null,
-    imageUrl: ELON_B,
+    imageUrl: ELON_A,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -513,7 +517,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-threat",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: ELON_A,
+    imageUrl: ELON_F,
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -599,7 +603,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-xai",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: ELON_B,
+    imageUrl: ELON_E,
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -642,7 +646,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-neuralink",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: ELON_A,
+    imageUrl: ELON_F,
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -676,7 +680,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-3-4",
     type: "manga-panel",
     chapter: null,
-    imageUrl: ELON_B,
+    imageUrl: ELON_C,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -781,7 +785,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch5-tweet",
     type: "manga-panel",
     chapter: 5,
-    imageUrl: ELON_A,
+    imageUrl: ELON_B,
     text: "2016年12月17日。",
     accentColor: WARM,
     speechBubbles: [
@@ -826,7 +830,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-5-6",
     type: "manga-panel",
     chapter: null,
-    imageUrl: ELON_B,
+    imageUrl: ELON_D,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -879,7 +883,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch6-elon-response",
     type: "manga-panel",
     chapter: 6,
-    imageUrl: ELON_A,
+    imageUrl: ELON_C,
     text: "10時間後。",
     accentColor: TEXT,
     speechBubbles: [
@@ -897,7 +901,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch6-starlink-explain",
     type: "manga-panel",
     chapter: 6,
-    imageUrl: ELON_B,
+    imageUrl: ELON_E,
     text: "",
     accentColor: TEXT,
     speechBubbles: [
