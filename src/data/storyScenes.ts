@@ -1,5 +1,7 @@
 import type { StoryScene } from "../types/story";
 
+const ELON = "images/elon-avatar.webp";
+
 const GOLD = "rgba(255, 225, 140, 0.9)";
 const CYAN = "rgba(80, 200, 255, 0.9)";
 const RED = "rgba(255, 90, 80, 0.9)";
@@ -24,7 +26,7 @@ export const storyScenes: StoryScene[] = [
     id: "prologue-elon",
     type: "image-hero",
     chapter: null,
-    imageUrl: "images/elon_mars.webp",
+    imageUrl: "images/elon-real.jpg",
     text: "ある一人の男が、\n立ち上がった。",
     accentColor: GOLD,
   },
@@ -108,11 +110,20 @@ export const storyScenes: StoryScene[] = [
   },
   {
     id: "ch1-extinction-next",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 1,
-    imageUrl: null,
-    text: "6度目は、\nいつ来てもおかしくない。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: CYAN,
+    speechBubbles: [
+      {
+        text: "6度目は、いつ来てもおかしくない。\nだから人類は\n複数の惑星に住む必要がある。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
   // イーロンと『The Case for Mars』
   {
@@ -129,7 +140,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-elon-reads",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: "images/elon-thinking.webp",
+    imageUrl: "images/elon-real.jpg",
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -137,11 +148,15 @@ export const storyScenes: StoryScene[] = [
         text: "今の技術でも、火星には行ける。\n問題は、ロケットを毎回\n使い捨てにしていることだ…",
         position: "right",
         delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
       {
         text: "飛行機を毎回捨てる奴はいない。\nロケットも同じだ。",
         position: "left",
         delay: 1.4,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
     ],
   },
@@ -162,27 +177,35 @@ export const storyScenes: StoryScene[] = [
     type: "manga-panel",
     chapter: 1,
     imageUrl: "images/airplane-window.webp",
-    text: "帰りの飛行機。イーロンはラップトップを開いた。",
+    text: "帰りの飛行機。イーロンはノートパソコンを開いた。",
     accentColor: CYAN,
     speechBubbles: [
       {
         text: "ロケットの原材料費は\n打ち上げ費用のたった3%だ。\n…自分で作った方が安いな。",
         position: "right",
         delay: 0.8,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
     ],
   },
   // SpaceX設立 + 笑われる
   {
     id: "ch1-founded",
-    type: "image-hero",
+    type: "manga-panel",
     chapter: 1,
     imageUrl: "images/laughing-crowd.webp",
     text: "2002年5月6日。SpaceX設立。",
-    subText:
-      "「ロケットってのは国が何千億もかけて作るもんだ。民間にできるわけねぇ」",
     badge: "SpaceX",
     accentColor: CYAN,
+    speechBubbles: [
+      {
+        text: "ロケットってのは\n国が何千億もかけて作るもんだ。\n民間にできるわけねぇ。",
+        position: "left",
+        delay: 0.5,
+        speakerName: "業界関係者",
+      },
+    ],
   },
   // Falcon 1 — 3連続爆発
   {
@@ -190,7 +213,7 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 1,
     imageUrl: "images/spacex-crisis-v2.webp",
-    text: "Falcon 1 ── 1回目。",
+    text: "Falcon 1 ── 1回目、失敗。",
     subText: "2006年3月24日。打ち上げ33秒、燃料ラインの腐食。爆発。",
     accentColor: CYAN,
   },
@@ -199,7 +222,7 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 1,
     imageUrl: "images/spacex-crisis-v2.webp",
-    text: "2回目。",
+    text: "2回目、失敗。",
     subText: "2007年3月21日。高度289kmに到達したが、姿勢制御を喪失。",
     accentColor: CYAN,
   },
@@ -208,19 +231,29 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 1,
     imageUrl: "images/spacex-crisis-v2.webp",
-    text: "3回目。",
+    text: "3回目、失敗。",
     subText: "2008年8月3日。第1段と第2段が衝突。全て失った。",
     accentColor: CYAN,
   },
   // 最後の1回
   {
     id: "ch1-last-chance",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 1,
-    imageUrl: null,
-    text: "残る資金で打てるのは、\nあと1回だけ。",
-    subText: "イーロンの全財産は尽きかけていた。テスラも同時に倒産寸前だった。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: CYAN,
+    speechBubbles: [
+      {
+        text: "これが最後のチャンスだ。\nこれを失敗したら、全てが終わる。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
+    subText:
+      "残る資金で打てるのは、あと1回だけ。イーロンが同時に経営していた電気自動車メーカー、テスラも倒産寸前だった。",
   },
   // 4回目 — 成功
   {
@@ -269,12 +302,20 @@ export const storyScenes: StoryScene[] = [
   },
   {
     id: "ch1-mars-goal",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 1,
-    imageUrl: null,
-    text: "火星への片道切符を、\n全人類が買える値段にする。",
-    subText: "それがSpaceXの最終目標だ。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: CYAN,
+    speechBubbles: [
+      {
+        text: "火星への片道切符を、\n全人類が買える値段にする。\nそれがSpaceXの最終目標だ。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
 
   // ════════════════════════════════════════
@@ -282,11 +323,20 @@ export const storyScenes: StoryScene[] = [
   // ════════════════════════════════════════
   {
     id: "bridge-1-2",
-    type: "text-only",
+    type: "manga-panel",
     chapter: null,
-    imageUrl: null,
-    text: "SpaceXで宇宙を変える。\nだが地球にも、今すぐ\n解決すべき危機があった。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: TEXT,
+    speechBubbles: [
+      {
+        text: "宇宙への道は開けた。\nだが地球にも、今すぐ\n解決すべき危機がある。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
 
   // ════════════════════════════════════════
@@ -314,18 +364,27 @@ export const storyScenes: StoryScene[] = [
   },
   {
     id: "ch2-car-problem",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 2,
-    imageUrl: null,
-    text: "最大の排出源のひとつが、\n自動車だ。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: RED,
+    speechBubbles: [
+      {
+        text: "最大の排出源のひとつが、自動車だ。\nだったら、世界で一番\nカッコいい電気自動車を作ればいい。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
   // テスラとの出会い
   {
     id: "ch2-tesla-founding",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: "images/elon-young-2001.webp",
+    imageUrl: "images/elon-real.jpg",
     text: "2004年。イーロンはあるスタートアップに出会った。",
     subText:
       "マーティン・エバーハードとマーク・ターペニングが設立したテスラ・モーターズ。イーロンは$650万を出資し、会長に就任した。",
@@ -335,6 +394,8 @@ export const storyScenes: StoryScene[] = [
         text: "EVがダサいから売れないんだ。\nフェラーリより速い\n電気自動車を作ればいい。",
         position: "right",
         delay: 0.8,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
     ],
   },
@@ -354,12 +415,19 @@ export const storyScenes: StoryScene[] = [
   // EVへの批判
   {
     id: "ch2-criticism",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 2,
-    imageUrl: null,
-    text: "でも批判もあった。",
-    subText: "「バッテリー製造時のCO\u2082はどうするんだ？」",
+    imageUrl: "images/laughing-crowd.webp",
+    text: "",
     accentColor: RED,
+    speechBubbles: [
+      {
+        text: "バッテリーを作る時に\n大量のCO\u2082が出るだろ？\n結局エコじゃないんじゃないか？",
+        position: "left",
+        delay: 0.5,
+        speakerName: "批判する人々",
+      },
+    ],
   },
   // ライフサイクル反論
   {
@@ -377,12 +445,20 @@ export const storyScenes: StoryScene[] = [
   // Megapack
   {
     id: "ch2-energy-problem",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 2,
-    imageUrl: null,
-    text: "でも車を電気で走らせるだけじゃ\n足りない。",
-    subText: "太陽は夜には沈む。電気そのものを貯める方法が必要だ。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: RED,
+    speechBubbles: [
+      {
+        text: "車を電気で走らせるだけじゃ足りない。\n太陽は夜には沈む。\n電気そのものを貯める方法が必要だ。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
   {
     id: "ch2-megapack",
@@ -403,12 +479,20 @@ export const storyScenes: StoryScene[] = [
   // ════════════════════════════════════════
   {
     id: "bridge-2-3",
-    type: "text-only",
+    type: "manga-panel",
     chapter: null,
-    imageUrl: null,
-    text: "エネルギーの次に、\nイーロンが恐れたもの。",
-    subText: "それは人類が生み出す「知能」そのものだった。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: TEXT,
+    speechBubbles: [
+      {
+        text: "エネルギーの問題は見えた。\nだが、もっと恐ろしいものがある。\n人類が生み出す「知能」そのものだ。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
 
   // ════════════════════════════════════════
@@ -427,7 +511,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-threat",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/elon-determined.webp",
+    imageUrl: "images/elon-real.jpg",
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -435,6 +519,8 @@ export const storyScenes: StoryScene[] = [
         text: "AIは今後数十年で、\n人類にとって最大の脅威になりうる。\n核兵器よりも危険かもしれない。",
         position: "right",
         delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
     ],
   },
@@ -511,7 +597,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-xai",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/elon-speaking.webp",
+    imageUrl: "images/elon-real.jpg",
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -519,6 +605,8 @@ export const storyScenes: StoryScene[] = [
         text: "OpenAIは非営利の約束を破った。\nならば、本当に真実を追求するAIを\n自分で作る。",
         position: "right",
         delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
     ],
   },
@@ -552,7 +640,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-neuralink",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/neuralink-patient.jpg",
+    imageUrl: "images/elon-real.jpg",
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -560,6 +648,8 @@ export const storyScenes: StoryScene[] = [
         text: 'AIが人間より賢くなる日が来る。\nそのとき人間が"ペット"に\nならないためには、\n脳とAIを直接つなぐしかない。',
         position: "left",
         delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
     ],
   },
@@ -582,12 +672,20 @@ export const storyScenes: StoryScene[] = [
   // ════════════════════════════════════════
   {
     id: "bridge-3-4",
-    type: "text-only",
+    type: "manga-panel",
     chapter: null,
-    imageUrl: null,
-    text: "AIで知能を拡張する。\nだが、もう一つの危機が\n迫っていた。",
-    subText: "そもそも「働く人間」がいなくなりつつある。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: TEXT,
+    speechBubbles: [
+      {
+        text: "AIで知能を拡張する。\nだが、もう一つの危機が迫っている。\nそもそも「働く人間」が\nいなくなりつつある。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
 
   // ════════════════════════════════════════
@@ -681,7 +779,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch5-tweet",
     type: "manga-panel",
     chapter: 5,
-    imageUrl: "images/elon-exhausted.webp",
+    imageUrl: "images/elon-real.jpg",
     text: "2016年12月17日。",
     accentColor: WARM,
     speechBubbles: [
@@ -689,6 +787,8 @@ export const storyScenes: StoryScene[] = [
         text: "渋滞マジでムリ。\nトンネル掘削機を買って、\n今すぐ穴掘り始めるわ。",
         position: "right",
         delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
     ],
   },
@@ -722,11 +822,20 @@ export const storyScenes: StoryScene[] = [
   // ════════════════════════════════════════
   {
     id: "bridge-5-6",
-    type: "text-only",
+    type: "manga-panel",
     chapter: null,
-    imageUrl: null,
-    text: "地下のトンネルの次は、空。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: TEXT,
+    speechBubbles: [
+      {
+        text: "地下のトンネルの次は、空だ。\n世界中をつなげる。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
 
   // ════════════════════════════════════════
@@ -768,7 +877,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch6-elon-response",
     type: "manga-panel",
     chapter: 6,
-    imageUrl: "images/elon-determined.webp",
+    imageUrl: "images/elon-real.jpg",
     text: "10時間後。",
     accentColor: TEXT,
     speechBubbles: [
@@ -776,19 +885,28 @@ export const storyScenes: StoryScene[] = [
         text: "Starlinkサービス、\nウクライナで起動完了。\n端末も送る。",
         position: "right",
         delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
       },
     ],
   },
   // Starlinkの説明
   {
     id: "ch6-starlink-explain",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 6,
-    imageUrl: null,
-    text: "Starlinkとは何か。",
-    subText:
-      "高度550kmに9,400基以上の小型衛星。宇宙からインターネットを届ける。砂漠でも海上でも戦場でも、空さえ見えれば繋がる。",
+    imageUrl: "images/elon-real.jpg",
+    text: "",
     accentColor: TEXT,
+    speechBubbles: [
+      {
+        text: "高度550kmに小型衛星を9,400基以上並べる。\n砂漠でも海上でも戦場でも、\n空さえ見えれば繋がる。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+      },
+    ],
   },
   // Starlink衛星
   {
@@ -825,7 +943,7 @@ export const storyScenes: StoryScene[] = [
     id: "epilogue-still",
     type: "image-hero",
     chapter: null,
-    imageUrl: "images/elon-stage.webp",
+    imageUrl: "images/elon-real.jpg",
     text: "この男は、今も急いでいる。",
     accentColor: GOLD,
   },

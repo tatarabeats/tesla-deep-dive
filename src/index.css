@@ -291,12 +291,12 @@
 }
 
 .scene__text-sub {
-  font-size: clamp(14px, 3.8vw, 18px);
+  font-size: clamp(16px, 4.2vw, 21px);
   font-weight: 400;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.8;
   margin-top: 8px;
-  max-width: 400px;
+  max-width: 440px;
 }
 
 /* ===== CHAPTER TITLE scene ===== */
@@ -361,10 +361,10 @@
 }
 
 .scene__hero-sub {
-  font-size: clamp(13px, 3.5vw, 17px);
+  font-size: clamp(15px, 4vw, 20px);
   font-weight: 400;
-  color: rgba(232, 220, 200, 0.7);
-  line-height: 1.6;
+  color: rgba(232, 220, 200, 0.8);
+  line-height: 1.75;
 }
 
 /* ===== EPILOGUE ===== */
@@ -455,11 +455,11 @@
   z-index: 2;
   background: linear-gradient(
     to bottom,
-    rgba(11, 17, 32, 0.25) 0%,
-    rgba(11, 17, 32, 0.08) 25%,
-    rgba(11, 17, 32, 0.4) 55%,
-    rgba(11, 17, 32, 0.88) 80%,
-    rgba(11, 17, 32, 1) 100%
+    rgba(11, 17, 32, 0.08) 0%,
+    rgba(11, 17, 32, 0.02) 30%,
+    rgba(11, 17, 32, 0.25) 55%,
+    rgba(11, 17, 32, 0.8) 78%,
+    rgba(11, 17, 32, 0.95) 100%
   );
 }
 
@@ -494,11 +494,11 @@
 }
 
 .scene-stat__label {
-  font-size: clamp(11px, 2.8vw, 14px);
+  font-size: clamp(13px, 3.2vw, 16px);
   font-weight: 400;
   color: var(--text-secondary);
-  line-height: 1.6;
-  max-width: 320px;
+  line-height: 1.7;
+  max-width: 360px;
 }
 
 /* Center-aligned stat in text-only scenes */
@@ -1169,40 +1169,40 @@
 
 .chapter-indicator {
   position: fixed;
-  top: 50%;
+  top: 12px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   z-index: 150;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 20px 36px;
-  pointer-events: none;
+  gap: 10px;
+  padding: 6px 18px;
+  border-radius: 100px;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 220, 200, 0.1);
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .chapter-indicator__num {
-  font-size: clamp(28px, 6vw, 48px);
-  font-weight: 900;
-  letter-spacing: 0.15em;
-  text-shadow:
-    0 0 40px currentColor,
-    0 0 80px currentColor;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 
 .chapter-indicator__divider {
-  width: 40px;
-  height: 1px;
-  background: rgba(232, 220, 200, 0.25);
+  width: 1px;
+  height: 12px;
+  background: rgba(232, 220, 200, 0.15);
 }
 
 .chapter-indicator__label {
-  font-size: clamp(12px, 2.5vw, 18px);
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-secondary);
-  letter-spacing: 0.08em;
-  opacity: 0.7;
+  letter-spacing: 0.04em;
 }
 
 /* ============================================================
@@ -1459,9 +1459,31 @@
   transform: translateX(-50%);
 }
 
+.manga__bubble-speaker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.manga__bubble-speaker img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(232, 220, 200, 0.2);
+}
+
+.manga__bubble-speaker span {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+}
+
 .manga__bubble-text {
-  font-size: clamp(15px, 4vw, 19px);
-  line-height: 1.7;
+  font-size: clamp(16px, 4.5vw, 21px);
+  line-height: 1.75;
   color: var(--text);
   font-style: italic;
   letter-spacing: 0.02em;

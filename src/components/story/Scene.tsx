@@ -373,6 +373,16 @@ export default function Scene({ scene }: Props) {
               }}
             >
               <span className="manga__bubble-tail" />
+              {bubble.speaker && (
+                <div className="manga__bubble-speaker">
+                  <img
+                    src={`${import.meta.env.BASE_URL}${bubble.speaker}`}
+                    alt=""
+                    draggable={false}
+                  />
+                  {bubble.speakerName && <span>{bubble.speakerName}</span>}
+                </div>
+              )}
               <p className="manga__bubble-text">{bubble.text}</p>
             </motion.div>
           ))}

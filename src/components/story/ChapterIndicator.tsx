@@ -4,7 +4,7 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { storyScenes } from "../../data/storyScenes";
 
 const CHAPTER_META: Record<number, { label: string; color: string }> = {
@@ -18,49 +18,53 @@ const CHAPTER_META: Record<number, { label: string; color: string }> = {
 
 export default function ChapterIndicator() {
   const { scrollYProgress } = useScroll();
-  const [current, setCurrent] = useState<number | null>(null);
-  const [justChanged, setJustChanged] = useState(false);
-  const prevChapter = useRef<number | null>(null);
+  const [showIndicator, setShowIndicator] = useState(false);
+  const [currentChapter, setCurrentChapter] = useState<number | null>(null);
+
+  const chapterTitleIndices = useMemo(() => {
+    const map: Record<number, number> = {};
+    storyScenes.forEach((scene, i) => {
+      if (scene.type === "chapter-title" && scene.chapter) {
+        map[scene.chapter] = i;
+      }
+    });
+    return map;
+  }, []);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const idx = Math.floor(v * storyScenes.length);
-    const scene = storyScenes[Math.min(idx, storyScenes.length - 1)];
-    setCurrent(scene?.chapter ?? null);
+    const total = storyScenes.length;
+    const idx = Math.min(Math.floor(v * total), total - 1);
+    const scene = storyScenes[idx];
+    const chapter = scene?.chapter ?? null;
+
+    setCurrentChapter(chapter);
+
+    if (chapter && chapterTitleIndices[chapter] !== undefined) {
+      const titleIdx = chapterTitleIndices[chapter];
+      setShowIndicator(idx > titleIdx + 1);
+    } else {
+      setShowIndicator(false);
+    }
   });
 
-  useEffect(() => {
-    if (current !== prevChapter.current && current !== null) {
-      setJustChanged(true);
-      const timer = setTimeout(() => setJustChanged(false), 1500);
-      prevChapter.current = current;
-      return () => clearTimeout(timer);
-    }
-    if (current === null) {
-      prevChapter.current = null;
-    }
-  }, [current]);
-
-  const meta = current ? CHAPTER_META[current] : null;
+  const meta = currentChapter ? CHAPTER_META[currentChapter] : null;
 
   return (
     <AnimatePresence>
-      {meta && (
+      {showIndicator && meta && (
         <motion.div
           className="chapter-indicator"
-          key={current}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{
-            opacity: justChanged ? 0.95 : 0.4,
-            scale: justChanged ? 1.05 : 1,
-          }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          key={currentChapter}
+          initial={{ opacity: 0, y: -10, scale: 1.6 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -10, scale: 0.8 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <span
             className="chapter-indicator__num"
             style={{ color: meta.color }}
           >
-            危機 {String(current).padStart(2, "0")}
+            危機 {String(currentChapter).padStart(2, "0")}
           </span>
           <span className="chapter-indicator__divider" />
           <span className="chapter-indicator__label">{meta.label}</span>

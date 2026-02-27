@@ -15,16 +15,25 @@ export default function ScrollStory() {
 
   const bgHue = useTransform(
     scrollYProgress,
-    [0, 0.15, 0.3, 0.5, 0.65, 0.8, 0.9, 1],
     [
-      "rgba(11,17,32,1)",
-      "rgba(11,20,35,1)",
-      "rgba(18,14,28,1)",
-      "rgba(14,13,30,1)",
-      "rgba(12,18,26,1)",
-      "rgba(16,15,24,1)",
-      "rgba(11,17,32,1)",
-      "rgba(11,17,32,1)",
+      0, 0.05, 0.06, 0.38, 0.4, 0.53, 0.55, 0.73, 0.75, 0.8, 0.82, 0.89, 0.91,
+      1,
+    ],
+    [
+      "rgba(5,8,18,1)", // Prologue — void black
+      "rgba(5,8,18,1)",
+      "rgba(6,16,30,1)", // Ch1 — deep ocean cyan
+      "rgba(6,16,30,1)",
+      "rgba(22,8,10,1)", // Ch2 — dark crimson
+      "rgba(22,8,10,1)",
+      "rgba(12,6,24,1)", // Ch3 — deep purple
+      "rgba(12,6,24,1)",
+      "rgba(6,18,14,1)", // Ch4 — dark forest
+      "rgba(6,18,14,1)",
+      "rgba(20,16,8,1)", // Ch5 — amber
+      "rgba(20,16,8,1)",
+      "rgba(12,12,18,1)", // Ch6 — neutral
+      "rgba(12,12,18,1)",
     ],
   );
 

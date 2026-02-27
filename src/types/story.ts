@@ -51,5 +51,7 @@ export interface StoryScene {
     text: string;
     position?: "left" | "right" | "center";
     delay?: number;
+    speaker?: string;
+    speakerName?: string;
   }[];
 }
