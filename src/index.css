@@ -314,11 +314,12 @@
 }
 
 .scene__chapter-title {
-  font-size: clamp(40px, 12vw, 72px);
+  font-size: clamp(32px, 10vw, 72px);
   font-weight: 800;
   line-height: 1.15;
   color: #fff;
   margin-top: 8px;
+  white-space: nowrap;
   /* Base shadow — accent glow is added inline via style prop */
   text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
 }

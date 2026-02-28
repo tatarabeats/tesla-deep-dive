@@ -322,7 +322,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-reuse",
     type: "image-hero",
     chapter: 1,
-    imageUrl: "images/falcon9-landing-real.webp",
+    imageUrl: "images/falcon9-landing.webp",
     text: "でもイーロンの本当の夢は、\nもっと先にあった。",
     subText:
       "ロケットを着陸させて、もう一度飛ばす。\n飛行機を毎回壊す人はいない。\nロケットも同じだ。",
@@ -419,7 +419,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-tesla-founding",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: "images/elon-photo-13.webp",
+    imageUrl: "images/elon-photo-10.webp",
     text: "2004年。\nイーロンはある小さな会社に出会った。",
     subText:
       "2人のエンジニアが作った\n電気自動車の会社「テスラ・モーターズ」。\nイーロンは約10億円を出して\n最大の出資者になった。",
@@ -448,22 +448,13 @@ export const storyScenes: StoryScene[] = [
     statLabel: "0→100km/h 加速タイム",
     accentColor: RED,
   },
-  // EVへの批判 — 導入
-  {
-    id: "ch2-criticism-intro",
-    type: "text-only",
-    chapter: 2,
-    imageUrl: null,
-    text: "だが、こんな批判もあった。",
-    accentColor: RED,
-  },
-  // EVへの批判 — セリフ
+  // EVへの批判
   {
     id: "ch2-criticism",
     type: "manga-panel",
     chapter: 2,
     imageUrl: "images/co2-factory-real.webp",
-    text: "",
+    text: "だが、こんな批判もあった。",
     accentColor: RED,
     speechBubbles: [
       {
@@ -486,6 +477,17 @@ export const storyScenes: StoryScene[] = [
       "確かに、バッテリーを作るときの\nCO₂はガソリン車より多い。\nでも走り始めれば電気自動車のCO₂はほぼゼロ。\n約1.7万km走った時点で逆転する。\n車を買ってから廃車にするまでの\nCO₂を比べると──",
     stat: "73%削減",
     statLabel: "ガソリン車と比べたCO₂（EU調べ）",
+    accentColor: RED,
+  },
+  // バッテリーの廃棄問題
+  {
+    id: "ch2-battery-recycle",
+    type: "text-only",
+    chapter: 2,
+    imageUrl: null,
+    text: "じゃあ、バッテリーは\nどうするのか？",
+    subText:
+      "「廃車にしたらバッテリーのゴミが\n大量に出るんじゃないか？」\nこれもよく聞く批判だ。\n\nテスラはバッテリーをリサイクルしている。\n中に入っている貴重な金属の\n92%以上を回収して、\n新しいバッテリーの材料に戻す。\n\nさらに、車では使えなくなった電池も\n建物の電力を貯める用途に再利用できる。\nゴミにはならない。第二の人生がある。",
     accentColor: RED,
   },
   // Megapack
@@ -511,10 +513,10 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-megapack",
     type: "image-hero",
     chapter: 2,
-    imageUrl: "images/megapack-real.webp",
+    imageUrl: "images/megapack-aerial.webp",
     text: "街ひとつ分の電気を\n貯められる巨大バッテリー。",
     subText:
-      "「Megapack（メガパック）」。\n1台で一般家庭130軒分の電気を貯められる。\nオーストラリアでは\nガスを燃やす発電所をまるごと置き換えた。",
+      "「Megapack（メガパック）」。\n1台で一般家庭約130軒が\n丸一日使う量の電気を貯められる。\n太陽が出ている昼間に貯めて、夜に使う。\nオーストラリアでは\nガスを燃やす発電所をまるごと置き換えた。",
     badge: "Tesla Energy",
     stat: "3,900kWh",
     statLabel: "Megapack 1台の蓄電量",
@@ -602,7 +604,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-elon-leaves",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/sam-altman-real-3.jpg",
+    imageUrl: "images/elon-photo-16.webp",
     text: "2018年。2人の意見が割れた。",
     accentColor: PURPLE,
     speechBubbles: [
@@ -664,7 +666,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-revolt",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/sam-altman-real-4.jpg",
+    imageUrl: "images/sam-altman-stage.webp",
     text: "だが社員が動いた。",
     accentColor: PURPLE,
     speechBubbles: [
@@ -705,7 +707,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/datacenter-real.webp",
     text: "たった122日で、\n世界最大のAI計算センターを建てた。",
     subText:
-      "テネシー州メンフィス──アメリカ南部の工業都市。\n使われなくなった巨大な家電工場を買い取り、\nAIの「頭脳」となるチップ（GPU）を\n10万個から20万個へ倍増させた。",
+      "テネシー州メンフィス──アメリカ南部の工業都市。\n使われなくなった巨大な家電工場を買い取り、\nAIの学習に必要な大量の計算を\n同時にこなせる専用チップ「GPU」を\n10万個から20万個へ倍増させた。",
     badge: "xAI",
     stat: "200,000個",
     statLabel: "AIチップの数",
@@ -716,10 +718,10 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-jensen",
     type: "image-hero",
     chapter: 3,
-    imageUrl: "images/jensen-huang-real-5.jpg",
-    text: "そのチップを作っている男。",
+    imageUrl: "images/jensen-huang-real-2.jpg",
+    text: "そのGPUを作っている男。",
     subText:
-      "ジェンセン・ファン。\n半導体メーカーNVIDIA（エヌビディア）のCEO。\nChatGPTも、イーロンのGrokも、\nGoogleのGeminiも──\n全てこの男が作ったチップで動いている。",
+      "ジェンセン・ファン。\n半導体メーカーNVIDIA（エヌビディア）のCEO。\nChatGPTも、イーロンのGrokも、\nGoogleのGeminiも──\n世界中のAIは\nほぼ全てこの男が作ったGPUで動いている。",
     badge: "NVIDIA",
     accentColor: PURPLE,
   },
@@ -794,7 +796,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch4-birthrate",
     type: "image-hero",
     chapter: 4,
-    imageUrl: "images/population-decline-real.webp",
+    imageUrl: "images/empty-classroom.webp",
     text: "子どもが生まれない。",
     subText:
       "女性1人が一生のうちに産む子どもの数。\n人口が減らないためには「2.1人」が必要。\nでも今の韓国は0.72。日本は1.20。\nこのままでは、介護する人も、\n工場で働く人も、\nトラックの運転手も足りなくなる。",
@@ -824,7 +826,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch4-optimus-gen1",
     type: "image-hero",
     chapter: 4,
-    imageUrl: "images/optimus-gen1.webp",
+    imageUrl: "images/optimus-real.webp",
     text: "2023年3月。Optimus Gen 1。",
     subText:
       "まだ荒削り。\nむき出しの配線、ぎこちない歩き方。\nでも、人の形をしたロボットを\n大量に作るという途方もない挑戦が始まった。",
@@ -835,10 +837,10 @@ export const storyScenes: StoryScene[] = [
     id: "ch4-optimus-gen2",
     type: "image-hero",
     chapter: 4,
-    imageUrl: "images/optimus-gen2.webp",
-    text: "9ヶ月後。Gen 2。\n別物になった。",
+    imageUrl: "images/optimus-hands.webp",
+    text: "9ヶ月後。Gen 2。\n手が別物になった。",
     subText:
-      "2023年12月。\nたった9ヶ月でまるで別物に。\n卵を割らずに持てる繊細な指。\n30%軽くなった体。\nそして24時間、休まず働ける。",
+      "2023年12月。\nたった9ヶ月でまるで別物に。\n卵を割らずに持てるほど繊細な指。\n30%軽くなった体。\nそして24時間、休まず働ける。",
     badge: "Optimus Gen2",
     stat: "$20,000",
     statLabel: "1台の目標価格（約300万円）",
@@ -888,7 +890,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch5-tweet",
     type: "manga-panel",
     chapter: 5,
-    imageUrl: "images/elon-photo-10.webp",
+    imageUrl: "images/elon-photo-13.webp",
     text: "2016年12月17日。",
     accentColor: WARM,
     speechBubbles: [
@@ -914,16 +916,50 @@ export const storyScenes: StoryScene[] = [
     statLabel: "従来の1/10のコストでトンネルを掘る",
     accentColor: WARM,
   },
+  // Boring Companyの実績
+  {
+    id: "ch5-boring-method",
+    type: "manga-panel",
+    chapter: 5,
+    imageUrl: "images/elon-photo-15.webp",
+    text: "",
+    accentColor: WARM,
+    speechBubbles: [
+      {
+        text: "既存のトンネル掘削機は遅すぎる。\nカタツムリより遅い。\nだから、自分たちで速い掘削機を作る。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+        emphasis: "quiet",
+      },
+    ],
+    subText:
+      "2016年12月、本当に「The Boring Company」を設立。\n「boring」は英語で「退屈」と「掘削」の\nダブルミーニング。",
+  },
   // Vegas Loop
   {
     id: "ch5-vegas",
     type: "image-hero",
     chapter: 5,
-    imageUrl: "images/vegas-loop-real.webp",
-    text: "ラスベガスで、\nすでに走っている。",
+    imageUrl: "images/vegas-loop-tunnel.webp",
+    text: "ラスベガスの地下で、\nもう走っている。",
     subText:
-      "「Vegas Loop」。\nラスベガスの地下に掘ったトンネル。\nすでに8駅が動いていて、\n2026年には空港までつながる予定。\n最終的には約110km、104駅の\n地下ネットワークになる。",
+      "「Vegas Loop」。\nラスベガスの地下に掘ったトンネルの中を、\nテスラの車が乗客を乗せて走っている。\nすでに8駅が営業中。\n2026年には空港までつながる予定。\n最終的には約110km、104駅の\n地下ネットワークになる。",
     badge: "Vegas Loop",
+    accentColor: WARM,
+  },
+  // Vegas Loopの体験
+  {
+    id: "ch5-vegas-experience",
+    type: "text-only",
+    chapter: 5,
+    imageUrl: null,
+    text: "歩けば25分の距離を、\n2分で移動できる。",
+    subText:
+      "ラスベガスの展示会場LVCC。\n端から端まで歩くと25分かかる巨大施設。\nVegas Loopなら2分。\nしかも無料で乗れる。\n利用者はすでに累計500万人を超えた。",
+    stat: "500万人+",
+    statLabel: "累計利用者数（2024年末時点）",
     accentColor: WARM,
   },
 
@@ -1012,7 +1048,7 @@ export const storyScenes: StoryScene[] = [
     accentColor: TEXT,
     speechBubbles: [
       {
-        text: "宇宙に小さな衛星を何千個も飛ばして、\n地球全体をネットで包む。\n砂漠でも海の上でも戦場でも、\n空さえ見えればつながる。",
+        text: "宇宙に小さな衛星を何千個も飛ばして、\n地球全体をカバーする\nインターネット網を作る。\n砂漠でも、海の上でも、戦場でも、\n空が見える場所ならどこでも\nネットにつながる。",
         position: "right",
         delay: 0.5,
         speaker: ELON,
@@ -1039,7 +1075,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch6-x",
     type: "image-hero",
     chapter: 6,
-    imageUrl: ELON_D,
+    imageUrl: "images/elon-photo-22.webp",
     text: "声を届け、お金を届ける。",
     subText:
       "世界には銀行口座を持てない人が13億人いる。\nスマホ1台でお金を送ったり、\n買い物したり、貯金したりできるアプリ。\n\nイーロンは1999年に「X.com」という\nネット決済サービスを作った男。\nあのPayPalの前身だ。\nTwitterを買って「X」に変えたのは、\nその夢の続きだった。",
