@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#131f24"/>
+  <text x="256" y="310" text-anchor="middle" font-size="260" fill="#ff4b4b">T</text>
+  <text x="256" y="430" text-anchor="middle" font-size="72" fill="#58cc02" font-weight="bold">DIVE</text>
+</svg>

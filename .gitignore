@@ -1,0 +1,10 @@
+node_modules
+dist
+generate_orb_images.py
+
+# Portrait generation
+generate_portraits.py
+test_timing.py
+public/images/elon_candidates/
+public/images/elon_lora/
+public/images/portraits/
