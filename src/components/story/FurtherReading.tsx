@@ -1,49 +1,46 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { bookRecommendations } from "../../data/bookRecommendations";
-
-const CHAPTER_COLORS: Record<number, string> = {
-  1: "rgba(80, 200, 255, 0.9)",
-  2: "rgba(255, 90, 80, 0.9)",
-  3: "rgba(180, 130, 255, 0.9)",
-  4: "rgba(80, 220, 140, 0.9)",
-  5: "rgba(200, 180, 150, 0.9)",
-  6: "rgba(232, 220, 200, 0.9)",
-};
+import {
+  heroBook,
+  chapterBooks,
+  type Book,
+} from "../../data/bookRecommendations";
 
 export default function FurtherReading() {
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: false, amount: 0.1 });
+  const isInView = useInView(ref, { once: false, amount: 0.05 });
 
   return (
-    <section ref={ref} className="further-reading">
+    <section ref={ref} className="fr">
+      {/* ── Header ── */}
       <motion.div
-        className="further-reading__header"
+        className="fr__header"
         initial={{ opacity: 0, y: 40 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 1, ease: "easeOut" }}
       >
-        <div
-          className="further-reading__line"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, rgba(255,225,140,0.5), transparent)",
-          }}
-        />
-        <h2 className="further-reading__title">もっと深く知りたいあなたへ</h2>
-        <p className="further-reading__subtitle">
-          各章のテーマをさらに掘り下げる厳選書籍
+        <div className="fr__header-line" />
+        <h2 className="fr__header-title">もっと深く知りたいあなたへ</h2>
+        <p className="fr__header-sub">
+          各章のテーマに対応する厳選書籍。
+          <br />
+          イーロンの頭の中を、さらに深く覗く。
         </p>
       </motion.div>
 
-      <div className="further-reading__chapters">
-        {bookRecommendations.map((rec) => (
-          <ChapterBooks key={rec.chapter} rec={rec} />
+      {/* ── Hero Book ── */}
+      <HeroBookCard />
+
+      {/* ── Chapter Books ── */}
+      <div className="fr__chapters">
+        {chapterBooks.map((ch) => (
+          <ChapterSection key={ch.chapter} chapter={ch} />
         ))}
       </div>
 
+      {/* ── Footer ── */}
       <motion.p
-        className="further-reading__footer"
+        className="fr__footer"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 0.4 } : {}}
         transition={{ duration: 1, delay: 1 }}
@@ -54,70 +51,131 @@ export default function FurtherReading() {
   );
 }
 
-function ChapterBooks({ rec }: { rec: (typeof bookRecommendations)[number] }) {
+// ── Hero Book (full-width premium card) ──
+function HeroBookCard() {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const isInView = useInView(ref, { once: false, amount: 0.3 });
+
+  return (
+    <motion.a
+      ref={ref}
+      href={heroBook.amazonUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fr__hero"
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+    >
+      <div className="fr__hero-badge">RECOMMENDED</div>
+      <div
+        className="fr__hero-cover"
+        style={{
+          background: `linear-gradient(135deg, rgba(255,225,140,0.15), rgba(255,180,80,0.08))`,
+        }}
+      >
+        <span className="fr__hero-cover-title">
+          ELON
+          <br />
+          MUSK
+        </span>
+        <span className="fr__hero-cover-author">Walter Isaacson</span>
+      </div>
+      <div className="fr__hero-info">
+        <h3 className="fr__hero-title">{heroBook.title}</h3>
+        <span className="fr__hero-author">{heroBook.author}</span>
+        <p className="fr__hero-desc">{heroBook.connection}</p>
+        <span className="fr__hero-cta" style={{ color: heroBook.accentColor }}>
+          Amazonで読む →
+        </span>
+      </div>
+    </motion.a>
+  );
+}
+
+// ── Chapter Section ──
+function ChapterSection({
+  chapter,
+}: {
+  chapter: (typeof chapterBooks)[number];
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
-  const color = CHAPTER_COLORS[rec.chapter] || "rgba(255,225,140,0.9)";
+  const color = chapter.books[0]?.accentColor ?? "rgba(255,225,140,0.9)";
 
   return (
     <motion.div
       ref={ref}
-      className="further-reading__chapter"
+      className="fr__chapter"
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, ease: "easeOut" }}
     >
-      <div className="further-reading__chapter-label" style={{ color }}>
-        <span className="further-reading__chapter-num">
-          危機 {String(rec.chapter).padStart(2, "0")}
+      <div className="fr__chapter-label">
+        <span className="fr__chapter-num" style={{ color }}>
+          危機 {String(chapter.chapter).padStart(2, "0")}
         </span>
-        <span className="further-reading__chapter-name">
-          {rec.chapterTitle}
-        </span>
+        <span className="fr__chapter-name">{chapter.chapterTitle}</span>
       </div>
-
-      <div className="further-reading__books">
-        {rec.books.map((book, i) => (
-          <motion.a
+      <div className="fr__chapter-books">
+        {chapter.books.map((book, i) => (
+          <BookCard
             key={book.title}
-            href={book.amazonUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="further-reading__book"
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{
-              duration: 0.6,
-              delay: 0.2 + i * 0.15,
-              ease: "easeOut",
-            }}
-          >
-            <div
-              className="further-reading__book-cover"
-              style={{ borderColor: `${color.replace("0.9", "0.3")}` }}
-            >
-              <div
-                className="further-reading__book-placeholder"
-                style={{ color }}
-              >
-                📖
-              </div>
-            </div>
-            <div className="further-reading__book-info">
-              <span className="further-reading__book-title">{book.title}</span>
-              <span className="further-reading__book-author">
-                {book.author}
-              </span>
-              <span className="further-reading__book-desc">
-                {book.description}
-              </span>
-              <span className="further-reading__book-cta" style={{ color }}>
-                Amazonで見る →
-              </span>
-            </div>
-          </motion.a>
+            book={book}
+            delay={i * 0.15}
+            isInView={isInView}
+          />
         ))}
       </div>
     </motion.div>
+  );
+}
+
+// ── Individual Book Card ──
+function BookCard({
+  book,
+  delay,
+  isInView,
+}: {
+  book: Book;
+  delay: number;
+  isInView: boolean;
+}) {
+  return (
+    <motion.a
+      href={book.amazonUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fr__book"
+      initial={{ opacity: 0, x: -20 }}
+      animate={isInView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.2 + delay, ease: "easeOut" }}
+    >
+      <div
+        className="fr__book-cover"
+        style={{
+          background: `linear-gradient(145deg, ${book.accentColor.replace("0.9", "0.12")}, ${book.accentColor.replace("0.9", "0.04")})`,
+          borderColor: book.accentColor.replace("0.9", "0.25"),
+        }}
+      >
+        <span
+          className="fr__book-cover-title"
+          style={{ color: book.accentColor }}
+        >
+          {book.titleJp || book.title}
+        </span>
+      </div>
+      <div className="fr__book-info">
+        <span className="fr__book-title">{book.titleJp || book.title}</span>
+        {book.titleJp && (
+          <span className="fr__book-title-en">{book.title}</span>
+        )}
+        <span className="fr__book-author">{book.author}</span>
+        <p className="fr__book-desc">{book.connection}</p>
+        <span className="fr__book-cta" style={{ color: book.accentColor }}>
+          Amazonで読む →
+        </span>
+      </div>
+    </motion.a>
   );
 }

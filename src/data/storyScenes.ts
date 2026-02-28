@@ -1,15 +1,17 @@
 import type { StoryScene } from "../types/story";
 
+// ── Elon portraits ──
 const ELON = "images/elon-avatar.webp";
-const ELON_A = "images/elon-real.jpg";
-const ELON_B = "images/elon-celebration.webp";
+const ELON_A = "images/elon-real.jpg"; // Formal portrait
+const ELON_B = "images/elon-celebration.webp"; // Celebrating
 const ELON_C = "images/elon-photo-3.webp"; // SpaceX press conf
 const ELON_D = "images/elon-photo-4.webp"; // Tesla Battery Day
 const ELON_E = "images/elon-photo-5.webp"; // Speaking at academy
 const ELON_F = "images/elon-photo-6.webp"; // AI Summit 2023
 
+// ── Colors ──
 const GOLD = "rgba(255, 225, 140, 0.9)";
-const FIRE = "rgba(255, 100, 30, 0.95)"; // ゴージャスなオレンジ赤
+const FIRE = "rgba(255, 100, 30, 0.95)";
 const CYAN = "rgba(80, 200, 255, 0.9)";
 const RED = "rgba(255, 90, 80, 0.9)";
 const PURPLE = "rgba(180, 130, 255, 0.9)";
@@ -45,6 +47,7 @@ export const storyScenes: StoryScene[] = [
     text: "6つの危機。6つの会社。\n1人の男の確信。",
     stat: "6",
     statLabel: "つの事業が世界を変える",
+    textColor: "#ffffff",
     accentColor: FIRE,
   },
 
@@ -72,7 +75,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-ext-ordovician",
     type: "image-hero",
     chapter: 1,
-    imageUrl: "images/extinction-ordovician-real.webp",
+    imageUrl: "images/extinction_ordovician.webp",
     text: "オルドビス紀末。\n海が凍りついた。",
     subText: "4億4300万年前 ── 全種の85%が絶滅。",
     accentColor: CYAN,
@@ -81,7 +84,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-ext-devonian",
     type: "image-hero",
     chapter: 1,
-    imageUrl: "images/extinction-devonian-real.webp",
+    imageUrl: "images/extinction_devonian.webp",
     text: "デボン紀末。\n海から酸素が消えた。",
     subText: "3億7500万年前 ── 全種の75%が絶滅。",
     accentColor: CYAN,
@@ -90,7 +93,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-ext-permian",
     type: "image-hero",
     chapter: 1,
-    imageUrl: "images/extinction-permian-real.webp",
+    imageUrl: "images/extinction_permian.webp",
     text: "ペルム紀末。\n地球史上、最悪の日。",
     subText: "2億5100万年前 ── 全種の96%が絶滅。",
     stat: "96%",
@@ -101,7 +104,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-ext-triassic",
     type: "image-hero",
     chapter: 1,
-    imageUrl: "images/extinction-triassic-real.webp",
+    imageUrl: "images/extinction_triassic.webp",
     text: "三畳紀末。\n火山が気候を壊した。",
     subText: "2億年前 ── 全種の76%が絶滅。",
     accentColor: CYAN,
@@ -138,17 +141,17 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-elon-book",
     type: "image-hero",
     chapter: 1,
-    imageUrl: ELON_D,
+    imageUrl: "images/case-for-mars-book.webp",
     text: "2001年。イーロンは\n一冊の本に出会った。",
     subText:
-      "『The Case for Mars』── ロバート・ズブリンが書いた、火星移住の具体的ロードマップ。",
+      "『The Case for Mars』──\n火星に人が住めることを\n具体的に示した計画書。",
     accentColor: CYAN,
   },
   {
     id: "ch1-elon-reads",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: ELON_F,
+    imageUrl: "images/elon-photo-9.webp",
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -175,10 +178,10 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-russia",
     type: "image-hero",
     chapter: 1,
-    imageUrl: ELON_C,
+    imageUrl: "images/elon-russia-meeting.webp",
     text: "まず、安いロケットを\n買おうとした。",
     subText:
-      "2001年、モスクワ。ロシア製ミサイル3基、$2,100万（約31億円）。だがロシア側はイーロンを鼻で笑った。",
+      "2001年、ロシアのモスクワへ飛んだ。\n中古ロケットを3基、約31億円で売ってほしい。\nだがロシア側は\n「こいつは素人だ」と鼻で笑った。",
     accentColor: CYAN,
   },
   // 飛行機での「自分で作る」決断
@@ -186,8 +189,8 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-airplane",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: ELON_F,
-    text: "帰りの飛行機。イーロンはノートパソコンを開いた。",
+    imageUrl: "images/elon-airplane-laptop.webp",
+    text: "帰りの飛行機。\nイーロンはノートパソコンを開いた。",
     accentColor: CYAN,
     speechBubbles: [
       {
@@ -208,7 +211,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/falcon1-warehouse.webp",
     text: "2002年5月6日。\nSpaceX設立。",
     subText:
-      "カリフォルニア州エルセグンドの倉庫。たった30人でロケット開発が始まった。",
+      "カリフォルニアの小さな倉庫。\nたった30人で「自分たちでロケットを作る」\nという途方もない挑戦が始まった。",
     badge: "SpaceX",
     accentColor: CYAN,
   },
@@ -217,7 +220,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-mockery",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: ELON_B,
+    imageUrl: "images/laughing-crowd.webp",
     text: "だが、業界はこう笑った。",
     accentColor: CYAN,
     speechBubbles: [
@@ -237,7 +240,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon1-flight1.webp",
     text: "Falcon 1 ── 1回目、失敗。",
-    subText: "2006年3月24日。打ち上げ33秒、燃料ラインの腐食。爆発。",
+    subText:
+      "2006年3月24日。\n打ち上げからたった33秒。\n燃料パイプが錆びていた。爆発。",
     accentColor: CYAN,
   },
   {
@@ -246,7 +250,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon1-flight2.webp",
     text: "2回目、失敗。",
-    subText: "2007年3月21日。高度289kmに到達したが、姿勢制御を喪失。",
+    subText:
+      "2007年3月21日。\n高度289kmまで飛んだ。\nだが機体のバランスが崩れ、制御不能に。",
     accentColor: CYAN,
   },
   {
@@ -255,7 +260,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon1-flight3.webp",
     text: "3回目、失敗。",
-    subText: "2008年8月3日。第1段と第2段が衝突。全て失った。",
+    subText:
+      "2008年8月3日。\nロケットの上半分と下半分が\n切り離しの瞬間にぶつかった。\n全て失った。",
     accentColor: CYAN,
   },
   // 最後の1回
@@ -263,7 +269,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-last-chance",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: ELON_C,
+    imageUrl: "images/elon-photo-20.webp",
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -277,7 +283,7 @@ export const storyScenes: StoryScene[] = [
       },
     ],
     subText:
-      "残る資金で打てるのは、あと1回だけ。イーロンが同時に経営していた電気自動車メーカー、テスラも倒産寸前だった。",
+      "残るお金で打ち上げられるのは、あと1回だけ。\nイーロンが同時に経営していた\n電気自動車の会社「テスラ」も、\n潰れる寸前だった。",
   },
   // 4回目 — 成功
   {
@@ -295,7 +301,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: ELON_B,
     text: "成功。",
     subText:
-      "民間企業として史上初、液体燃料ロケットが地球の軌道に到達した瞬間だった。",
+      "国でもなく、軍でもなく、\nたった一つの民間企業が\nロケットを宇宙に届けた。\n史上初の快挙だった。",
     accentColor: GOLD,
   },
   // NASA契約
@@ -306,9 +312,9 @@ export const storyScenes: StoryScene[] = [
     imageUrl: null,
     text: "そして3ヶ月後──",
     subText:
-      "2008年12月23日、クリスマスイブの前日。NASAがSpaceXに$1.6Bの契約を結んだ。国際宇宙ステーションへの輸送12回分。",
+      "2008年12月23日、クリスマスイブの前日。\nNASA（アメリカ航空宇宙局）が\nSpaceXに声をかけた。\n「宇宙ステーションに荷物を届けてくれ」。\n12回分の輸送契約。",
     stat: "$1.6B",
-    statLabel: "NASAとの契約額（約2,400億円）",
+    statLabel: "NASA契約額（約2,400億円）",
     accentColor: CYAN,
   },
   // Falcon 9再利用
@@ -318,9 +324,10 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon9-landing-real.webp",
     text: "でもイーロンの本当の夢は、\nもっと先にあった。",
-    subText: "ロケットを着陸させて、また飛ばす。飛行機と同じように。",
+    subText:
+      "ロケットを着陸させて、もう一度飛ばす。\n飛行機を毎回壊す人はいない。\nロケットも同じだ。",
     stat: "20回+",
-    statLabel: "Falcon 9ブースター最大再使用回数",
+    statLabel: "同じロケットの再使用回数",
     badge: "SpaceX",
     accentColor: CYAN,
   },
@@ -328,7 +335,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-mars-goal",
     type: "manga-panel",
     chapter: 1,
-    imageUrl: ELON_A,
+    imageUrl: "images/elon-photo-12.webp",
     text: "",
     accentColor: CYAN,
     speechBubbles: [
@@ -350,7 +357,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-1-2",
     type: "manga-panel",
     chapter: null,
-    imageUrl: ELON_B,
+    imageUrl: "images/elon-photo-17.webp",
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -382,17 +389,18 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 2,
     imageUrl: "images/co2-factory-real.webp",
-    text: "年間374億トンのCO\u2082。",
-    subText: "人類が1年間に排出する温室効果ガス。100年で気温は+1.1℃上昇した。",
+    text: "地球が、\nじわじわ熱くなっている。",
+    subText:
+      "石油や石炭を燃やすと、CO₂（二酸化炭素）が出る。\nこのガスが地球を毛布のように包んで\n温度を上げている。\nこの100年で、気温はすでに+1.1℃上昇。\n人類が毎年出すCO₂の量は──",
     stat: "374億トン",
-    statLabel: "年間CO\u2082排出量（IEA 2023）",
+    statLabel: "年間CO₂排出量",
     accentColor: RED,
   },
   {
     id: "ch2-car-problem",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: ELON_D,
+    imageUrl: "images/elon-photo-7.webp",
     text: "",
     accentColor: RED,
     speechBubbles: [
@@ -411,10 +419,10 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-tesla-founding",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: ELON_A,
-    text: "2004年。イーロンはあるスタートアップに出会った。",
+    imageUrl: "images/elon-photo-13.webp",
+    text: "2004年。\nイーロンはある小さな会社に出会った。",
     subText:
-      "マーティン・エバーハードとマーク・ターペニングが設立したテスラ・モーターズ。イーロンは$650万（約10億円）を出資し、会長に就任した。",
+      "2人のエンジニアが作った\n電気自動車の会社「テスラ・モーターズ」。\nイーロンは約10億円を出して\n最大の出資者になった。",
     accentColor: RED,
     speechBubbles: [
       {
@@ -434,7 +442,7 @@ export const storyScenes: StoryScene[] = [
     chapter: 2,
     imageUrl: "images/tesla-roadster-real.webp",
     text: "Tesla Roadster。\n常識を粉砕した。",
-    subText: "時速0kmから100kmに到達するまで、たったの──",
+    subText: "止まった状態から時速100kmまで、\nたったの──",
     badge: "Tesla",
     stat: "3.9秒",
     statLabel: "0→100km/h 加速タイム",
@@ -454,12 +462,12 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-criticism",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: ELON_D,
+    imageUrl: "images/co2-factory-real.webp",
     text: "",
     accentColor: RED,
     speechBubbles: [
       {
-        text: "バッテリーを製造する時に\n大量のCO\u2082が出るだろ？\n結局エコじゃないんじゃないか？",
+        text: "バッテリーを作る時に\n大量のCO₂が出るだろ？\n結局エコじゃないんじゃないか？",
         position: "left",
         delay: 0.5,
         speakerName: "自動車業界の批判者たち",
@@ -475,9 +483,9 @@ export const storyScenes: StoryScene[] = [
     imageUrl: null,
     text: "答えはデータにある。",
     subText:
-      "確かに、バッテリー製造時のCO\u2082はガソリン車より約40%多い。でも約1万7000km走れば逆転する。車の一生で比較すると──",
-    stat: "73%",
-    statLabel: "ガソリン車比でCO\u2082削減（EU実測値）",
+      "確かに、バッテリーを作るときの\nCO₂はガソリン車より多い。\nでも走り始めれば電気自動車のCO₂はほぼゼロ。\n約1.7万km走った時点で逆転する。\n車を買ってから廃車にするまでの\nCO₂を比べると──",
+    stat: "73%削減",
+    statLabel: "ガソリン車と比べたCO₂（EU調べ）",
     accentColor: RED,
   },
   // Megapack
@@ -485,7 +493,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-energy-problem",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: ELON_E,
+    imageUrl: ELON_D,
     text: "",
     accentColor: RED,
     speechBubbles: [
@@ -504,12 +512,12 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 2,
     imageUrl: "images/megapack-real.webp",
-    text: "街全体の電力を貯められる\nバッテリーを作る。",
+    text: "街ひとつ分の電気を\n貯められる巨大バッテリー。",
     subText:
-      "Megapack 1基で一般家庭130軒分の電力を貯蔵。オーストラリアではガス発電所を置き換えた。",
+      "「Megapack（メガパック）」。\n1台で一般家庭130軒分の電気を貯められる。\nオーストラリアでは\nガスを燃やす発電所をまるごと置き換えた。",
     badge: "Tesla Energy",
     stat: "3,900kWh",
-    statLabel: "Megapack 1基の蓄電容量",
+    statLabel: "Megapack 1台の蓄電量",
     accentColor: RED,
   },
 
@@ -520,7 +528,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-2-3",
     type: "manga-panel",
     chapter: null,
-    imageUrl: ELON_A,
+    imageUrl: "images/elon-thinking.webp",
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -556,7 +564,7 @@ export const storyScenes: StoryScene[] = [
     accentColor: PURPLE,
     speechBubbles: [
       {
-        text: "AIは今後数十年で、\n人類にとって最大の脅威になりうる。\n核兵器よりも危険かもしれない。",
+        text: "AIは人類にとって\n最大の脅威になりうる。\n核兵器よりも危険かもしれない。",
         position: "right",
         delay: 0.5,
         speaker: ELON,
@@ -571,8 +579,9 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 3,
     imageUrl: "images/sam-altman-real-2.jpg",
-    text: "一つの企業にAIを\n独占させちゃいけない。",
-    subText: "2015年、OpenAIを非営利で設立。「人類全体のためのAI」を作る。",
+    text: "一つの企業に\nAIを独占させちゃいけない。",
+    subText:
+      "2015年、「OpenAI」を設立。\nお金儲けが目的ではなく、\n人類全体のためにAIを作る組織。\n技術は全て無料で公開する約束だった。",
     badge: "OpenAI",
     accentColor: PURPLE,
   },
@@ -583,19 +592,46 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: "images/sam-altman-real-1.jpg",
     text: "共同設立者、サム・アルトマン。",
-    subText: "Y Combinator前CEO。天才たちを見つけて育てるのが仕事だった。",
+    subText:
+      "シリコンバレーで最も有名な\nスタートアップ支援組織の元トップ。\n天才たちを見つけて育てるのが仕事だった。",
     badge: "Sam Altman",
     accentColor: PURPLE,
   },
-  // イーロンがOpenAIを去る
+  // イーロンとサムの対立 → 対話形式に変更
   {
     id: "ch3-elon-leaves",
-    type: "image-hero",
+    type: "manga-panel",
     chapter: 3,
     imageUrl: "images/sam-altman-real-3.jpg",
-    text: "だが2018年、\nイーロンはOpenAIを去った。",
+    text: "2018年。2人の意見が割れた。",
+    accentColor: PURPLE,
+    speechBubbles: [
+      {
+        text: "AIの技術は全て公開すべきだ。\n誰でも使えるようにしないと\n危険な独占が生まれる。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+        emphasis: "quiet",
+      },
+      {
+        text: "強すぎるAIを誰でも使えたら\nそっちの方が危険だ。\nそれに、もっとお金が必要なんだ。",
+        position: "left",
+        delay: 1.6,
+        speakerName: "Sam Altman",
+        emphasis: "quiet",
+      },
+    ],
+  },
+  // イーロン離脱の結果
+  {
+    id: "ch3-elon-leaves-result",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "イーロンはOpenAIを去った。",
     subText:
-      "イーロンは「AIをオープンソースで公開すべきだ」と主張した。しかしサム・アルトマンらは「危険すぎる」と反対。非営利のままでは巨額の計算資源を確保できないという現実もあった。",
+      "そしてOpenAIは「お金儲けしない」という\n約束を下ろし、普通の会社になった。\n「人類のため」に作ったはずの組織が、\n「利益のため」の組織に変わった。",
     accentColor: PURPLE,
   },
   // ChatGPT
@@ -606,9 +642,9 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/chatgpt-real.webp",
     text: "そして2022年11月──\n史上最速の記録が生まれた。",
     subText:
-      "100万ユーザー到達まで。\nNetflixは3.5年。Instagramは2.5ヶ月。\nChatGPTは──",
+      "100万人が使い始めるまでにかかった時間。\nNetflixは3年半。\nInstagramは2ヶ月半。\nChatGPTは──",
     stat: "5日",
-    statLabel: "で100万ユーザーを突破",
+    statLabel: "",
     accentColor: PURPLE,
   },
   // サム解雇
@@ -617,33 +653,42 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 3,
     imageUrl: "images/sam-altman-real-4.jpg",
-    text: "2023年11月17日。\n突然の解雇。",
+    text: "2023年11月17日。\n突然のクビ宣告。",
     subText:
-      "取締役会がサムを解任。「一貫して率直でなかった」。秘密のQ*プロジェクトを巡る安全性の対立があったとされる。",
+      "OpenAIの幹部たちが、\n突然サムを追い出した。\n理由は「嘘をついていた」から。\nあまりに強力なAIの開発を\nどこまで進めていいのか、\n内部で意見が真っ二つに割れていた。",
     badge: "OpenAI",
     accentColor: PURPLE,
   },
-  // 社員が動く
+  // 社員が動く → 対話形式
   {
     id: "ch3-revolt",
-    type: "text-only",
+    type: "manga-panel",
     chapter: 3,
-    imageUrl: null,
+    imageUrl: "images/sam-altman-real-4.jpg",
     text: "だが社員が動いた。",
-    subText: "770人中ほぼ全員が辞職を宣言。5日後、サムは復帰した。",
     accentColor: PURPLE,
+    speechBubbles: [
+      {
+        text: "サムを戻せ。\nさもなければ全員辞める。",
+        position: "left",
+        delay: 0.5,
+        speakerName: "OpenAI社員 770人中ほぼ全員",
+        emphasis: "hero",
+      },
+    ],
+    subText: "5日後、サムは復帰した。",
   },
   // xAI
   {
     id: "ch3-xai",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: ELON_E,
+    imageUrl: "images/elon-photo-8.webp",
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
       {
-        text: "OpenAIは非営利の約束を破った。\nならば、本当に真実を追求するAIを\n自分で作る。",
+        text: "OpenAIは約束を破った。\nなら、自分の手で作る。\n本当に真実を追求するAIを。",
         position: "right",
         delay: 0.5,
         speaker: ELON,
@@ -658,11 +703,12 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 3,
     imageUrl: "images/datacenter-real.webp",
-    text: "122日で世界最大の\nAIスパコンを建設。",
-    subText: "メンフィスの廃家電工場。NVIDIA GPU 10万基を92日で20万基に倍増。",
+    text: "たった122日で、\n世界最大のAI計算センターを建てた。",
+    subText:
+      "テネシー州メンフィス──アメリカ南部の工業都市。\n使われなくなった巨大な家電工場を買い取り、\nAIの「頭脳」となるチップ（GPU）を\n10万個から20万個へ倍増させた。",
     badge: "xAI",
-    stat: "200,000基",
-    statLabel: "Colossus GPU数",
+    stat: "200,000個",
+    statLabel: "AIチップの数",
     accentColor: PURPLE,
   },
   // ジェンセン・ファン
@@ -671,9 +717,9 @@ export const storyScenes: StoryScene[] = [
     type: "image-hero",
     chapter: 3,
     imageUrl: "images/jensen-huang-real-5.jpg",
-    text: "そのGPUを作っている男。",
+    text: "そのチップを作っている男。",
     subText:
-      "ジェンセン・ファン、NVIDIA CEO。ChatGPTもGrokもGeminiも、全てNVIDIAのチップで動いている。AIの石油を握る男。",
+      "ジェンセン・ファン。\n半導体メーカーNVIDIA（エヌビディア）のCEO。\nChatGPTも、イーロンのGrokも、\nGoogleのGeminiも──\n全てこの男が作ったチップで動いている。",
     badge: "NVIDIA",
     accentColor: PURPLE,
   },
@@ -682,12 +728,12 @@ export const storyScenes: StoryScene[] = [
     id: "ch3-neuralink",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: ELON_F,
+    imageUrl: "images/elon-photo-11.webp",
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
       {
-        text: "AIが人間より賢くなる日が来る。\nそのとき人間が取り残されないために、\n人間の脳そのものを\nアップグレードする必要がある。",
+        text: "AIが人間より賢くなる日が来る。\nそのとき人間が取り残されないために、\n脳そのものを\nアップグレードする必要がある。",
         position: "left",
         delay: 0.5,
         speaker: ELON,
@@ -698,14 +744,14 @@ export const storyScenes: StoryScene[] = [
   },
   {
     id: "ch3-neuralink-detail",
-    type: "text-only",
+    type: "image-hero",
     chapter: 3,
-    imageUrl: null,
-    text: "2024年1月。人類初の\n脳チップ移植。",
+    imageUrl: "images/noland-arbaugh-real.webp",
+    text: "2024年1月。\n人類初の脳チップ手術。",
     subText:
-      "ノーランド・アーボウ。四肢麻痺の彼が、思考だけでカーソルを動かした。短期的には脳疾患の治療、長期的には人間の知能そのものの拡張。",
-    stat: "1,024ch",
-    statLabel: "N1チップの脳信号チャンネル数",
+      "ノーランド・アーボウ。\n首から下が動かない彼の脳に、\n小さなチップを埋め込んだ。\n「動け」と念じるだけで\n画面のカーソルが動いた。\n\nまずは体が動かない人を助ける。\nそしていつか、人間の脳そのものを\nパワーアップさせる。",
+    stat: "1,024",
+    statLabel: "本の極細センサーが脳の信号を読み取る",
     badge: "Neuralink",
     accentColor: PURPLE,
   },
@@ -733,7 +779,7 @@ export const storyScenes: StoryScene[] = [
   },
 
   // ════════════════════════════════════════
-  //  危機 04 — 労働力の消滅
+  //  危機 04 — 労働力の不足
   // ════════════════════════════════════════
   {
     id: "ch4-title",
@@ -741,7 +787,7 @@ export const storyScenes: StoryScene[] = [
     chapter: 4,
     imageUrl: "images/population-decline-real.webp",
     text: "危機 04",
-    subText: "労働力の消滅",
+    subText: "労働力の不足",
     accentColor: GREEN,
   },
   {
@@ -751,8 +797,27 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/population-decline-real.webp",
     text: "子どもが生まれない。",
     subText:
-      "「合計特殊出生率」── 女性1人が一生に産む子どもの平均数。人口を維持するには2.1が必要だが、韓国は0.72、日本は1.20。介護する人も、工場で働く人も、トラックを運転する人も、いなくなる。",
+      "女性1人が一生のうちに産む子どもの数。\n人口が減らないためには「2.1人」が必要。\nでも今の韓国は0.72。日本は1.20。\nこのままでは、介護する人も、\n工場で働く人も、\nトラックの運転手も足りなくなる。",
     accentColor: GREEN,
+  },
+  // イーロンの動機（Optimus前の橋渡し）
+  {
+    id: "ch4-optimus-idea",
+    type: "manga-panel",
+    chapter: 4,
+    imageUrl: "images/elon-photo-14.webp",
+    text: "",
+    accentColor: GREEN,
+    speechBubbles: [
+      {
+        text: "人が足りなくなるなら、\n人の形をしたロボットを作ればいい。\n24時間働いて、文句も言わない。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+        emphasis: "hero",
+      },
+    ],
   },
   // Optimus 進化
   {
@@ -762,7 +827,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/optimus-gen1.webp",
     text: "2023年3月。Optimus Gen 1。",
     subText:
-      "まだ荒削り。露出した配線、ぎこちない歩行。でも、二足歩行ロボットの量産という狂気の挑戦が始まった。",
+      "まだ荒削り。\nむき出しの配線、ぎこちない歩き方。\nでも、人の形をしたロボットを\n大量に作るという途方もない挑戦が始まった。",
     badge: "Optimus Gen1",
     accentColor: GREEN,
   },
@@ -773,10 +838,10 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/optimus-gen2.webp",
     text: "9ヶ月後。Gen 2。\n別物になった。",
     subText:
-      "2023年12月。洗練されたデザイン。卵を割らずに持てる指の精度。30%の軽量化。24時間稼働。",
+      "2023年12月。\nたった9ヶ月でまるで別物に。\n卵を割らずに持てる繊細な指。\n30%軽くなった体。\nそして24時間、休まず働ける。",
     badge: "Optimus Gen2",
     stat: "$20,000",
-    statLabel: "目標価格（約300万円 / 1台）",
+    statLabel: "1台の目標価格（約300万円）",
     accentColor: GREEN,
   },
   // Cybercab
@@ -787,7 +852,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/cybercab-real.webp",
     text: "運転手もいらなくなる。",
     subText:
-      "Tesla Cybercab。ハンドルすらない完全自律ロボタクシー。24時間365日、止まらない。",
+      "Tesla Cybercab（サイバーキャブ）。\nハンドルもアクセルもない完全自動運転タクシー。\n充電はワイヤレス──停めるだけで充電が始まる。\n人間の運転手がいないから、24時間走り続ける。",
     badge: "Tesla",
     stat: "24h",
     statLabel: "自律走行に休憩時間は存在しない",
@@ -813,7 +878,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/traffic-jam-real.webp",
     text: "年間51時間。",
     subText:
-      "アメリカ人が渋滞で失う時間。一生で換算すると約3,300時間。渋滞の中で動けず、ただ時間だけが過ぎていく。",
+      "アメリカ人が渋滞で失う時間。\n一生分だと約3,300時間。\n動けず、ただ時間だけが過ぎていく。",
     stat: "51時間/年",
     statLabel: "渋滞で失われる時間（INRIX 2023）",
     accentColor: WARM,
@@ -823,12 +888,12 @@ export const storyScenes: StoryScene[] = [
     id: "ch5-tweet",
     type: "manga-panel",
     chapter: 5,
-    imageUrl: ELON_B,
+    imageUrl: "images/elon-photo-10.webp",
     text: "2016年12月17日。",
     accentColor: WARM,
     speechBubbles: [
       {
-        text: "渋滞マジでムリ。\nトンネル掘削機を買って、\n今すぐ穴掘り始めるわ。",
+        text: "渋滞マジでムリ。\nトンネルを掘る機械を買って、\n今すぐ穴を掘り始めるわ。",
         position: "right",
         delay: 0.5,
         speaker: ELON,
@@ -843,10 +908,10 @@ export const storyScenes: StoryScene[] = [
     chapter: 5,
     imageUrl: "images/tunnel-boring-real.webp",
     text: "ビルは上に伸びるのに、\n道路は平面のまま。",
-    subText: "街は3Dなのに、交通は2Dだ。地下にもう一層作ればいい。",
+    subText: "街は3Dなのに、交通は2Dだ。\n地下にもう一層作ればいい。",
     badge: "The Boring Company",
     stat: "1/10",
-    statLabel: "トンネル掘削コスト（従来比）",
+    statLabel: "従来の1/10のコストでトンネルを掘る",
     accentColor: WARM,
   },
   // Vegas Loop
@@ -857,7 +922,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/vegas-loop-real.webp",
     text: "ラスベガスで、\nすでに走っている。",
     subText:
-      "Vegas Loop。8駅が稼働中、約16kmのトンネル。2026年には空港に接続予定。最終計画は約110km、104駅。",
+      "「Vegas Loop」。\nラスベガスの地下に掘ったトンネル。\nすでに8駅が動いていて、\n2026年には空港までつながる予定。\n最終的には約110km、104駅の\n地下ネットワークになる。",
     badge: "Vegas Loop",
     accentColor: WARM,
   },
@@ -869,7 +934,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-5-6",
     type: "manga-panel",
     chapter: null,
-    imageUrl: ELON_D,
+    imageUrl: "images/elon-photo-18.webp",
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -904,7 +969,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/ukraine-real.webp",
     text: "2022年2月。\nロシアがウクライナに侵攻。",
     subText:
-      "通信インフラが破壊された。電話もネットも使えない。指揮も安否確認もできない。",
+      "電話の基地局やネット回線が\n爆撃で破壊された。\n電話もできない。ネットもつながらない。\n軍の連絡も、家族の安否確認もできない。",
     accentColor: TEXT,
   },
   // フェドロフのツイート
@@ -915,7 +980,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: "images/fedorov.jpg",
     text: "ウクライナのフェドロフ副首相が\nSNSで叫んだ。",
     subText:
-      "「@elonmusk あなたが火星を目指している間に、ロシアがウクライナを占領しようとしている。Starlinkの端末を送ってくれ。」",
+      "「@elonmusk\nあなたが火星を目指している間に、\nロシアがウクライナを占領しようとしている。\nStarlink（衛星インターネット）の\n端末を送ってくれ。」",
     accentColor: TEXT,
   },
   // イーロンの即応
@@ -923,7 +988,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch6-elon-response",
     type: "manga-panel",
     chapter: 6,
-    imageUrl: ELON_C,
+    imageUrl: "images/elon-photo-24.webp",
     text: "10時間後。",
     accentColor: TEXT,
     speechBubbles: [
@@ -942,12 +1007,12 @@ export const storyScenes: StoryScene[] = [
     id: "ch6-starlink-explain",
     type: "manga-panel",
     chapter: 6,
-    imageUrl: ELON_E,
+    imageUrl: "images/elon-photo-25.webp",
     text: "",
     accentColor: TEXT,
     speechBubbles: [
       {
-        text: "高度550kmに小型衛星を9,400基以上並べる。\n砂漠でも海上でも戦場でも、\n空さえ見えれば繋がる。",
+        text: "宇宙に小さな衛星を何千個も飛ばして、\n地球全体をネットで包む。\n砂漠でも海の上でも戦場でも、\n空さえ見えればつながる。",
         position: "right",
         delay: 0.5,
         speaker: ELON,
@@ -963,10 +1028,10 @@ export const storyScenes: StoryScene[] = [
     chapter: 6,
     imageUrl: "images/starlink-real.webp",
     text: "今も世界に22億人、\nネットに接続できない人がいる。",
-    subText: "光ファイバーが届かない場所に、空から届ける。",
+    subText: "ネット回線を引けない場所に、空から届ける。",
     badge: "Starlink",
     stat: "9,400基+",
-    statLabel: "軌道上の衛星数",
+    statLabel: "宇宙を飛ぶ衛星の数",
     accentColor: TEXT,
   },
   // X / Everything App
@@ -977,7 +1042,7 @@ export const storyScenes: StoryScene[] = [
     imageUrl: ELON_D,
     text: "声を届け、お金を届ける。",
     subText:
-      "銀行口座を持てない13億人がいる。スマホ1台で送金・決済・投資ができるアプリを届けたい。イーロンは1999年にオンライン決済サービス「X.com」を創業した男。Twitterを買収してXに改名したのは、その原点への回帰だった。",
+      "世界には銀行口座を持てない人が13億人いる。\nスマホ1台でお金を送ったり、\n買い物したり、貯金したりできるアプリ。\n\nイーロンは1999年に「X.com」という\nネット決済サービスを作った男。\nあのPayPalの前身だ。\nTwitterを買って「X」に変えたのは、\nその夢の続きだった。",
     badge: "X",
     stat: "6億人",
     statLabel: "月間アクティブユーザー",
@@ -991,7 +1056,7 @@ export const storyScenes: StoryScene[] = [
     id: "epilogue-still",
     type: "image-hero",
     chapter: null,
-    imageUrl: ELON_A,
+    imageUrl: "images/elon-stage.webp",
     text: "この男は、今も急いでいる。",
     accentColor: GOLD,
   },
@@ -1004,7 +1069,7 @@ export const storyScenes: StoryScene[] = [
     elonQuote:
       "Consciousness is a very rare and precious thing. We should take whatever steps we can to preserve the light of consciousness.",
     elonQuoteJp:
-      "意識はとても稀で、貴重なものだ。\n意識の灯を守るために、できることは全てやるべきだ。",
+      "意識はとても稀で、貴重なものだ。\n意識の灯を守るために、\nできることは全てやるべきだ。",
     accentColor: GOLD,
   },
 ];

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo, memo } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { visionTreeData } from "../../data/visionTree";
 import type { VisionNode, NodeDataPoint } from "../../types/visionTree";
@@ -22,6 +22,22 @@ function getColorAlpha(node: VisionNode, alpha: number): string {
   const base = COLOR_MAP[node.color] || "rgba(232, 220, 200, 0.9)";
   return base.replace(/[\d.]+\)$/, `${alpha})`);
 }
+
+// Hoisted static SVG — created once, reused across renders
+const ARROW_RIGHT_ICON = (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
 
 // Japanese translations for common Elon quotes
 const QUOTE_JP: Record<string, string> = {
@@ -185,67 +201,59 @@ function BranchGrid({
   );
 }
 
-function BranchCard({
-  node,
-  index,
-  onClick,
-}: {
-  node: VisionNode;
-  index: number;
-  onClick: () => void;
-}) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-  const color = getColor(node);
-  const colorBg = getColorAlpha(node, 0.06);
-  const colorBorder = getColorAlpha(node, 0.15);
+const BranchCard = memo(
+  function BranchCard({
+    node,
+    index,
+    onClick,
+  }: {
+    node: VisionNode;
+    index: number;
+    onClick: () => void;
+  }) {
+    const ref = useRef<HTMLButtonElement>(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
+    const color = getColor(node);
+    const colorBg = getColorAlpha(node, 0.06);
+    const colorBorder = getColorAlpha(node, 0.15);
 
-  return (
-    <motion.button
-      ref={ref}
-      className="tree-card tree-card--branch"
-      onClick={onClick}
-      style={
-        {
-          "--card-color": color,
-          "--card-bg": colorBg,
-          "--card-border": colorBorder,
-        } as React.CSSProperties
-      }
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-      whileHover={{ scale: 1.03, y: -4 }}
-      whileTap={{ scale: 0.98 }}
-    >
-      <span className="tree-card__icon">{node.icon}</span>
-      <span className="tree-card__threat">{node.subtitle || ""}</span>
-      <h3 className="tree-card__title">{node.title}</h3>
-      {node.heroStat && (
-        <div className="tree-card__stat">
-          <span className="tree-card__stat-num" style={{ color }}>
-            {node.heroStat}
-          </span>
-          <span className="tree-card__stat-caption">{node.heroCaption}</span>
-        </div>
-      )}
-      <span className="tree-card__arrow" style={{ color }}>
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </span>
-    </motion.button>
-  );
-}
+    return (
+      <motion.button
+        ref={ref}
+        className="tree-card tree-card--branch"
+        onClick={onClick}
+        style={
+          {
+            "--card-color": color,
+            "--card-bg": colorBg,
+            "--card-border": colorBorder,
+          } as React.CSSProperties
+        }
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+        whileHover={{ scale: 1.03, y: -4 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <span className="tree-card__icon">{node.icon}</span>
+        <span className="tree-card__threat">{node.subtitle || ""}</span>
+        <h3 className="tree-card__title">{node.title}</h3>
+        {node.heroStat && (
+          <div className="tree-card__stat">
+            <span className="tree-card__stat-num" style={{ color }}>
+              {node.heroStat}
+            </span>
+            <span className="tree-card__stat-caption">{node.heroCaption}</span>
+          </div>
+        )}
+        <span className="tree-card__arrow" style={{ color }}>
+          {ARROW_RIGHT_ICON}
+        </span>
+      </motion.button>
+    );
+  },
+  (prev, next) => prev.node.id === next.node.id && prev.index === next.index,
+);
 
 // ── Webtoon-style Branch View ──
 function WebtoonBranch({
@@ -256,10 +264,10 @@ function WebtoonBranch({
   onBack: () => void;
 }) {
   const branch = visionTreeData[branchId];
-  if (!branch) return null;
+  const color = branch ? getColor(branch) : "";
+  const nodes = useMemo(() => flattenBranch(branchId), [branchId]);
 
-  const color = getColor(branch);
-  const nodes = flattenBranch(branchId);
+  if (!branch) return null;
 
   return (
     <motion.div

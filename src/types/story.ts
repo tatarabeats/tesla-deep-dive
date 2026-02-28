@@ -26,6 +26,8 @@ export interface StoryScene {
   statLabel?: string;
   /** Accent color */
   accentColor: string;
+  /** Override text color (defaults to accentColor for text-only, white for others) */
+  textColor?: string;
   /** Elon quote */
   elonQuote?: string;
   /** Japanese translation of Elon quote */

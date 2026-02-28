@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CHAPTER_META: Record<number, { label: string; color: string }> = {
   1: { label: "単一惑星への依存", color: "rgba(80, 200, 255, 0.9)" },
   2: { label: "化石燃料への依存", color: "rgba(255, 90, 80, 0.9)" },
   3: { label: "制御できないAI", color: "rgba(180, 130, 255, 0.9)" },
-  4: { label: "労働力の消滅", color: "rgba(80, 220, 140, 0.9)" },
+  4: { label: "労働力の不足", color: "rgba(80, 220, 140, 0.9)" },
   5: { label: "動かない車、消える時間", color: "rgba(200, 180, 150, 0.9)" },
   6: { label: "つながれない22億人", color: "rgba(232, 220, 200, 0.9)" },
 };
@@ -21,76 +21,45 @@ const CHAPTER_IDS: [number, string][] = [
 
 export default function ChapterIndicator() {
   const [activeChapter, setActiveChapter] = useState<number | null>(null);
+  // Cache DOM elements so we querySelector only once
+  const elMapRef = useRef<Map<number, Element>>(new Map());
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    // Track which chapter-title elements are currently visible
-    const visible = new Set<number>();
+    // Populate cached element map after DOM is ready
+    const timer = setTimeout(() => {
+      for (const [ch, id] of CHAPTER_IDS) {
+        const el = document.querySelector(`[data-scene="${id}"]`);
+        if (el) elMapRef.current.set(ch, el);
+      }
+    }, 100);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const ch = Number(entry.target.getAttribute("data-chapter"));
-          if (entry.isIntersecting) {
-            visible.add(ch);
-          } else {
-            visible.delete(ch);
-          }
-        }
-
-        // Find the highest chapter whose title has scrolled OUT of view
-        // by checking scroll position relative to each title element
+    // Throttled scroll handler using requestAnimationFrame
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      rafRef.current = requestAnimationFrame(() => {
         let best: number | null = null;
-        for (const [ch, id] of CHAPTER_IDS) {
-          const el = document.querySelector(`[data-scene="${id}"]`);
+        for (const [ch] of CHAPTER_IDS) {
+          const el = elMapRef.current.get(ch);
           if (!el) continue;
           const rect = el.getBoundingClientRect();
-          // Title has scrolled past (bottom edge is above viewport)
-          if (rect.bottom < 0 && !visible.has(ch)) {
+          if (rect.bottom < 0) {
             best = ch;
           }
         }
         setActiveChapter(best);
-      },
-      { threshold: 0 },
-    );
-
-    // Wait for DOM to be ready, then observe chapter-title elements
-    const timer = setTimeout(() => {
-      for (const [, id] of CHAPTER_IDS) {
-        const el = document.querySelector(`[data-scene="${id}"]`);
-        if (el) {
-          el.setAttribute(
-            "data-chapter",
-            String(CHAPTER_IDS.find(([, i]) => i === id)![0]),
-          );
-          observer.observe(el);
-        }
-      }
-    }, 100);
-
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, []);
-
-  // Also listen to scroll to update which chapter is "past"
-  useEffect(() => {
-    const onScroll = () => {
-      let best: number | null = null;
-      for (const [ch, id] of CHAPTER_IDS) {
-        const el = document.querySelector(`[data-scene="${id}"]`);
-        if (!el) continue;
-        const rect = el.getBoundingClientRect();
-        if (rect.bottom < 0) {
-          best = ch;
-        }
-      }
-      setActiveChapter(best);
+        ticking = false;
+      });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   const meta = activeChapter ? CHAPTER_META[activeChapter] : null;

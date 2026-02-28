@@ -67,6 +67,7 @@ export default function Scene({ scene }: Props) {
   // ===== TEXT-ONLY =====
   if (scene.type === "text-only") {
     const bgTint = getChapterTint(scene.chapter, scene.accentColor);
+    const mainColor = scene.textColor ?? scene.accentColor;
     return (
       <section
         ref={ref}
@@ -77,13 +78,30 @@ export default function Scene({ scene }: Props) {
         <div className="scene__content scene__content--center">
           <motion.h2
             className="scene__text-main"
-            style={{ color: scene.accentColor }}
+            style={{ color: mainColor }}
             variants={fadeUp}
             initial="hidden"
             animate={vis}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {scene.text}
+            {scene.textColor
+              ? scene.text.split(/(6)/).map((part, i) =>
+                  part === "6" ? (
+                    <span
+                      key={i}
+                      style={{
+                        color: scene.accentColor,
+                        textShadow: `0 0 20px ${scene.accentColor}`,
+                        fontWeight: 800,
+                      }}
+                    >
+                      6
+                    </span>
+                  ) : (
+                    <span key={i}>{part}</span>
+                  ),
+                )
+              : scene.text}
           </motion.h2>
           {scene.subText && (
             <motion.p
@@ -153,6 +171,7 @@ export default function Scene({ scene }: Props) {
           </motion.span>
           <motion.h2
             className="scene__chapter-title"
+            style={{ textShadow: `0 0 60px ${scene.accentColor}` }}
             variants={fadeUp}
             initial="hidden"
             animate={vis}
@@ -210,7 +229,7 @@ export default function Scene({ scene }: Props) {
             <motion.blockquote
               className="scene__epilogue-quote"
               initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 0.5 } : {}}
+              animate={isInView ? { opacity: 0.85 } : {}}
               transition={{ duration: 1.5, delay: 1.2 }}
             >
               &ldquo;{scene.elonQuote}&rdquo;

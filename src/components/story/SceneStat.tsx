@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { useInView } from "framer-motion";
 
 interface Props {
@@ -47,7 +47,7 @@ export default function SceneStat({ stat, label, color }: Props) {
   const isInView = useInView(ref, { once: false, amount: 0.5 });
   const [displayNum, setDisplayNum] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const parsed = parseStatNumber(stat);
+  const parsed = useMemo(() => parseStatNumber(stat), [stat]);
 
   useEffect(() => {
     if (!parsed.hasNum) return;
