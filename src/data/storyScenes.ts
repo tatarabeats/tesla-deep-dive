@@ -322,7 +322,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch1-reuse",
     type: "image-hero",
     chapter: 1,
-    imageUrl: "images/falcon9-landing.webp",
+    imageUrl: "images/falcon9-landing-hq.webp",
     text: "でもイーロンの本当の夢は、\nもっと先にあった。",
     subText:
       "ロケットを着陸させて、もう一度飛ばす。\n飛行機を毎回壊す人はいない。\nロケットも同じだ。",
@@ -826,7 +826,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch4-optimus-gen1",
     type: "image-hero",
     chapter: 4,
-    imageUrl: "images/optimus-real.webp",
+    imageUrl: "images/optimus-gen1-hq.webp",
     text: "2023年3月。Optimus Gen 1。",
     subText:
       "まだ荒削り。\nむき出しの配線、ぎこちない歩き方。\nでも、人の形をしたロボットを\n大量に作るという途方もない挑戦が始まった。",
@@ -837,8 +837,8 @@ export const storyScenes: StoryScene[] = [
     id: "ch4-optimus-gen2",
     type: "image-hero",
     chapter: 4,
-    imageUrl: "images/optimus-hands.webp",
-    text: "9ヶ月後。Gen 2。\n手が別物になった。",
+    imageUrl: "images/optimus-gen2-hq.webp",
+    text: "9ヶ月後。Gen 2。\n別物になった。",
     subText:
       "2023年12月。\nたった9ヶ月でまるで別物に。\n卵を割らずに持てるほど繊細な指。\n30%軽くなった体。\nそして24時間、休まず働ける。",
     badge: "Optimus Gen2",
@@ -942,7 +942,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch5-vegas",
     type: "image-hero",
     chapter: 5,
-    imageUrl: "images/vegas-loop-tunnel.webp",
+    imageUrl: "images/vegas-loop-interior.webp",
     text: "ラスベガスの地下で、\nもう走っている。",
     subText:
       "「Vegas Loop」。\nラスベガスの地下に掘ったトンネルの中を、\nテスラの車が乗客を乗せて走っている。\nすでに8駅が営業中。\n2026年には空港までつながる予定。\n最終的には約110km、104駅の\n地下ネットワークになる。",
