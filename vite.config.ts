@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/tesla-deep-dive/',
+  base: process.env.GITHUB_ACTIONS ? '/tesla-deep-dive/' : '/',
   server: {
     host: true,
   },

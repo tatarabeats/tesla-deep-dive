@@ -1,14 +1,24 @@
-import { motion, type MotionValue } from 'framer-motion';
+import { motion, type MotionValue } from "framer-motion";
 
 interface Props {
   src: string;
   imageY: MotionValue<string>;
   imageScale: MotionValue<number>;
+  /** Optional scroll-linked clip-path for cinematic reveal */
+  clipPath?: MotionValue<string>;
 }
 
-export default function SceneImage({ src, imageY, imageScale }: Props) {
+export default function SceneImage({
+  src,
+  imageY,
+  imageScale,
+  clipPath,
+}: Props) {
   return (
-    <div className="scene-image">
+    <motion.div
+      className="scene-image"
+      style={clipPath ? { clipPath } : undefined}
+    >
       <motion.img
         src={src}
         alt=""
@@ -21,6 +31,6 @@ export default function SceneImage({ src, imageY, imageScale }: Props) {
         }}
       />
       <div className="scene-image__overlay" />
-    </div>
+    </motion.div>
   );
 }

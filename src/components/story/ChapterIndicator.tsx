@@ -2,12 +2,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const CHAPTER_META: Record<number, { label: string; color: string }> = {
-  1: { label: "単一惑星への依存", color: "rgba(80, 200, 255, 0.9)" },
-  2: { label: "化石燃料への依存", color: "rgba(255, 90, 80, 0.9)" },
-  3: { label: "制御できないAI", color: "rgba(180, 130, 255, 0.9)" },
-  4: { label: "労働力の不足", color: "rgba(80, 220, 140, 0.9)" },
-  5: { label: "動かない車、消える時間", color: "rgba(200, 180, 150, 0.9)" },
-  6: { label: "つながれない22億人", color: "rgba(232, 220, 200, 0.9)" },
+  1: { label: "地球にしか住んでいない", color: "rgba(80, 200, 255, 0.9)" },
+  2: { label: "石油と石炭への依存", color: "rgba(255, 90, 80, 0.9)" },
+  3: { label: "AIの暴走", color: "rgba(180, 130, 255, 0.9)" },
+  4: { label: "働く人がいない", color: "rgba(80, 220, 140, 0.9)" },
+  5: { label: "渋滞で消える人生", color: "rgba(200, 180, 150, 0.9)" },
+  6: { label: "ネットが届かない22億人", color: "rgba(232, 220, 200, 0.9)" },
 };
 
 const CHAPTER_IDS: [number, string][] = [
