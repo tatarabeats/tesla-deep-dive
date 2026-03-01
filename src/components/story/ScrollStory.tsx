@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { storyScenes } from "../../data/storyScenes";
-import Scene from "./Scene";
+import { cinematicScenes } from "../../data/cinematicScenes";
+import CinematicScene from "../cinematic/CinematicScene";
 import ProgressBar from "./ProgressBar";
 import ChapterIndicator from "./ChapterIndicator";
 import FurtherReading from "./FurtherReading";
@@ -14,27 +14,45 @@ export default function ScrollStory() {
   const starY1 = useSpring(rawStarY1, { stiffness: 50, damping: 30 });
   const starY2 = useSpring(rawStarY2, { stiffness: 50, damping: 30 });
 
+  // Background color transitions keyed to new 28-scene structure
+  // Prologue(2) → Ch1(6) → Bridge → Ch2(4) → Bridge → Ch3(5) → Bridge → Ch4(3) → Ch5(3) → Bridge → Ch6(3) → Epilogue(2)
   const bgHue = useTransform(
     scrollYProgress,
     [
-      0, 0.05, 0.06, 0.38, 0.4, 0.53, 0.55, 0.73, 0.75, 0.8, 0.82, 0.89, 0.91,
-      1,
+      0,
+      0.06, // Prologue — void black
+      0.07,
+      0.35, // Ch1 — deep ocean cyan
+      0.36,
+      0.5, // Ch2 — dark crimson
+      0.51,
+      0.7, // Ch3 — deep purple
+      0.71,
+      0.78, // Ch4 — dark forest
+      0.79,
+      0.86, // Ch5 — amber
+      0.87,
+      0.95, // Ch6 — neutral
+      0.96,
+      1, // Epilogue — warm gold
     ],
     [
-      "rgba(5,8,18,1)", // Prologue — void black
+      "rgba(5,8,18,1)", // Prologue
       "rgba(5,8,18,1)",
-      "rgba(6,16,30,1)", // Ch1 — deep ocean cyan
+      "rgba(6,16,30,1)", // Ch1
       "rgba(6,16,30,1)",
-      "rgba(22,8,10,1)", // Ch2 — dark crimson
+      "rgba(22,8,10,1)", // Ch2
       "rgba(22,8,10,1)",
-      "rgba(12,6,24,1)", // Ch3 — deep purple
+      "rgba(12,6,24,1)", // Ch3
       "rgba(12,6,24,1)",
-      "rgba(6,18,14,1)", // Ch4 — dark forest
+      "rgba(6,18,14,1)", // Ch4
       "rgba(6,18,14,1)",
-      "rgba(20,16,8,1)", // Ch5 — amber
+      "rgba(20,16,8,1)", // Ch5
       "rgba(20,16,8,1)",
-      "rgba(12,12,18,1)", // Ch6 — neutral
+      "rgba(12,12,18,1)", // Ch6
       "rgba(12,12,18,1)",
+      "rgba(8,6,12,1)", // Epilogue
+      "rgba(8,6,12,1)",
     ],
   );
 
@@ -61,8 +79,8 @@ export default function ScrollStory() {
       <ChapterIndicator />
 
       <main className="scroll-story">
-        {storyScenes.map((scene, i) => (
-          <Scene key={scene.id} scene={scene} index={i} />
+        {cinematicScenes.map((scene) => (
+          <CinematicScene key={scene.id} scene={scene} />
         ))}
         <FurtherReading />
       </main>
