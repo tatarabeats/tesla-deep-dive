@@ -9,6 +9,7 @@ import {
 import type { CinematicScene } from "../../types/cinematic";
 import SceneImage from "../story/SceneImage";
 import ParticleField from "../effects/ParticleField";
+import LetterReveal from "../effects/LetterReveal";
 import { useIsMobile } from "./hooks/useIsMobile";
 
 const SPRING = { stiffness: 100, damping: 30, mass: 0.5 };
@@ -143,17 +144,20 @@ export default function ChapterGate({ scene }: Props) {
           {scene.chapterNum}
         </motion.span>
 
-        <motion.h2
-          className="cin-chapter-gate__title"
+        <motion.div
           style={{
-            textShadow: `0 0 60px ${scene.accentColor}, 0 0 120px ${scene.accentColor}40`,
             opacity: titleOpacity,
             scale: titleScale,
             y: titleY,
           }}
         >
-          {scene.text}
-        </motion.h2>
+          <LetterReveal
+            text={scene.text ?? ""}
+            className="cin-chapter-gate__title"
+            glowColor={scene.accentColor}
+            staggerDelay={0.05}
+          />
+        </motion.div>
 
         <motion.div
           className="cin-chapter-gate__line"

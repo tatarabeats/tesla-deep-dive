@@ -152,6 +152,11 @@ export default function FullBleedStat({ scene }: Props) {
           <motion.div
             className="cin-full-bleed__stat"
             style={{ opacity: statOpacity, scale: statScale }}
+            whileHover={{
+              scale: 1.08,
+              filter: `drop-shadow(0 0 30px ${scene.accentColor}) drop-shadow(0 0 60px ${scene.accentColor}40)`,
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             <CountUp
               value={scene.stat}

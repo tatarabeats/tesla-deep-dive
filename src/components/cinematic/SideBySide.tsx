@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import type { CinematicScene } from "../../types/cinematic";
 import CountUp from "../effects/CountUp";
@@ -114,8 +114,40 @@ function SidePanel({
     isMobile ? [0, 0] : [40, 0],
   );
 
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+
+  const handleTiltMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (isMobile) return;
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+      setTilt({ rotateY: x * 8, rotateX: -y * 6 });
+    },
+    [isMobile],
+  );
+
+  const handleTiltLeave = useCallback(() => {
+    setTilt({ rotateX: 0, rotateY: 0 });
+  }, []);
+
   return (
-    <motion.div className="cin-side-by-side__panel" style={{ opacity, y }}>
+    <motion.div
+      className="cin-side-by-side__panel"
+      style={{
+        opacity,
+        y,
+        perspective: 800,
+        transformStyle: "preserve-3d" as const,
+      }}
+      animate={{
+        rotateX: tilt.rotateX,
+        rotateY: tilt.rotateY,
+      }}
+      transition={{ type: "spring", stiffness: 200, damping: 15 }}
+      onMouseMove={handleTiltMove}
+      onMouseLeave={handleTiltLeave}
+    >
       {panel.badge && (
         <span
           className="cin-side-by-side__badge"

@@ -1,17 +1,9 @@
 import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useInView,
-} from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import type { CinematicScene } from "../../types/cinematic";
 import SceneImage from "../story/SceneImage";
 import ParticleField from "../effects/ParticleField";
 import { useIsMobile } from "./hooks/useIsMobile";
-
-const SPRING = { stiffness: 100, damping: 30, mass: 0.5 };
 
 interface Props {
   scene: CinematicScene;
@@ -20,62 +12,7 @@ interface Props {
 export default function EpilogueScene({ scene }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const isInView = useInView(ref, { once: false, amount: 0.1 });
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  // Image
-  const rawImageY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    isMobile ? ["0%", "0%"] : ["8%", "-8%"],
-  );
-  const rawImageScale = useTransform(
-    scrollYProgress,
-    [0, 0.5],
-    isMobile ? [1, 1] : [1.15, 1],
-  );
-  const imageY = useSpring(rawImageY, SPRING);
-  const imageScale = useSpring(rawImageScale, SPRING);
-  const imageOpacity = useTransform(
-    scrollYProgress,
-    isMobile ? [0, 0.05] : [0, 0.15],
-    [0, 1],
-  );
-
-  // Decorative line
-  const lineOpacity = useTransform(
-    scrollYProgress,
-    isMobile ? [0, 0.05, 0.9, 1] : [0.05, 0.18, 0.85, 0.95],
-    [0, 1, 1, 0],
-  );
-  const lineScaleX = useTransform(
-    scrollYProgress,
-    isMobile ? [0, 0.08] : [0.05, 0.22],
-    [0, 1],
-  );
-
-  // Main text
-  const textOpacity = useTransform(
-    scrollYProgress,
-    isMobile ? [0, 0.05, 0.9, 1] : [0.08, 0.2, 0.85, 0.95],
-    [0, 1, 1, 0],
-  );
-  const textY = useTransform(
-    scrollYProgress,
-    isMobile ? [0, 0.05] : [0.08, 0.2],
-    isMobile ? [0, 0] : [30, 0],
-  );
-
-  // Quote
-  const quoteOpacity = useTransform(
-    scrollYProgress,
-    isMobile ? [0, 0.08, 0.9, 1] : [0.15, 0.28, 0.85, 0.95],
-    [0, 0.85, 0.85, 0],
-  );
+  const isInView = useInView(ref, { once: false, amount: 0.15 });
 
   const imgSrc = scene.imageUrl
     ? `${import.meta.env.BASE_URL}${scene.imageUrl}`
@@ -83,14 +20,7 @@ export default function EpilogueScene({ scene }: Props) {
 
   return (
     <section ref={ref} className="cin-scene cin-epilogue" data-scene={scene.id}>
-      {imgSrc && (
-        <SceneImage
-          src={imgSrc}
-          imageY={imageY}
-          imageScale={imageScale}
-          imageOpacity={imageOpacity}
-        />
-      )}
+      {imgSrc && <SceneImage src={imgSrc} />}
 
       {isInView && (
         <ParticleField
@@ -106,22 +36,24 @@ export default function EpilogueScene({ scene }: Props) {
       <div className="cin-epilogue__content">
         <motion.div
           className="cin-epilogue__line"
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={
+            isInView ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0 }
+          }
+          transition={{ duration: 1, delay: 0.2 }}
           style={{
             background: `linear-gradient(90deg, transparent, ${scene.accentColor}, transparent)`,
             boxShadow: `0 0 20px ${scene.accentColor}`,
-            opacity: lineOpacity,
-            scaleX: lineScaleX,
             transformOrigin: "center",
           }}
         />
 
         <motion.p
           className="cin-epilogue__text"
-          style={{
-            color: scene.accentColor,
-            opacity: textOpacity,
-            y: textY,
-          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          style={{ color: scene.accentColor }}
         >
           {scene.text}
         </motion.p>
@@ -129,7 +61,9 @@ export default function EpilogueScene({ scene }: Props) {
         {scene.elonQuote && (
           <motion.blockquote
             className="cin-epilogue__quote"
-            style={{ opacity: quoteOpacity }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 0.85 } : { opacity: 0 }}
+            transition={{ duration: 1.2, delay: 0.8 }}
           >
             &ldquo;{scene.elonQuote}&rdquo;
             {scene.elonQuoteJp && (

@@ -2,8 +2,8 @@ import { motion, type MotionValue } from "framer-motion";
 
 interface Props {
   src: string;
-  imageY: MotionValue<string>;
-  imageScale: MotionValue<number>;
+  imageY?: MotionValue<string>;
+  imageScale?: MotionValue<number>;
   /** Optional scroll-linked opacity for reveal effect */
   imageOpacity?: MotionValue<number>;
   /** Optional scroll-linked clip-path for cinematic reveal */
@@ -33,8 +33,8 @@ export default function SceneImage({
         loading="lazy"
         className="scene-image__img"
         style={{
-          y: imageY,
-          scale: imageScale,
+          ...(imageY && { y: imageY }),
+          ...(imageScale && { scale: imageScale }),
         }}
       />
       <div className="scene-image__overlay" />

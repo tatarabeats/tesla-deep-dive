@@ -44,6 +44,8 @@ export default function ParticleField({
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const animRef = useRef<number>(0);
   const timeRef = useRef(0);
+  const scrollSpeedRef = useRef(0);
+  const lastScrollRef = useRef(0);
 
   const createParticle = useCallback(
     (w: number, h: number): Particle => {
@@ -149,6 +151,15 @@ export default function ParticleField({
       canvas.addEventListener("mousemove", handleMouse);
     }
 
+    // Track scroll velocity
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      const delta = Math.abs(currentScroll - lastScrollRef.current);
+      scrollSpeedRef.current = Math.min(delta / 10, 3); // Normalized 0-3
+      lastScrollRef.current = currentScroll;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
     const animate = () => {
       const cw = canvas.offsetWidth;
       const ch = canvas.offsetHeight;
@@ -158,6 +169,9 @@ export default function ParticleField({
       const particles = particlesRef.current;
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
+      const scrollBoost = 1 + scrollSpeedRef.current;
+      // Decay scroll speed over time
+      scrollSpeedRef.current *= 0.92;
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -170,9 +184,9 @@ export default function ParticleField({
           continue;
         }
 
-        // Movement
-        p.x += p.vx;
-        p.y += p.vy;
+        // Movement (boosted by scroll speed)
+        p.x += p.vx * scrollBoost;
+        p.y += p.vy * scrollBoost;
 
         // Mouse interaction
         if (interactive && mx > 0) {
@@ -210,7 +224,7 @@ export default function ParticleField({
         const pulseFactor = 0.7 + 0.3 * Math.sin(p.pulse);
         const alpha = p.opacity * fadeIn * fadeOut * pulseFactor;
 
-        // Draw
+        // Draw — with scroll-speed streak effect
         ctx.beginPath();
         if (variant === "rain") {
           ctx.moveTo(p.x, p.y);
@@ -218,8 +232,22 @@ export default function ParticleField({
           ctx.strokeStyle = `hsla(${p.hue}, 70%, 70%, ${alpha})`;
           ctx.lineWidth = p.size * 0.5;
           ctx.stroke();
+        } else if (scrollSpeedRef.current > 0.3) {
+          // Streak/meteor effect during fast scroll
+          const streakLen = scrollSpeedRef.current * 8;
+          ctx.globalCompositeOperation = "lighter";
+          ctx.strokeStyle = `hsla(${p.hue}, 80%, 75%, ${alpha * 0.4})`;
+          ctx.lineWidth = p.size;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x - p.vx * streakLen, p.y - p.vy * streakLen);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.fillStyle = `hsla(${p.hue}, 80%, 85%, ${alpha * 0.8})`;
+          ctx.arc(p.x, p.y, p.size * 1.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalCompositeOperation = "source-over";
         } else {
-          // Simple glow circle — much faster than radialGradient
+          // Normal glow circle
           ctx.globalCompositeOperation = "lighter";
           ctx.fillStyle = `hsla(${p.hue}, 80%, 75%, ${alpha * 0.6})`;
           ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
@@ -259,6 +287,7 @@ export default function ParticleField({
       if (interactive) {
         canvas.removeEventListener("mousemove", handleMouse);
       }
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [count, hue, speed, connectDistance, interactive, variant, createParticle]);
 
