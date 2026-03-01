@@ -60,7 +60,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 1,
     accentColor: CYAN,
-    scrollHeight: "500vh",
+    scrollHeight: "350vh",
     beats: [
       {
         imageUrl: "images/extinction_ordovician.webp",
@@ -101,7 +101,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 1,
     accentColor: CYAN,
-    scrollHeight: "400vh",
+    scrollHeight: "280vh",
     beats: [
       {
         imageUrl: ELON_E,
@@ -138,7 +138,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 1,
     accentColor: CYAN,
-    scrollHeight: "500vh",
+    scrollHeight: "350vh",
     beats: [
       {
         imageUrl: "images/falcon1-flight1.webp",
@@ -192,7 +192,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 1,
     accentColor: CYAN,
-    scrollHeight: "300vh",
+    scrollHeight: "220vh",
     beats: [
       {
         text: "3ヶ月後、NASAから電話が来た。",
@@ -256,7 +256,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 2,
     accentColor: RED,
-    scrollHeight: "400vh",
+    scrollHeight: "280vh",
     beats: [
       {
         imageUrl: "images/co2-factory-real.webp",
@@ -361,7 +361,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 3,
     accentColor: PURPLE,
-    scrollHeight: "400vh",
+    scrollHeight: "280vh",
     beats: [
       {
         imageUrl: ELON_F,
@@ -397,7 +397,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 3,
     accentColor: PURPLE,
-    scrollHeight: "500vh",
+    scrollHeight: "350vh",
     beats: [
       {
         imageUrl: "images/elon-photo-16.webp",
@@ -496,7 +496,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 4,
     accentColor: GREEN,
-    scrollHeight: "400vh",
+    scrollHeight: "280vh",
     beats: [
       {
         imageUrl: "images/empty-classroom.webp",
@@ -553,7 +553,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 5,
     accentColor: WARM,
-    scrollHeight: "400vh",
+    scrollHeight: "280vh",
     beats: [
       {
         imageUrl: "images/traffic-jam-real.webp",
@@ -630,7 +630,7 @@ export const cinematicScenes: CinematicScene[] = [
     type: "sticky-sequence",
     chapter: 6,
     accentColor: TEXT,
-    scrollHeight: "400vh",
+    scrollHeight: "280vh",
     beats: [
       {
         imageUrl: "images/ukraine-real.webp",

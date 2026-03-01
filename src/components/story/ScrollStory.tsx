@@ -3,7 +3,9 @@ import { cinematicScenes } from "../../data/cinematicScenes";
 import CinematicScene from "../cinematic/CinematicScene";
 import ProgressBar from "./ProgressBar";
 import ChapterIndicator from "./ChapterIndicator";
-import FurtherReading from "./FurtherReading";
+import ChapterNav from "./ChapterNav";
+// FurtherReading archived — can be re-added later
+// import FurtherReading from "./FurtherReading";
 
 export default function ScrollStory() {
   const { scrollYProgress } = useScroll();
@@ -59,12 +61,13 @@ export default function ScrollStory() {
 
       <ProgressBar progress={progress} />
       <ChapterIndicator />
+      <ChapterNav />
 
       <main className="scroll-story">
         {cinematicScenes.map((scene) => (
           <CinematicScene key={scene.id} scene={scene} />
         ))}
-        <FurtherReading />
+        {/* <FurtherReading /> */}
       </main>
     </>
   );

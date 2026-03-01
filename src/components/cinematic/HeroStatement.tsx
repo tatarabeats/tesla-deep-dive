@@ -17,36 +17,57 @@ export default function HeroStatement({ scene }: Props) {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end start"],
   });
 
-  const contentOpacity = useTransform(
+  // Prologue scenes are already visible on page load —
+  // only animate EXIT (fade out when scrolling past), not entrance
+  const isPrologue =
+    scene.id === "prologue-crisis" || scene.id === "prologue-thesis";
+
+  // Exit fade: opacity goes from 1→0 as you scroll this scene out
+  const exitOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
+  const exitScale = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.8, 0.95],
-    [0, 1, 1, 0],
+    [0, 0.6, 1],
+    isMobile ? [1, 1, 1] : [1, 1, 0.95],
   );
-  const contentScale = useTransform(
+  const exitY = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.8, 0.95],
-    isMobile ? [1, 1, 1, 1] : [0.9, 1, 1, 0.95],
-  );
-  const contentY = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.8, 0.95],
-    isMobile ? [0, 0, 0, 0] : [40, 0, 0, -20],
+    [0, 0.6, 1],
+    isMobile ? [0, 0, 0] : [0, 0, -30],
   );
 
-  // Image for scenes like prologue-thesis with background image
-  const imageOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
+  // Non-prologue: full entrance + exit via scroll
+  const scrollOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.15, 0.7, 0.95],
+    [0, 1, 1, 0],
+  );
+  const scrollScale = useTransform(
+    scrollYProgress,
+    [0, 0.15, 0.7, 0.95],
+    isMobile ? [1, 1, 1, 1] : [0.92, 1, 1, 0.95],
+  );
+  const scrollY = useTransform(
+    scrollYProgress,
+    [0, 0.15, 0.7, 0.95],
+    isMobile ? [0, 0, 0, 0] : [30, 0, 0, -20],
+  );
+
+  // Image
+  const imageOpacity = isPrologue
+    ? undefined // Prologue image always visible
+    : useTransform(scrollYProgress, [0, 0.12], [0, 1]);
   const rawImageY = useTransform(
     scrollYProgress,
     [0, 1],
-    isMobile ? ["0%", "0%"] : ["8%", "-8%"],
+    isMobile ? ["0%", "0%"] : ["6%", "-6%"],
   );
   const rawImageScale = useTransform(
     scrollYProgress,
     [0, 0.5],
-    isMobile ? [1, 1] : [1.15, 1],
+    isMobile ? [1, 1] : [1.1, 1],
   );
 
   const imgSrc = scene.imageUrl
@@ -72,23 +93,25 @@ export default function HeroStatement({ scene }: Props) {
       )}
 
       {isInView && (
-        <ParticleField
-          count={isMobile ? 20 : 50}
-          hue={20}
-          speed={0.15}
-          connectDistance={0}
-          interactive={isGlitch}
-          variant="stars"
-        />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1 }}>
+          <ParticleField
+            count={isMobile ? 20 : 50}
+            hue={20}
+            speed={0.15}
+            connectDistance={0}
+            interactive={isGlitch}
+            variant="stars"
+          />
+        </div>
       )}
 
       <motion.div
         className="cin-hero-statement__content"
-        style={{
-          opacity: contentOpacity,
-          scale: contentScale,
-          y: contentY,
-        }}
+        style={
+          isPrologue
+            ? { opacity: exitOpacity, scale: exitScale, y: exitY }
+            : { opacity: scrollOpacity, scale: scrollScale, y: scrollY }
+        }
       >
         {isGlitch ? (
           <h2 className="cin-hero-statement__text" aria-label={scene.text}>
