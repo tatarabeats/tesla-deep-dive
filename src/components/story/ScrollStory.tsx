@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { storyScenes } from "../../data/storyScenes";
-import Scene from "./Scene";
+import { cinematicScenes } from "../../data/cinematicScenes";
+import CinematicScene from "../cinematic/CinematicScene";
 import ProgressBar from "./ProgressBar";
 import ChapterIndicator from "./ChapterIndicator";
 import FurtherReading from "./FurtherReading";
@@ -61,8 +61,8 @@ export default function ScrollStory() {
       <ChapterIndicator />
 
       <main className="scroll-story">
-        {storyScenes.map((scene, i) => (
-          <Scene key={scene.id} scene={scene} index={i} />
+        {cinematicScenes.map((scene) => (
+          <CinematicScene key={scene.id} scene={scene} />
         ))}
         <FurtherReading />
       </main>

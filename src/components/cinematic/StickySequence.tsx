@@ -127,6 +127,7 @@ export default function StickySequence({ scene }: Props) {
               fadeIn={item.fadeIn}
               fadeOut={item.fadeOut}
               isFirst={item.index === 0}
+              isLast={item.index === beatCount - 1}
               isMobile={isMobile}
             />
           ))}
@@ -163,6 +164,7 @@ function StickyImage({
   fadeIn,
   fadeOut,
   isFirst,
+  isLast,
   isMobile,
 }: {
   src: string;
@@ -170,16 +172,25 @@ function StickyImage({
   fadeIn: number;
   fadeOut: number;
   isFirst: boolean;
+  isLast: boolean;
   isMobile: boolean;
 }) {
   // Fade in just before the beat, fade out just after
-  const margin = 0.02;
+  // Clamp all offsets to [0, 1] for WAAPI compatibility
+  const m = 0.02;
+  const inStart = Math.max(0, fadeIn - m);
+  const inEnd = Math.min(1, fadeIn + m);
+  const outStart = Math.max(0, fadeOut - m);
+  const outEnd = Math.min(1, fadeOut + m);
+
   const opacity = useTransform(
     scrollYProgress,
     isFirst
-      ? [0, fadeIn + margin, fadeOut - margin, fadeOut + margin]
-      : [fadeIn - margin, fadeIn + margin, fadeOut - margin, fadeOut + margin],
-    isFirst ? [1, 1, 1, 0] : [0, 1, 1, 0],
+      ? [0, inEnd, outStart, outEnd]
+      : isLast
+        ? [inStart, inEnd, outStart, 1]
+        : [inStart, inEnd, outStart, outEnd],
+    isFirst ? [1, 1, 1, isLast ? 1 : 0] : isLast ? [0, 1, 1, 1] : [0, 1, 1, 0],
   );
 
   // Subtle Ken Burns
