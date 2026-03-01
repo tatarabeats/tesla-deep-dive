@@ -77,7 +77,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/extinction_ordovician.webp",
     text: "1回目。海が凍りついた。",
-    subText: "4億4300万年前。地球全体が氷の時代に入り、海の生き物の85%が死んだ。",
+    subText:
+      "4億4300万年前。地球全体が氷の時代に入り、海の生き物の85%が死んだ。",
     accentColor: CYAN,
   },
   {
@@ -86,7 +87,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/extinction_devonian.webp",
     text: "2回目。海から酸素が消えた。",
-    subText: "3億7500万年前。海の中の酸素がなくなり、魚を含む75%の生き物が死んだ。",
+    subText:
+      "3億7500万年前。海の中の酸素がなくなり、魚を含む75%の生き物が死んだ。",
     accentColor: CYAN,
   },
   {
@@ -95,7 +97,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/extinction_permian.webp",
     text: "3回目。地球の歴史で最悪の日。",
-    subText: "2億5100万年前。火山の大噴火で地球が灼熱の星になった。生き物の96%が死んだ。",
+    subText:
+      "2億5100万年前。火山の大噴火で地球が灼熱の星になった。生き物の96%が死んだ。",
     stat: "96%",
     statLabel: "が絶滅。地球史上最大の悲劇",
     accentColor: CYAN,
@@ -106,7 +109,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/extinction_triassic.webp",
     text: "4回目。火山が気候を壊した。",
-    subText: "2億年前。超大陸が割れ始め、あちこちで火山が噴火。生き物の76%が死んだ。",
+    subText:
+      "2億年前。超大陸が割れ始め、あちこちで火山が噴火。生き物の76%が死んだ。",
     accentColor: CYAN,
   },
   {
@@ -115,7 +119,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/extinction-cretaceous-real.webp",
     text: "5回目。巨大な隕石が落ちてきた。",
-    subText: "6600万年前。直径10kmの岩が地球に激突。恐竜を含む76%の生き物が死んだ。",
+    subText:
+      "6600万年前。直径10kmの岩が地球に激突。恐竜を含む76%の生き物が死んだ。",
     accentColor: CYAN,
   },
   {
@@ -142,7 +147,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/case-for-mars-book.webp",
     text: "2001年。イーロンは一冊の本に出会った。",
-    subText: "『The Case for Mars』（火星移住計画）。今の技術でも、工夫すれば火星に人が住めることを具体的に書いた本だった。",
+    subText:
+      "『The Case for Mars』（火星移住計画）。今の技術でも、工夫すれば火星に人が住めることを具体的に書いた本だった。",
     accentColor: CYAN,
   },
   {
@@ -177,7 +183,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/elon-russia-meeting.webp",
     text: "まず中古のロケットを買おうとした。",
-    subText: "2001年、ロシアに飛んだ。「ロケットを3基、31億円で売ってくれ」。でもロシア側は「こいつは素人だ」と鼻で笑って、相手にしなかった。",
+    subText:
+      "2001年、ロシアに飛んだ。「ロケットを3基、31億円で売ってくれ」。でもロシア側は「こいつは素人だ」と鼻で笑って、相手にしなかった。",
     accentColor: CYAN,
   },
   {
@@ -204,7 +211,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon1-warehouse.webp",
     text: "2002年。SpaceX設立。",
-    subText: "カリフォルニアの小さな倉庫に、たった30人が集まった。「自分たちでロケットを作る」という、とんでもない挑戦が始まった。",
+    subText:
+      "カリフォルニアの小さな倉庫に、たった30人が集まった。「自分たちでロケットを作る」という、とんでもない挑戦が始まった。",
     badge: "SpaceX",
     accentColor: CYAN,
   },
@@ -231,7 +239,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon1-flight1.webp",
     text: "Falcon 1、1回目 — 失敗。",
-    subText: "2006年3月。打ち上げてたった33秒で、燃料パイプの錆が原因で爆発した。",
+    subText:
+      "2006年3月。打ち上げてたった33秒で、燃料パイプの錆が原因で爆発した。",
     accentColor: CYAN,
   },
   {
@@ -240,7 +249,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon1-flight2.webp",
     text: "2回目 — 失敗。",
-    subText: "2007年3月。高度289kmまで飛んだが、機体のバランスが崩れて制御できなくなった。",
+    subText:
+      "2007年3月。高度289kmまで飛んだが、機体のバランスが崩れて制御できなくなった。",
     accentColor: CYAN,
   },
   {
@@ -249,7 +259,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon1-flight3.webp",
     text: "3回目 — 失敗。",
-    subText: "2008年8月。ロケットの上半分と下半分が分離する瞬間にぶつかってしまった。全てが砕け散った。",
+    subText:
+      "2008年8月。ロケットの上半分と下半分が分離する瞬間にぶつかってしまった。全てが砕け散った。",
     accentColor: CYAN,
   },
   {
@@ -288,7 +299,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: ELON_B,
     text: "成功。",
-    subText: "国でもなく、軍でもなく、たった1つの民間企業がロケットを宇宙に届けた。人類史上初めてのことだった。",
+    subText:
+      "国でもなく、軍でもなく、たった1つの民間企業がロケットを宇宙に届けた。人類史上初めてのことだった。",
     accentColor: GOLD,
   },
   {
@@ -297,7 +309,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: null,
     text: "3ヶ月後、NASAから電話が来た。",
-    subText: "「宇宙ステーションに荷物を届けてくれないか」。12回分の輸送契約。金額は約2,400億円。",
+    subText:
+      "「宇宙ステーションに荷物を届けてくれないか」。12回分の輸送契約。金額は約2,400億円。",
     stat: "$1.6B",
     statLabel: "NASAとの契約額（約2,400億円）",
     accentColor: CYAN,
@@ -308,7 +321,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 1,
     imageUrl: "images/falcon9-landing-hq.webp",
     text: "でもイーロンの夢はもっと先にあった。",
-    subText: "ロケットを着陸させて、もう一度飛ばす。飛行機を毎回壊す人は誰もいない。ロケットだって同じだ。そして本当にそれを実現した。",
+    subText:
+      "ロケットを着陸させて、もう一度飛ばす。飛行機を毎回壊す人は誰もいない。ロケットだって同じだ。そして本当にそれを実現した。",
     stat: "20回+",
     statLabel: "同じロケットの飛行回数",
     badge: "SpaceX",
@@ -373,7 +387,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 2,
     imageUrl: "images/co2-factory-real.webp",
     text: "地球がどんどん暑くなっている。",
-    subText: "石油や石炭を燃やすとCO₂（二酸化炭素）が出る。このガスが地球を毛布のように包んで、温度を上げている。人間が毎年出すCO₂は——",
+    subText:
+      "石油や石炭を燃やすとCO₂（二酸化炭素）が出る。このガスが地球を毛布のように包んで、温度を上げている。人間が毎年出すCO₂は——",
     stat: "374億トン",
     statLabel: "毎年のCO₂排出量",
     accentColor: RED,
@@ -402,7 +417,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 2,
     imageUrl: "images/elon-photo-10.webp",
     text: "2004年。小さな電気自動車の会社に出会った。",
-    subText: "2人のエンジニアが作った「テスラ・モーターズ」。イーロンは約10億円を出して、最大の出資者になった。",
+    subText:
+      "2人のエンジニアが作った「テスラ・モーターズ」。イーロンは約10億円を出して、最大の出資者になった。",
     accentColor: RED,
     speechBubbles: [
       {
@@ -431,7 +447,7 @@ export const storyScenes: StoryScene[] = [
     id: "ch2-criticism",
     type: "manga-panel",
     chapter: 2,
-    imageUrl: "images/co2-factory-real.webp",
+    imageUrl: "images/ev-lifecycle-graph.webp",
     text: "でも、こんな反論もあった。",
     accentColor: RED,
     speechBubbles: [
@@ -450,9 +466,10 @@ export const storyScenes: StoryScene[] = [
     chapter: 2,
     imageUrl: null,
     text: "答えはデータにある。",
-    subText: "たしかに、バッテリーを作るときのCO₂はガソリン車より多い。でも走り始めたら電気自動車のCO₂はほぼゼロ。約1.7万km走った時点で逆転する。車の一生で比べると——",
+    subText:
+      "たしかに、バッテリーを作るときのCO₂はガソリン車より多い。でも走り始めたら電気自動車のCO₂はほぼゼロ。約1.7万km走った時点で逆転する。車の一生で比べると——",
     stat: "73%削減",
-    statLabel: "ガソリン車と比べたCO₂（EU調べ）",
+    statLabel: "ガソリン車と比べたCO₂（ICCT調べ）",
     accentColor: RED,
   },
   {
@@ -461,7 +478,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 2,
     imageUrl: null,
     text: "じゃあ使い終わったバッテリーはどうなるの？",
-    subText: "テスラはバッテリーの中の金属を92%以上リサイクルして、新しいバッテリーの材料に戻している。車で使えなくなった電池も、建物の電力を貯める用途に再利用できる。ゴミにはならない。",
+    subText:
+      "テスラの報告によると、バッテリーの中の金属を92%以上リサイクルして新しいバッテリーの材料に戻している。車で使えなくなった電池も、建物の電力を貯める用途に再利用できる。ゴミにはならない。",
     accentColor: RED,
   },
   {
@@ -488,7 +506,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 2,
     imageUrl: "images/megapack-aerial.webp",
     text: "街ひとつ分の電気を貯められる巨大バッテリー。",
-    subText: "「Megapack（メガパック）」。1台で130軒の家が丸一日使う量の電気を貯められる。昼に太陽光で貯めて、夜に使う。オーストラリアではガス発電所をまるごと置き換えた。",
+    subText:
+      "「Megapack（メガパック）」。1台で130軒の家が丸一日使う量の電気を貯められる。昼に太陽光で貯めて、夜に使う。オーストラリアではガス発電所をまるごと置き換えた。",
     badge: "Tesla Energy",
     stat: "3,900kWh",
     statLabel: "Megapack 1台の蓄電量",
@@ -502,7 +521,7 @@ export const storyScenes: StoryScene[] = [
     id: "bridge-2-3",
     type: "manga-panel",
     chapter: null,
-    imageUrl: "images/elon-thinking.webp",
+    imageUrl: "images/elon-photo-19.webp",
     text: "",
     accentColor: TEXT,
     speechBubbles: [
@@ -548,12 +567,41 @@ export const storyScenes: StoryScene[] = [
     ],
   },
   {
+    id: "ch3-deepmind",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "2014年。Googleが「DeepMind」を買収した。",
+    subText:
+      "人間のように学習するAI技術を持つ天才集団。その力がGoogleという一つの巨大企業の手に渡った。",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-openai-idea",
+    type: "manga-panel",
+    chapter: 3,
+    imageUrl: "images/elon-photo-21.webp",
+    text: "",
+    accentColor: PURPLE,
+    speechBubbles: [
+      {
+        text: "ひとつの会社にAIを独占させてはいけない。人類全体のためのAIを、オープンに作る組織が必要だ。",
+        position: "right",
+        delay: 0.5,
+        speaker: ELON,
+        speakerName: "Elon Musk",
+        emphasis: "hero",
+      },
+    ],
+  },
+  {
     id: "ch3-openai",
     type: "image-hero",
     chapter: 3,
     imageUrl: "images/sam-altman-real-2.jpg",
-    text: "ひとつの会社にAIを独占させてはいけない。",
-    subText: "2015年、「OpenAI」を設立。お金儲けが目的ではなく、人類全員のためにAIを作る組織。技術は全て無料で公開する約束だった。",
+    text: "2015年。OpenAI設立。",
+    subText:
+      "お金儲けが目的ではない、非営利のAI研究組織。技術は全て無料で公開するという約束だった。",
     badge: "OpenAI",
     accentColor: PURPLE,
   },
@@ -563,7 +611,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: "images/sam-altman-real-1.jpg",
     text: "共同設立者、サム・アルトマン。",
-    subText: "シリコンバレーで最も有名なスタートアップ支援組織のトップだった人物。天才を見つけて育てるプロだ。",
+    subText:
+      "シリコンバレー最大のスタートアップ支援組織「Y Combinator」のトップ。AIの力をGoogleだけに握らせてはいけないと考え、イーロンと意気投合した。",
     badge: "Sam Altman",
     accentColor: PURPLE,
   },
@@ -598,7 +647,18 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: null,
     text: "イーロンはOpenAIを去った。",
-    subText: "その後OpenAIは「お金儲けしない」という約束を捨て、ふつうの会社になった。人類のために作ったはずの組織が、利益のための組織に変わってしまった。",
+    subText:
+      "2018年、意見の対立からイーロンは理事会を辞任。自分が作った組織を、他人の手に委ねることになった。",
+    accentColor: PURPLE,
+  },
+  {
+    id: "ch3-betrayal",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "そしてOpenAIは、約束を破った。",
+    subText:
+      "最先端のAIを学習させるには、莫大な計算能力が必要だった。年間数百億円のコスト。非営利では資金が続かなかった。2019年、マイクロソフトから約1,500億円の出資を受け入れ、営利企業に転換した。",
     accentColor: PURPLE,
   },
   {
@@ -607,7 +667,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: "images/chatgpt-real.webp",
     text: "史上最速の記録が生まれた。",
-    subText: "100万人が使い始めるまでにかかった時間。Netflixは3年半。Instagramは2ヶ月半。ChatGPTは——",
+    subText:
+      "100万人が使い始めるまでにかかった時間。Netflixは3年半。Instagramは2ヶ月半。ChatGPTは——",
     stat: "5日",
     statLabel: "",
     accentColor: PURPLE,
@@ -618,7 +679,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: "images/sam-altman-real-4.jpg",
     text: "2023年11月。突然のクビ宣告。",
-    subText: "OpenAIの幹部たちが突然サムを追い出した。「あまりに強力なAIの開発をどこまで進めていいのか」——内部で意見が割れていた。",
+    subText:
+      "OpenAIの幹部たちが突然サムを追い出した。「あまりに強力なAIの開発をどこまで進めていいのか」——内部で意見が割れていた。",
     badge: "OpenAI",
     accentColor: PURPLE,
   },
@@ -634,17 +696,28 @@ export const storyScenes: StoryScene[] = [
         text: "サムを戻せ。さもなければ全員辞める。",
         position: "left",
         delay: 0.5,
-        speakerName: "OpenAI社員 770人中ほぼ全員",
+        speakerName: "OpenAI社員 770人中747人",
         emphasis: "hero",
       },
     ],
-    subText: "5日後、サムは復帰した。",
+    subText:
+      "社員たちにとって、サムは「AIの夢を実現してくれるリーダー」だった。彼がいなければマイクロソフトやGoogleに引き抜かれる。解任を主導したイリヤ・サツキバー自身も、翌日には署名に加わった。",
+  },
+  {
+    id: "ch3-revolt-result",
+    type: "text-only",
+    chapter: 3,
+    imageUrl: null,
+    text: "5日後、サムは復帰した。",
+    subText:
+      "解任を主導した理事たちは全員退任。「AIの安全」を守ろうとした側が敗北し、「AIの開発を加速する」側が勝った。",
+    accentColor: PURPLE,
   },
   {
     id: "ch3-xai",
     type: "manga-panel",
     chapter: 3,
-    imageUrl: "images/elon-photo-8.webp",
+    imageUrl: "images/elon-photo-23.webp",
     text: "",
     accentColor: PURPLE,
     speechBubbles: [
@@ -664,10 +737,11 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: "images/datacenter-real.webp",
     text: "122日で、世界最大のAIセンター。",
-    subText: "テネシー州メンフィスの使われなくなった巨大工場を買い取った。AIの学習に使う専用チップ「GPU」を20万個積み、世界で最もパワフルなAI拠点にした。",
+    subText:
+      "テネシー州メンフィスの使われなくなった巨大工場を買い取った。まず122日で10万個のAIチップを稼働させ、さらに92日で倍の20万個に拡張。世界で最もパワフルなAI拠点を作り上げた。",
     badge: "xAI",
     stat: "200,000個",
-    statLabel: "のAIチップを搭載",
+    statLabel: "のAIチップを搭載（Colossus）",
     accentColor: PURPLE,
   },
   {
@@ -676,7 +750,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: "images/jensen-huang-real-2.jpg",
     text: "そのチップを作っている男。",
-    subText: "ジェンセン・ファン。半導体メーカーNVIDIA（エヌビディア）のCEO。ChatGPTも、イーロンのGrokも、GoogleのGeminiも——世界中のAIは、ほぼ全てこの男が作ったチップで動いている。",
+    subText:
+      "ジェンセン・ファン。半導体メーカーNVIDIA（エヌビディア）のCEO。ChatGPTも、イーロンのGrokも、GoogleのGeminiも——世界中のAIは、ほぼ全てこの男が作ったチップで動いている。",
     badge: "NVIDIA",
     accentColor: PURPLE,
   },
@@ -704,7 +779,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 3,
     imageUrl: "images/noland-arbaugh-real.webp",
     text: "2024年1月。人類初の脳チップ手術。",
-    subText: "首から下が動かないノーランドの脳に小さなチップを埋め込んだ。「動け」と念じるだけで画面のカーソルが動いた。まずは体が動かない人を助ける。そしていつか、人間の脳そのものをパワーアップさせる。",
+    subText:
+      "首から下が動かないノーランドの脳に小さなチップを埋め込んだ。「動け」と念じるだけで画面のカーソルが動いた。まずは体が動かない人を助ける。そしていつか、人間の脳そのものをパワーアップさせる。",
     stat: "1,024",
     statLabel: "本の極細センサーが脳の信号を読み取る",
     badge: "Neuralink",
@@ -751,7 +827,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 4,
     imageUrl: "images/empty-classroom.webp",
     text: "子どもが生まれていない。",
-    subText: "人口を維持するには、女性一人あたり2.1人の子どもが必要。でも今の韓国は0.72。日本は1.20。このままでは介護する人も、工場で働く人も、運転手も足りなくなる。",
+    subText:
+      "人口を維持するには、女性一人あたり2.1人の子どもが必要。でも今の韓国は0.72。日本は1.20。このままでは介護する人も、工場で働く人も、運転手も足りなくなる。",
     accentColor: GREEN,
   },
   {
@@ -778,7 +855,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 4,
     imageUrl: "images/optimus-gen1-hq.webp",
     text: "2023年3月。Optimus Gen 1。",
-    subText: "まだ荒削り。むき出しの配線に、ぎこちない歩き方。でも人の形をしたロボットを大量に作るという途方もない挑戦が始まった。",
+    subText:
+      "まだ荒削り。むき出しの配線に、ぎこちない歩き方。でも人の形をしたロボットを大量に作るという途方もない挑戦が始まった。",
     badge: "Optimus Gen1",
     accentColor: GREEN,
   },
@@ -788,7 +866,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 4,
     imageUrl: "images/optimus-gen2-hq.webp",
     text: "9ヶ月後。まるで別物になった。",
-    subText: "Optimus Gen 2。卵を割らずに持てるほど繊細な指。体重は30%軽くなった。目標価格は1台300万円。しかも24時間、休まず働ける。",
+    subText:
+      "Optimus Gen 2。卵を割らずに持てるほど繊細な指。体重は30%軽くなった。目標価格は1台300万円。しかも24時間、休まず働ける。",
     badge: "Optimus Gen2",
     stat: "$20,000",
     statLabel: "1台の目標価格（約300万円）",
@@ -800,7 +879,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 4,
     imageUrl: "images/cybercab-real.webp",
     text: "運転手だっていらなくなる。",
-    subText: "Tesla Cybercab。ハンドルもアクセルペダルもない、完全自動運転タクシー。充電は置くだけのワイヤレス。人間の運転手がいないから24時間走り続ける。",
+    subText:
+      "Tesla Cybercab。ハンドルもアクセルペダルもない、完全自動運転タクシー。充電は置くだけのワイヤレス。人間の運転手がいないから24時間走り続ける。",
     badge: "Tesla",
     stat: "24h",
     statLabel: "自動運転に休憩時間はない",
@@ -825,7 +905,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 5,
     imageUrl: "images/traffic-jam-real.webp",
     text: "年間51時間。",
-    subText: "アメリカ人が渋滞で失っている時間。一生分だと約3,300時間。ただ動けず、人生の時間が消えていく。",
+    subText:
+      "アメリカ人が渋滞で失っている時間。一生分だと約3,300時間。ただ動けず、人生の時間が消えていく。",
     stat: "51時間/年",
     statLabel: "渋滞で消える時間（INRIX 2023）",
     accentColor: WARM,
@@ -877,7 +958,8 @@ export const storyScenes: StoryScene[] = [
         emphasis: "quiet",
       },
     ],
-    subText: "2016年12月、本当に「The Boring Company」を設立。「boring」は英語で「退屈」と「掘削」のダブルミーニング。",
+    subText:
+      "2016年12月、本当に「The Boring Company」を設立。「boring」は英語で「退屈」と「掘削」のダブルミーニング。",
   },
   {
     id: "ch5-vegas",
@@ -885,7 +967,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 5,
     imageUrl: "images/vegas-loop-interior.webp",
     text: "ラスベガスの地下で、もう動いている。",
-    subText: "「Vegas Loop」。ラスベガスの地下に掘ったトンネルの中を、テスラの車が乗客を乗せて走っている。すでに8駅が営業中。最終的には全長110km、104駅の地下ネットワークになる。",
+    subText:
+      "「Vegas Loop」。ラスベガスの地下に掘ったトンネルの中を、テスラの車が乗客を乗せて走っている。すでに8駅が営業中。最終的には全長110km、104駅の地下ネットワークになる。",
     badge: "Vegas Loop",
     accentColor: WARM,
   },
@@ -895,7 +978,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 5,
     imageUrl: null,
     text: "歩けば25分の距離を、2分で移動。",
-    subText: "ラスベガスの巨大展示会場。端から端まで歩くと25分かかる。Vegas Loopならたった2分。しかも無料。利用者はすでに500万人を超えた。",
+    subText:
+      "ラスベガスの巨大展示会場。端から端まで歩くと25分かかる。Vegas Loopならたった2分。しかも無料。利用者はすでに500万人を超えた。",
     stat: "500万人+",
     statLabel: "累計利用者数（2024年末時点）",
     accentColor: WARM,
@@ -941,7 +1025,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 6,
     imageUrl: "images/ukraine-real.webp",
     text: "2022年2月。ロシアがウクライナに攻め込んだ。",
-    subText: "爆撃で電話の基地局やネット回線が壊された。電話もできない。ネットもつながらない。家族が生きているかどうかも確認できない。",
+    subText:
+      "爆撃で電話の基地局やネット回線が壊された。電話もできない。ネットもつながらない。家族が生きているかどうかも確認できない。",
     accentColor: TEXT,
   },
   {
@@ -950,7 +1035,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 6,
     imageUrl: "images/fedorov.jpg",
     text: "ウクライナの副首相がSNSで助けを求めた。",
-    subText: "「@elonmusk あなたが火星を目指している間に、ロシアがウクライナを占領しようとしている。衛星インターネットの端末を送ってくれ。」",
+    subText:
+      "「@elonmusk あなたが火星を目指している間に、ロシアがウクライナを占領しようとしている。衛星インターネットの端末を送ってくれ。」",
     accentColor: TEXT,
   },
   {
@@ -1007,7 +1093,8 @@ export const storyScenes: StoryScene[] = [
     chapter: 6,
     imageUrl: "images/elon-photo-22.webp",
     text: "声を届け、お金を届ける。",
-    subText: "世界には銀行口座を持てない人が13億人いる。スマホ1台でお金を送ったり、買い物したり、貯金したりできるアプリ。イーロンは1999年に「X.com」というネット決済サービスを作った。PayPalの前身だ。Twitterを買って「X」に変えたのは、その夢の続きだった。",
+    subText:
+      "世界には銀行口座を持てない人が13億人いる。スマホ1台でお金を送ったり、買い物したり、貯金したりできるアプリ。イーロンは1999年に「X.com」というネット決済サービスを作った。PayPalの前身だ。Twitterを買って「X」に変えたのは、その夢の続きだった。",
     badge: "X",
     stat: "6億人",
     statLabel: "月間アクティブユーザー",

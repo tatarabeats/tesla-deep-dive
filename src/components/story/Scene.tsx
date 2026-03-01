@@ -12,7 +12,6 @@ import SceneImage from "./SceneImage";
 import CountUp from "../effects/CountUp";
 import ParticleField from "../effects/ParticleField";
 import GlitchText from "../effects/GlitchText";
-// ScrollRevealText available for future character-by-character reveals
 
 interface Props {
   scene: StoryScene;
@@ -20,6 +19,7 @@ interface Props {
 }
 
 const SPRING = { stiffness: 100, damping: 30, mass: 0.5 };
+const IS_MOBILE = typeof window !== "undefined" && window.innerWidth <= 768;
 
 function getChapterParticleHue(chapter: number | null): number {
   switch (chapter) {
@@ -51,235 +51,309 @@ export default function Scene({ scene }: Props) {
     offset: ["start end", "end start"],
   });
 
-  // ─── Image parallax ───
-  const rawImageY = useTransform(scrollYProgress, [0, 1], ["12%", "-12%"]);
-  const rawImageScale = useTransform(scrollYProgress, [0, 0.5], [1.2, 1.0]);
+  // ─── Image parallax (desktop only) ───
+  const rawImageY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    IS_MOBILE ? ["0%", "0%"] : ["12%", "-12%"],
+  );
+  const rawImageScale = useTransform(
+    scrollYProgress,
+    [0, 0.5],
+    IS_MOBILE ? [1, 1] : [1.2, 1.0],
+  );
   const imageY = useSpring(rawImageY, SPRING);
   const imageScale = useSpring(rawImageScale, SPRING);
 
-  // ─── Image clip-path reveal (cinematic wipe from bottom) ───
-  const imageReveal = useTransform(scrollYProgress, [0.0, 0.3], [0, 1]);
-  const imageClipPath = useTransform(
-    imageReveal,
-    (v: number) => `inset(0 0 ${(1 - v) * 100}% 0)`,
+  // ─── Image reveal ───
+  const imageOpacity = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0.0, 0.05] : [0.0, 0.2],
+    [0, 1],
   );
 
-  // ─── Chapter title: circle reveal ───
-  const chapterImageReveal = useTransform(scrollYProgress, [0.0, 0.35], [0, 1]);
-  const chapterClipPath = useTransform(
-    chapterImageReveal,
-    (v: number) => `circle(${v * 85 + 15}% at 50% 50%)`,
-  );
-
+  // On mobile: skip scroll-linked opacity, always show content
   // ─── Hero content (bottom-aligned: image-hero, manga-panel) ───
   const heroOpacity = useTransform(
     scrollYProgress,
-    [0.1, 0.25, 0.72, 0.88],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.05, 0.18, 0.88, 0.97],
     [0, 1, 1, 0],
   );
   const heroY = useTransform(
     scrollYProgress,
-    [0.1, 0.25, 0.72, 0.88],
-    [60, 0, 0, -30],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.05, 0.18, 0.88, 0.97],
+    IS_MOBILE ? [0, 0, 0, 0] : [40, 0, 0, -20],
   );
 
   // ─── Centered content (text-only, epilogue) ───
   const centerOpacity = useTransform(
     scrollYProgress,
-    [0.15, 0.3, 0.65, 0.82],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.08, 0.2, 0.85, 0.95],
     [0, 1, 1, 0],
   );
   const centerY = useTransform(
     scrollYProgress,
-    [0.15, 0.3, 0.65, 0.82],
-    [40, 0, 0, -25],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.08, 0.2, 0.85, 0.95],
+    IS_MOBILE ? [0, 0, 0, 0] : [30, 0, 0, -15],
   );
 
-  // ─── Sub-text (slightly delayed) ───
+  // ─── Sub-text ───
   const subOpacity = useTransform(
     scrollYProgress,
-    [0.18, 0.33, 0.65, 0.82],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.1, 0.22, 0.85, 0.95],
     [0, 1, 1, 0],
   );
   const subY = useTransform(
     scrollYProgress,
-    [0.18, 0.33, 0.65, 0.82],
-    [35, 0, 0, -20],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.1, 0.22, 0.85, 0.95],
+    IS_MOBILE ? [0, 0, 0, 0] : [25, 0, 0, -12],
   );
 
-  // ─── Stat (more delayed) ───
+  // ─── Stat ───
   const statOpacity = useTransform(
     scrollYProgress,
-    [0.22, 0.37, 0.65, 0.82],
+    IS_MOBILE ? [0, 0.03, 0.98, 1] : [0.12, 0.25, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const statScale = useTransform(scrollYProgress, [0.22, 0.37], [0.7, 1]);
+  const statScale = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.03] : [0.12, 0.25],
+    IS_MOBILE ? [1, 1] : [0.7, 1],
+  );
 
   // ─── Badge ───
   const badgeOpacity = useTransform(
     scrollYProgress,
-    [0.08, 0.22, 0.72, 0.88],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.05, 0.18, 0.88, 0.97],
     [0, 1, 1, 0],
   );
-  const badgeX = useTransform(scrollYProgress, [0.08, 0.22], [-40, 0]);
+  const badgeX = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.05, 0.18],
+    IS_MOBILE ? [0, 0] : [-40, 0],
+  );
 
   // ─── Chapter title zoom-through ───
   const chapterNumOpacity = useTransform(
     scrollYProgress,
-    [0.1, 0.25, 0.6, 0.8],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.05, 0.18, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const chapterNumScale = useTransform(scrollYProgress, [0.1, 0.25], [0.5, 1]);
+  const chapterNumScale = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.05, 0.18],
+    IS_MOBILE ? [1, 1] : [0.5, 1],
+  );
   const chapterTitleOpacity = useTransform(
     scrollYProgress,
-    [0.12, 0.28, 0.6, 0.8],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.08, 0.2, 0.85, 0.95],
     [0, 1, 1, 0],
   );
   const chapterTitleScale = useTransform(
     scrollYProgress,
-    [0.15, 0.35, 0.6, 0.85],
-    [0.8, 1, 1, 1.15],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.1, 0.25, 0.85, 0.95],
+    IS_MOBILE ? [1, 1, 1, 1] : [0.8, 1, 1, 1.15],
   );
   const chapterTitleY = useTransform(
     scrollYProgress,
-    [0.15, 0.35, 0.6, 0.85],
-    [30, 0, 0, -20],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.1, 0.25, 0.85, 0.95],
+    IS_MOBILE ? [0, 0, 0, 0] : [30, 0, 0, -20],
   );
   const lineScaleX = useTransform(
     scrollYProgress,
-    [0.3, 0.45, 0.6, 0.8],
+    IS_MOBILE ? [0, 0.03, 0.98, 1] : [0.15, 0.3, 0.85, 0.95],
     [0, 1, 1, 0],
   );
 
-  // ─── Speech bubbles (scroll-staggered) ───
+  // ─── Speech bubbles ───
   const bubble0Opacity = useTransform(
     scrollYProgress,
-    [0.18, 0.32, 0.72, 0.88],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.08, 0.2, 0.88, 0.97],
     [0, 1, 1, 0],
   );
-  const bubble0Y = useTransform(scrollYProgress, [0.18, 0.32], [20, 0]);
-  const bubble0Scale = useTransform(scrollYProgress, [0.18, 0.32], [0.88, 1]);
+  const bubble0Y = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.08, 0.2],
+    IS_MOBILE ? [0, 0] : [20, 0],
+  );
+  const bubble0Scale = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.08, 0.2],
+    IS_MOBILE ? [1, 1] : [0.88, 1],
+  );
 
   const bubble1Opacity = useTransform(
     scrollYProgress,
-    [0.32, 0.46, 0.72, 0.88],
+    IS_MOBILE ? [0, 0.03, 0.98, 1] : [0.18, 0.3, 0.88, 0.97],
     [0, 1, 1, 0],
   );
-  const bubble1Y = useTransform(scrollYProgress, [0.32, 0.46], [20, 0]);
-  const bubble1Scale = useTransform(scrollYProgress, [0.32, 0.46], [0.88, 1]);
+  const bubble1Y = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.03] : [0.18, 0.3],
+    IS_MOBILE ? [0, 0] : [20, 0],
+  );
+  const bubble1Scale = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.03] : [0.18, 0.3],
+    IS_MOBILE ? [1, 1] : [0.88, 1],
+  );
 
   // ─── Watermark ───
   const watermarkOpacity = useTransform(
     scrollYProgress,
-    [0.2, 0.35, 0.65, 0.8],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.1, 0.22, 0.85, 0.95],
     [0, 0.04, 0.04, 0],
   );
 
   // ─── Epilogue special ───
   const epilogueLineOpacity = useTransform(
     scrollYProgress,
-    [0.15, 0.3, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.05, 0.18, 0.85, 0.95],
     [0, 1, 1, 0],
   );
   const epilogueLineScaleX = useTransform(
     scrollYProgress,
-    [0.15, 0.35],
+    IS_MOBILE ? [0, 0.02] : [0.05, 0.22],
     [0, 1],
   );
   const epilogueTextOpacity = useTransform(
     scrollYProgress,
-    [0.2, 0.38, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.08, 0.2, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const epilogueTextY = useTransform(scrollYProgress, [0.2, 0.38], [30, 0]);
+  const epilogueTextY = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.08, 0.2],
+    IS_MOBILE ? [0, 0] : [30, 0],
+  );
   const epilogueQuoteOpacity = useTransform(
     scrollYProgress,
-    [0.35, 0.5, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.15, 0.28, 0.85, 0.95],
     [0, 0.85, 0.85, 0],
   );
 
   // ─── Climax ───
   const climaxFlashOpacity = useTransform(
     scrollYProgress,
-    [0.2, 0.3, 0.45],
+    IS_MOBILE ? [0.05, 0.12, 0.25] : [0.1, 0.2, 0.35],
     [0, 0.8, 0],
   );
   const climaxGlowOpacity = useTransform(
     scrollYProgress,
-    [0.2, 0.35, 0.6],
+    IS_MOBILE ? [0.05, 0.12, 0.4] : [0.1, 0.22, 0.5],
     [0, 0.6, 0.15],
   );
   const climaxGlowScale = useTransform(
     scrollYProgress,
-    [0.2, 0.35, 0.6],
+    IS_MOBILE ? [0.05, 0.12, 0.4] : [0.1, 0.22, 0.5],
     [0.3, 1.5, 2.0],
   );
   const climaxTextOpacity = useTransform(
     scrollYProgress,
-    [0.25, 0.4, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.08, 0.2, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const climaxTextScale = useTransform(scrollYProgress, [0.25, 0.4], [0.5, 1]);
-  const climaxTextY = useTransform(scrollYProgress, [0.25, 0.4], [20, 0]);
+  const climaxTextScale = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.08, 0.2],
+    IS_MOBILE ? [1, 1] : [0.5, 1],
+  );
+  const climaxTextY = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.08, 0.2],
+    IS_MOBILE ? [0, 0] : [20, 0],
+  );
 
-  // ─── Timeline stagger ───
+  // ─── Timeline stagger (mobile: show all immediately) ───
   const tl0Opacity = useTransform(
     scrollYProgress,
-    [0.12, 0.22, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.06, 0.15, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const tl0X = useTransform(scrollYProgress, [0.12, 0.22], [-40, 0]);
+  const tl0X = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.06, 0.15],
+    IS_MOBILE ? [0, 0] : [-40, 0],
+  );
   const tl1Opacity = useTransform(
     scrollYProgress,
-    [0.18, 0.28, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.1, 0.19, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const tl1X = useTransform(scrollYProgress, [0.18, 0.28], [40, 0]);
+  const tl1X = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.02] : [0.1, 0.19],
+    IS_MOBILE ? [0, 0] : [40, 0],
+  );
   const tl2Opacity = useTransform(
     scrollYProgress,
-    [0.24, 0.34, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.03, 0.98, 1] : [0.14, 0.23, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const tl2X = useTransform(scrollYProgress, [0.24, 0.34], [-40, 0]);
+  const tl2X = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.03] : [0.14, 0.23],
+    IS_MOBILE ? [0, 0] : [-40, 0],
+  );
   const tl3Opacity = useTransform(
     scrollYProgress,
-    [0.3, 0.4, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.04, 0.98, 1] : [0.18, 0.27, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const tl3X = useTransform(scrollYProgress, [0.3, 0.4], [40, 0]);
+  const tl3X = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.04] : [0.18, 0.27],
+    IS_MOBILE ? [0, 0] : [40, 0],
+  );
   const tl4Opacity = useTransform(
     scrollYProgress,
-    [0.36, 0.46, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.05, 0.98, 1] : [0.22, 0.31, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const tl4X = useTransform(scrollYProgress, [0.36, 0.46], [-40, 0]);
+  const tl4X = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.05] : [0.22, 0.31],
+    IS_MOBILE ? [0, 0] : [-40, 0],
+  );
   const tlBarScales = [
-    useTransform(scrollYProgress, [0.22, 0.35], [0, 1]),
-    useTransform(scrollYProgress, [0.28, 0.41], [0, 1]),
-    useTransform(scrollYProgress, [0.34, 0.47], [0, 1]),
-    useTransform(scrollYProgress, [0.4, 0.53], [0, 1]),
-    useTransform(scrollYProgress, [0.46, 0.59], [0, 1]),
+    useTransform(scrollYProgress, IS_MOBILE ? [0, 0.02] : [0.12, 0.22], [0, 1]),
+    useTransform(scrollYProgress, IS_MOBILE ? [0, 0.03] : [0.16, 0.26], [0, 1]),
+    useTransform(scrollYProgress, IS_MOBILE ? [0, 0.04] : [0.2, 0.3], [0, 1]),
+    useTransform(scrollYProgress, IS_MOBILE ? [0, 0.05] : [0.24, 0.34], [0, 1]),
+    useTransform(scrollYProgress, IS_MOBILE ? [0, 0.06] : [0.28, 0.38], [0, 1]),
   ];
 
   // ─── Multi-card stagger ───
   const multi0Opacity = useTransform(
     scrollYProgress,
-    [0.15, 0.28, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.01, 0.98, 1] : [0.06, 0.16, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const multi0Y = useTransform(scrollYProgress, [0.15, 0.28], [60, 0]);
+  const multi0Y = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.01] : [0.06, 0.16],
+    IS_MOBILE ? [0, 0] : [60, 0],
+  );
   const multi1Opacity = useTransform(
     scrollYProgress,
-    [0.22, 0.35, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.02, 0.98, 1] : [0.12, 0.22, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const multi1Y = useTransform(scrollYProgress, [0.22, 0.35], [60, 0]);
+  const multi1Y = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.02] : [0.12, 0.22],
+    IS_MOBILE ? [0, 0] : [60, 0],
+  );
   const multi2Opacity = useTransform(
     scrollYProgress,
-    [0.29, 0.42, 0.7, 0.85],
+    IS_MOBILE ? [0, 0.03, 0.98, 1] : [0.18, 0.28, 0.85, 0.95],
     [0, 1, 1, 0],
   );
-  const multi2Y = useTransform(scrollYProgress, [0.29, 0.42], [60, 0]);
+  const multi2Y = useTransform(
+    scrollYProgress,
+    IS_MOBILE ? [0, 0.03] : [0.18, 0.28],
+    IS_MOBILE ? [0, 0] : [60, 0],
+  );
 
   const imgSrc = scene.imageUrl
     ? `${import.meta.env.BASE_URL}${scene.imageUrl}`
@@ -329,7 +403,7 @@ export default function Scene({ scene }: Props) {
       >
         {isInView && (
           <ParticleField
-            count={40}
+            count={IS_MOBILE ? 15 : 40}
             hue={getChapterParticleHue(scene.chapter)}
             speed={0.15}
             connectDistance={0}
@@ -402,12 +476,12 @@ export default function Scene({ scene }: Props) {
             src={imgSrc}
             imageY={imageY}
             imageScale={imageScale}
-            clipPath={chapterClipPath}
+            imageOpacity={imageOpacity}
           />
         )}
         {isInView && (
           <ParticleField
-            count={50}
+            count={IS_MOBILE ? 20 : 50}
             hue={getChapterParticleHue(scene.chapter)}
             speed={0.2}
             connectDistance={0}
@@ -464,12 +538,12 @@ export default function Scene({ scene }: Props) {
             src={imgSrc}
             imageY={imageY}
             imageScale={imageScale}
-            clipPath={chapterClipPath}
+            imageOpacity={imageOpacity}
           />
         )}
         {isInView && (
           <ParticleField
-            count={80}
+            count={IS_MOBILE ? 30 : 80}
             hue={40}
             speed={0.1}
             connectDistance={120}
@@ -608,7 +682,7 @@ export default function Scene({ scene }: Props) {
             src={imgSrc}
             imageY={imageY}
             imageScale={imageScale}
-            clipPath={imageClipPath}
+            imageOpacity={imageOpacity}
           />
         )}
         <div className="scene__content scene__content--center">
@@ -717,12 +791,12 @@ export default function Scene({ scene }: Props) {
             src={imgSrc}
             imageY={imageY}
             imageScale={imageScale}
-            clipPath={chapterClipPath}
+            imageOpacity={imageOpacity}
           />
         )}
         {isInView && (
           <ParticleField
-            count={80}
+            count={IS_MOBILE ? 30 : 80}
             hue={40}
             speed={0.6}
             connectDistance={0}
@@ -784,7 +858,7 @@ export default function Scene({ scene }: Props) {
           src={imgSrc}
           imageY={imageY}
           imageScale={imageScale}
-          clipPath={imageClipPath}
+          imageOpacity={imageOpacity}
         />
       )}
       <div className="scene__content">
@@ -878,7 +952,7 @@ const PrologueScene = forwardRef<HTMLDivElement, PrologueProps>(
         data-scene={scene.id}
       >
         <ParticleField
-          count={80}
+          count={IS_MOBILE ? 30 : 80}
           hue={20}
           speed={0.2}
           connectDistance={0}
