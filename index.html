@@ -3,22 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Elon's Vision — 6つの危機と、1人の男の物語</title>
-    <meta name="description" content="イーロン・マスクはなぜ6つの会社を作ったのか。地球が抱える6つの危機と、1人の男の壮大なビジョンを体感するインタラクティブストーリー。" />
-    <meta name="theme-color" content="#0B1120" />
+    <title>Tesla Deep Dive — 6つのピンチと、1人の男の物語</title>
+    <meta
+      name="description"
+      content="イーロン・マスクはなぜ6つの会社を作ったのか。地球が抱える6つのピンチと、1人の男の壮大なビジョンを体感するインタラクティブストーリー。"
+    />
+    <meta name="theme-color" content="#0a0a0a" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Elon's Vision" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Tesla Deep Dive" />
     <link rel="manifest" href="manifest.json" />
     <link rel="apple-touch-icon" href="icon-192.svg" />
-    <!-- Google Fonts: Premium Japanese Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/tesla-deep-dive/assets/index-DUjUXwna.js"></script>
-    <link rel="stylesheet" crossorigin href="/tesla-deep-dive/assets/index-tDPHewHt.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/tesla-deep-dive/assets/index-C49Gg1pC.js"></script>
+    <link rel="stylesheet" crossorigin href="/tesla-deep-dive/assets/index-BVSgnLIC.css">
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Force unregister old service worker and clear caches
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .getRegistrations()
+          .then(function (registrations) {
+            registrations.forEach(function (registration) {
+              registration.unregister();
+            });
+          });
+        caches.keys().then(function (keys) {
+          keys.forEach(function (key) {
+            caches.delete(key);
+          });
+        });
+      }
+    </script>
   </body>
 </html>
